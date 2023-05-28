@@ -46,10 +46,14 @@ class _MyHomePageState extends State<MyHomePage> {
 
   @override
   Widget build(BuildContext context) {
+    // TODO: turn the payload into mock json and mapper
     return Scaffold(
         appBar: AppBar(
           backgroundColor: Theme.of(context).colorScheme.inversePrimary,
-          title: Text(widget.title),
+          title: Text(widget.title,
+              style: TextStyle(
+                  color: Theme.of(context).colorScheme.onPrimary,
+                  fontWeight: FontWeight.bold)),
         ),
         body: SingleChildScrollView(
           child: Padding(
@@ -69,16 +73,10 @@ class _MyHomePageState extends State<MyHomePage> {
                   propertyType: PropertyType.townHouse,
                 ),
                 ElevatedCard(
-                  address: "2/15 Packham Crescent, Glen Waverley",
-                  overallScore: 6.05,
-                  price: Price(PriceState.estimated, 15050000),
-                  propertyType: PropertyType.townHouse,
-                ),
-                ElevatedCard(
-                  address: "2/15 Packham Crescent, Glen Waverley",
-                  overallScore: 6.05,
-                  price: Price(PriceState.estimated, 15050000),
-                  propertyType: PropertyType.townHouse,
+                  address: "1704 33 Blackwood Street, North Melbourne",
+                  overallScore: 3.05,
+                  price: Price(PriceState.sold, 660000),
+                  propertyType: PropertyType.apartment,
                 ),
                 ElevatedCard(
                   address: "2/15 Packham Crescent, Glen Waverley",
@@ -101,7 +99,8 @@ class _MyHomePageState extends State<MyHomePage> {
           onPressed: () {},
           shape: const CircleBorder(),
           tooltip: 'Add new address',
-          child: const Icon(Icons.add),
+          child: Icon(Icons.add_home_work,
+              size: 30, color: Theme.of(context).colorScheme.onPrimary),
         ),
         floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
         bottomNavigationBar: BottomAppBar(
@@ -109,20 +108,34 @@ class _MyHomePageState extends State<MyHomePage> {
             color: Theme.of(context).colorScheme.inversePrimary,
             clipBehavior: Clip.hardEdge,
             shape: const CircularNotchedRectangle(),
-            notchMargin: 4,
+            notchMargin: 8,
             child: IconTheme(
               data:
                   IconThemeData(color: Theme.of(context).colorScheme.onPrimary),
               child: Row(children: <Widget>[
                 IconButton(
-                  tooltip: 'Open navigation menu',
-                  icon: const Icon(Icons.menu),
+                  iconSize: 40,
+                  tooltip: 'Comparison',
+                  icon: const Icon(Icons.bar_chart),
+                  onPressed: () {},
+                ),
+                IconButton(
+                  iconSize: 40,
+                  tooltip: 'Criteria',
+                  icon: const Icon(Icons.format_list_numbered_rtl),
                   onPressed: () {},
                 ),
                 const Spacer(),
                 IconButton(
-                  tooltip: 'Favorite',
-                  icon: const Icon(Icons.favorite),
+                  iconSize: 40,
+                  tooltip: 'Additional cost',
+                  icon: const Icon(Icons.price_change),
+                  onPressed: () {},
+                ),
+                IconButton(
+                  iconSize: 40,
+                  tooltip: 'Settings',
+                  icon: const Icon(Icons.settings),
                   onPressed: () {},
                 ),
               ]),

@@ -1,4 +1,4 @@
-enum PropertyType { townHouse, house }
+enum PropertyType { townHouse, house, apartment }
 
 enum PriceState { estimated, sold }
 
