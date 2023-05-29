@@ -9,11 +9,12 @@ class Price {
   Price(this.state, this.amount);
 }
 
-class HouseCard {
+class HouseCardProps {
   String address;
   double overallScore;
   Price price;
   PropertyType propertyType;
 
-  HouseCard(this.address, this.overallScore, this.price, this.propertyType);
+  HouseCardProps(
+      this.address, this.overallScore, this.price, this.propertyType);
 }

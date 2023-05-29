@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:house_evaluator/type.dart';
 import 'package:intl/intl.dart';
 
-class ElevatedCard extends StatelessWidget {
-  const ElevatedCard({
+class HouseCard extends StatelessWidget {
+  const HouseCard({
     super.key,
     required this.address,
     required this.overallScore,
@@ -26,11 +26,11 @@ class ElevatedCard extends StatelessWidget {
   IconData iconPicker(PropertyType type) {
     switch (type) {
       case PropertyType.house:
-        return Icons.house;
+        return Icons.house_rounded;
       case PropertyType.townHouse:
-        return Icons.holiday_village;
+        return Icons.holiday_village_rounded;
       case PropertyType.apartment:
-        return Icons.apartment;
+        return Icons.apartment_rounded;
     }
   }
 

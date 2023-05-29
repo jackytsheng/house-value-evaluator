@@ -1,5 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:house_evaluator/card.dart';
+import 'package:house_evaluator/route/additional_rost_route.dart';
+import 'package:house_evaluator/components/house_card.dart';
+import 'package:house_evaluator/route/compare_route.dart';
+import 'package:house_evaluator/route/criteria_route.dart';
+import 'package:house_evaluator/route/new_property_route.dart';
+import 'package:house_evaluator/route/settings_route.dart';
 import 'package:house_evaluator/type.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -36,12 +41,6 @@ class _MyHomePageState extends State<MyHomePage> {
   @override
   void initState() {
     super.initState();
-    initializeCounter();
-  }
-
-  Future<void> initializeCounter() async {
-    await getCounterData();
-    setState(() {}); // Trigger a rebuild after fetching the counter data
   }
 
   @override
@@ -60,31 +59,31 @@ class _MyHomePageState extends State<MyHomePage> {
             padding: const EdgeInsets.only(top: 20),
             child: Column(
               children: <Widget>[
-                ElevatedCard(
+                HouseCard(
                   address: "2 Exeter Ct, Wheelers Hill",
                   overallScore: 5.9,
                   price: Price(PriceState.sold, 1524000),
                   propertyType: PropertyType.house,
                 ),
-                ElevatedCard(
+                HouseCard(
                   address: "2/15 Packham Crescent, Glen Waverley",
                   overallScore: 6.05,
                   price: Price(PriceState.estimated, 15050000),
                   propertyType: PropertyType.townHouse,
                 ),
-                ElevatedCard(
+                HouseCard(
                   address: "1704 33 Blackwood Street, North Melbourne",
                   overallScore: 3.05,
                   price: Price(PriceState.sold, 660000),
                   propertyType: PropertyType.apartment,
                 ),
-                ElevatedCard(
+                HouseCard(
                   address: "2/15 Packham Crescent, Glen Waverley",
                   overallScore: 6.05,
                   price: Price(PriceState.estimated, 15050000),
                   propertyType: PropertyType.townHouse,
                 ),
-                ElevatedCard(
+                HouseCard(
                   address: "2/15 Packham Crescent, Glen Waverley",
                   overallScore: 6.05,
                   price: Price(PriceState.estimated, 15050000),
@@ -96,10 +95,15 @@ class _MyHomePageState extends State<MyHomePage> {
           // This trailing comma makes auto-formatting nicer for build methods.
         ),
         floatingActionButton: FloatingActionButton(
-          onPressed: () {},
+          onPressed: () {
+            Navigator.push(
+                context,
+                MaterialPageRoute(
+                    builder: (context) => const NewPropertyRoute()));
+          },
           shape: const CircleBorder(),
           tooltip: 'Add new address',
-          child: Icon(Icons.add_home_work,
+          child: Icon(Icons.add_home_work_rounded,
               size: 30, color: Theme.of(context).colorScheme.onPrimary),
         ),
         floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
@@ -116,34 +120,49 @@ class _MyHomePageState extends State<MyHomePage> {
                 IconButton(
                   iconSize: 40,
                   tooltip: 'Comparison',
-                  icon: const Icon(Icons.bar_chart),
-                  onPressed: () {},
+                  icon: const Icon(Icons.bar_chart_rounded),
+                  onPressed: () {
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => const CompareRoute()));
+                  },
                 ),
                 IconButton(
                   iconSize: 40,
                   tooltip: 'Criteria',
-                  icon: const Icon(Icons.format_list_numbered_rtl),
-                  onPressed: () {},
+                  icon: const Icon(Icons.format_list_numbered_rtl_rounded),
+                  onPressed: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => const CriteriaRoute()),
+                    );
+                  },
                 ),
                 const Spacer(),
                 IconButton(
                   iconSize: 40,
                   tooltip: 'Additional cost',
-                  icon: const Icon(Icons.price_change),
-                  onPressed: () {},
+                  icon: const Icon(Icons.price_change_rounded),
+                  onPressed: () {
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => const AdditionalCostRoute()));
+                  },
                 ),
                 IconButton(
-                  iconSize: 40,
-                  tooltip: 'Settings',
-                  icon: const Icon(Icons.settings),
-                  onPressed: () {},
-                ),
+                    iconSize: 40,
+                    tooltip: 'Settings',
+                    icon: const Icon(Icons.settings_rounded),
+                    onPressed: () {
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => const SettingsRoute()));
+                    }),
               ]),
             )));
-  }
-
-  Future<void> getCounterData() async {
-    final SharedPreferences pref = await SharedPreferences.getInstance();
-    pref.remove("count");
   }
 }
