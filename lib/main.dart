@@ -20,7 +20,7 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'Home Value Evaluator',
       theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(seedColor: Colors.pink.shade100),
+        colorScheme: ColorScheme.fromSeed(seedColor: Color(0xffe4012b)),
         useMaterial3: true,
       ),
       home: const MyHomePage(title: 'Home Value Evaluator'),
@@ -73,8 +73,8 @@ class _MyHomePageState extends State<MyHomePage> {
                 ),
                 HouseCard(
                   address: "1704 33 Blackwood Street, North Melbourne",
-                  overallScore: 3.05,
-                  price: Price(PriceState.sold, 660000),
+                  overallScore: 4.05,
+                  price: Price(PriceState.sold, 550000),
                   propertyType: PropertyType.apartment,
                 ),
                 HouseCard(
@@ -125,7 +125,7 @@ class _MyHomePageState extends State<MyHomePage> {
                     Navigator.push(
                         context,
                         MaterialPageRoute(
-                            builder: (context) => const CompareRoute()));
+                            builder: (context) => CompareRoute()));
                   },
                 ),
                 IconButton(

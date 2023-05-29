@@ -44,12 +44,14 @@ class HouseCard extends StatelessWidget {
           shadowColor: Theme.of(context).colorScheme.background,
           surfaceTintColor: Theme.of(context).colorScheme.onPrimary,
           child: Container(
+              height: 120,
               padding: const EdgeInsets.all(16.0),
               child: Column(
                 children: <Widget>[
                   Text(address,
+                      textAlign: TextAlign.center,
                       style: const TextStyle(fontWeight: FontWeight.bold)),
-                  const SizedBox(height: 50),
+                  const Spacer(),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: <Widget>[
