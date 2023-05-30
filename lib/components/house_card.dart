@@ -80,13 +80,21 @@ class HouseCard extends StatelessWidget {
                   Row(
                     children: <Widget>[
                       ColorScaleWidget(
-                        value: 3,
+                        value: overallScore,
                         minValue: 0,
-                        minColor: Colors.pink.shade100,
+                        minColor: Theme.of(context).colorScheme.onPrimary,
+                        lightTextColor:
+                            Theme.of(context).colorScheme.onSecondary,
                         maxValue: 10,
-                        maxColor: Colors.blue.shade100,
+                        darkTextColor:
+                            Theme.of(context).colorScheme.inverseSurface,
+                        maxColor: Theme.of(context).colorScheme.secondary,
                         child: Center(
-                            child: Text(overallScore.toStringAsFixed(2))),
+                            child: Text(
+                          overallScore.toStringAsFixed(2),
+                          style: TextStyle(
+                              fontSize: 12, fontWeight: FontWeight.bold),
+                        )),
                       ),
                       const Spacer(),
                       getChip(price.state),

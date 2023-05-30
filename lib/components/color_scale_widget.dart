@@ -6,6 +6,8 @@ class ColorScaleWidget extends StatelessWidget {
   final Color minColor;
   final double maxValue;
   final Color maxColor;
+  final Color lightTextColor;
+  final Color darkTextColor;
   final Widget child;
   final double height;
   final double width;
@@ -18,6 +20,8 @@ class ColorScaleWidget extends StatelessWidget {
     required this.minColor,
     required this.maxValue,
     required this.maxColor,
+    required this.darkTextColor,
+    required this.lightTextColor,
     required this.child,
     this.height = 40,
     this.width = 40,
@@ -49,6 +53,6 @@ class ColorScaleWidget extends StatelessWidget {
             0.114 * backgroundColor.blue) /
         255;
 
-    return luminance > 0.5 ? Colors.black : Colors.white;
+    return luminance > 0.5 ? darkTextColor : lightTextColor;
   }
 }

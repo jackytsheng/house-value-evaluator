@@ -9,39 +9,49 @@ import 'package:house_evaluator/type.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 void main() {
-  runApp(const MyApp());
+  runApp(HomeEvaluatorApp());
 }
 
-class MyApp extends StatelessWidget {
-  const MyApp({super.key});
+class HomeEvaluatorApp extends StatefulWidget {
+  HomeEvaluatorApp({super.key});
+
+  @override
+  State<HomeEvaluatorApp> createState() => _HomeEvaluatorApp();
+}
+
+class _HomeEvaluatorApp extends State<HomeEvaluatorApp> {
+  Color selectedThemeColor = Colors.blue.shade200;
+
+  void changeThemeColor(Color color) {
+    setState(() {
+      selectedThemeColor = color;
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'Home Value Evaluator',
       theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(seedColor: Colors.pink.shade100),
+        colorScheme: ColorScheme.fromSeed(seedColor: selectedThemeColor),
         useMaterial3: true,
       ),
-      home: const MyHomePage(title: 'Home Value Evaluator'),
+      home: MyHomePage(
+        changeThemeColor: changeThemeColor,
+        currentThemeColor: selectedThemeColor,
+      ),
     );
   }
 }
 
-class MyHomePage extends StatefulWidget {
-  const MyHomePage({super.key, required this.title});
+class MyHomePage extends StatelessWidget {
+  MyHomePage(
+      {super.key,
+      required this.changeThemeColor,
+      required this.currentThemeColor});
 
-  final String title;
-
-  @override
-  State<MyHomePage> createState() => _MyHomePageState();
-}
-
-class _MyHomePageState extends State<MyHomePage> {
-  @override
-  void initState() {
-    super.initState();
-  }
+  final Function(Color color) changeThemeColor;
+  final Color currentThemeColor;
 
   @override
   Widget build(BuildContext context) {
@@ -49,7 +59,94 @@ class _MyHomePageState extends State<MyHomePage> {
     return Scaffold(
         appBar: AppBar(
           backgroundColor: Theme.of(context).colorScheme.inversePrimary,
-          title: Text(widget.title,
+          actions: <Widget>[
+            PopupMenuButton(
+              icon: Icon(Icons.palette_rounded,
+                  color: Theme.of(context).colorScheme.onInverseSurface,
+                  size: 30),
+              itemBuilder: (context) {
+                return [
+                  PopupMenuItem<Color>(
+                    value: Colors.pink.shade200,
+                    child: Row(children: <Widget>[
+                      Text("Pink"),
+                      const Spacer(),
+                      Icon(Icons.fiber_manual_record_rounded,
+                          color: Colors.pink.shade200),
+                    ]),
+                  ),
+                  PopupMenuItem<Color>(
+                    value: Colors.redAccent.shade700,
+                    child: Row(children: <Widget>[
+                      Text("Red Accent"),
+                      const Spacer(),
+                      Icon(Icons.fiber_manual_record_rounded,
+                          color: Colors.redAccent.shade700),
+                    ]),
+                  ),
+                  PopupMenuItem<Color>(
+                    value: Colors.amber.shade200,
+                    child: Row(children: <Widget>[
+                      Text("Amber"),
+                      const Spacer(),
+                      Icon(Icons.fiber_manual_record_rounded,
+                          color: Colors.amber.shade200),
+                    ]),
+                  ),
+                  PopupMenuItem<Color>(
+                    value: Colors.deepPurple.shade400,
+                    child: Row(children: <Widget>[
+                      Text("Deep Purple"),
+                      const Spacer(),
+                      Icon(Icons.fiber_manual_record_rounded,
+                          color: Colors.deepPurple.shade400),
+                    ]),
+                  ),
+                  PopupMenuItem<Color>(
+                    value: Colors.blue.shade400,
+                    child: Row(children: <Widget>[
+                      Text("Blue"),
+                      const Spacer(),
+                      Icon(Icons.fiber_manual_record_rounded,
+                          color: Colors.blue.shade400),
+                    ]),
+                  ),
+                  PopupMenuItem<Color>(
+                    value: Colors.cyanAccent.shade400,
+                    child: Row(children: <Widget>[
+                      Text("Cyan Accent"),
+                      const Spacer(),
+                      Icon(Icons.fiber_manual_record_rounded,
+                          color: Colors.cyanAccent.shade400),
+                    ]),
+                  ),
+                  PopupMenuItem<Color>(
+                    value: Colors.teal.shade400,
+                    child: Row(children: <Widget>[
+                      Text("Teal"),
+                      const Spacer(),
+                      Icon(Icons.fiber_manual_record_rounded,
+                          color: Colors.teal.shade400),
+                    ]),
+                  ),
+                  PopupMenuItem<Color>(
+                    value: Colors.green.shade400,
+                    child: Row(children: <Widget>[
+                      Text("Green"),
+                      const Spacer(),
+                      Icon(Icons.fiber_manual_record_rounded,
+                          color: Colors.green.shade400),
+                    ]),
+                  ),
+                ];
+              },
+              initialValue: currentThemeColor,
+              // Callback that sets the selected popup menu item.
+              onSelected: changeThemeColor,
+            ),
+          ],
+          scrolledUnderElevation: 0,
+          title: Text("Home Value Evaluator",
               style: TextStyle(
                   color: Theme.of(context).colorScheme.onPrimary,
                   fontWeight: FontWeight.bold)),
