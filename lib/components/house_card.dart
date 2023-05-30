@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:house_evaluator/components/color_scale_widget.dart';
 import 'package:house_evaluator/type.dart';
 import 'package:intl/intl.dart';
 
@@ -36,6 +37,30 @@ class HouseCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    Widget getChip(PriceState priceState) {
+      String labelText;
+      Color color;
+      switch (priceState) {
+        case PriceState.estimated:
+          labelText = "Est";
+          color = Theme.of(context).colorScheme.primary;
+        case PriceState.sold:
+          labelText = "Sold";
+          color = Theme.of(context).colorScheme.inversePrimary;
+      }
+
+      return Container(
+          margin: EdgeInsets.only(right: 10),
+          child: CircleAvatar(
+              radius: 14,
+              backgroundColor: color,
+              child: Text(labelText,
+                  style: TextStyle(
+                      color: Theme.of(context).colorScheme.onPrimary,
+                      fontSize: 11,
+                      fontWeight: FontWeight.bold))));
+    }
+
     return Stack(children: <Widget>[
       Card(
           margin: const EdgeInsets.all(20),
@@ -53,12 +78,22 @@ class HouseCard extends StatelessWidget {
                       style: const TextStyle(fontWeight: FontWeight.bold)),
                   const Spacer(),
                   Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: <Widget>[
-                      Text(overallScore.toStringAsFixed(2)),
-                      Text(price.state == PriceState.estimated
-                          ? 'Est ${convertedToMoneyFormat(price.amount)} AUD'
-                          : 'Sold ${convertedToMoneyFormat(price.amount)} AUD')
+                      ColorScaleWidget(
+                        value: 3,
+                        minValue: 0,
+                        minColor: Colors.pink.shade100,
+                        maxValue: 10,
+                        maxColor: Colors.blue.shade100,
+                        child: Center(
+                            child: Text(overallScore.toStringAsFixed(2))),
+                      ),
+                      const Spacer(),
+                      getChip(price.state),
+                      Text(
+                        "${convertedToMoneyFormat(price.amount)} AUD",
+                        style: TextStyle(),
+                      ),
                     ],
                   ),
                 ],

@@ -20,7 +20,7 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'Home Value Evaluator',
       theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(seedColor: Color(0xffe4012b)),
+        colorScheme: ColorScheme.fromSeed(seedColor: Colors.pink.shade100),
         useMaterial3: true,
       ),
       home: const MyHomePage(title: 'Home Value Evaluator'),
@@ -79,13 +79,13 @@ class _MyHomePageState extends State<MyHomePage> {
                 ),
                 HouseCard(
                   address: "2/15 Packham Crescent, Glen Waverley",
-                  overallScore: 6.05,
+                  overallScore: 10,
                   price: Price(PriceState.estimated, 15050000),
                   propertyType: PropertyType.townHouse,
                 ),
                 HouseCard(
                   address: "2/15 Packham Crescent, Glen Waverley",
-                  overallScore: 6.05,
+                  overallScore: 1,
                   price: Price(PriceState.estimated, 15050000),
                   propertyType: PropertyType.townHouse,
                 )
