@@ -78,25 +78,25 @@ class MyHomePage extends StatelessWidget {
                   PopupMenuItem<Color>(
                     value: Colors.redAccent.shade700,
                     child: Row(children: <Widget>[
-                      Text("Red Accent"),
+                      Text("Red"),
                       const Spacer(),
                       Icon(Icons.fiber_manual_record_rounded,
                           color: Colors.redAccent.shade700),
                     ]),
                   ),
                   PopupMenuItem<Color>(
-                    value: Colors.amber.shade200,
+                    value: Colors.amberAccent.shade100,
                     child: Row(children: <Widget>[
                       Text("Amber"),
                       const Spacer(),
                       Icon(Icons.fiber_manual_record_rounded,
-                          color: Colors.amber.shade200),
+                          color: Colors.amberAccent.shade100),
                     ]),
                   ),
                   PopupMenuItem<Color>(
                     value: Colors.deepPurple.shade400,
                     child: Row(children: <Widget>[
-                      Text("Deep Purple"),
+                      Text("Purple"),
                       const Spacer(),
                       Icon(Icons.fiber_manual_record_rounded,
                           color: Colors.deepPurple.shade400),
@@ -112,12 +112,12 @@ class MyHomePage extends StatelessWidget {
                     ]),
                   ),
                   PopupMenuItem<Color>(
-                    value: Colors.cyanAccent.shade400,
+                    value: Colors.cyan.shade400,
                     child: Row(children: <Widget>[
-                      Text("Cyan Accent"),
+                      Text("Cyan"),
                       const Spacer(),
                       Icon(Icons.fiber_manual_record_rounded,
-                          color: Colors.cyanAccent.shade400),
+                          color: Colors.cyan.shade400),
                     ]),
                   ),
                   PopupMenuItem<Color>(

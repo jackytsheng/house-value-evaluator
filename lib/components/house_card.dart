@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:house_evaluator/components/color_scale_widget.dart';
+import 'package:house_evaluator/components/float_card.dart';
 import 'package:house_evaluator/type.dart';
 import 'package:intl/intl.dart';
 
@@ -62,12 +63,8 @@ class HouseCard extends StatelessWidget {
     }
 
     return Stack(children: <Widget>[
-      Card(
-          margin: const EdgeInsets.all(20),
-          elevation: 4,
-          // shadowColor: Colors.pink[400],
-          shadowColor: Theme.of(context).colorScheme.background,
-          surfaceTintColor: Theme.of(context).colorScheme.onPrimary,
+      FlowCard(
+          margin: EdgeInsets.all(20),
           child: Container(
               height: 120,
               padding: const EdgeInsets.all(16.0),
@@ -100,7 +97,9 @@ class HouseCard extends StatelessWidget {
                       getChip(price.state),
                       Text(
                         "${convertedToMoneyFormat(price.amount)} AUD",
-                        style: TextStyle(),
+                        style: TextStyle(
+                          fontFamily: "RobotoMono",
+                        ),
                       ),
                     ],
                   ),
