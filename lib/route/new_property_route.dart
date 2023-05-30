@@ -7,7 +7,10 @@ class NewPropertyRoute extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: const ThemedAppBar(title: "Add a new property"),
+      appBar: const ThemedAppBar(
+        title: "Add a new property",
+        helpMessage: "",
+      ),
       body: Center(
         child: ElevatedButton(
           onPressed: () {

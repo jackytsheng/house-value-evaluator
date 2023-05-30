@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:house_evaluator/components/criteria_item.dart';
 import 'package:house_evaluator/components/themed_app_bar.dart';
 
 class CriteriaRoute extends StatelessWidget {
@@ -7,15 +8,14 @@ class CriteriaRoute extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: const ThemedAppBar(title: "Criteria"),
-      body: Center(
-        child: ElevatedButton(
-          onPressed: () {
-            Navigator.pop(context);
-          },
-          child: const Text('Go back!'),
+        appBar: const ThemedAppBar(
+          title: "Criteria",
+          helpMessage: "",
         ),
-      ),
-    );
+        body: Column(children: <Widget>[
+          CriteriaItem(),
+          CriteriaItem(),
+          CriteriaItem()
+        ]));
   }
 }

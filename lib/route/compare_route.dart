@@ -20,12 +20,23 @@ class CompareRoute extends StatelessWidget {
   Widget build(BuildContext context) {
     final List<ChartData> chartData = [
       ChartData('School', 1.2, 3, 7.2, 2, 2, 2, 2, 2, 2, 2, 2),
-      ChartData('Schoola', 1, 2, 5, 2, 2, 2, 2, 2, 2, 2, 2),
-      ChartData('School2', 1, 2, 5, 2, 2, 2, 2, 2, 2, 2, 2),
+      ChartData('Traffic', 1, 2, 5, 2, 2, 2, 2, 2, 2, 2, 2),
+      ChartData('Condition', 1, 2, 5, 2, 2, 2, 2, 2, 2, 2, 2),
       ChartData('Score', 1, 2, 3, 2, 2, 2, 2, 2, 2, 2, 2),
     ];
     return Scaffold(
-        appBar: const ThemedAppBar(title: "Compare property"),
+        appBar: const ThemedAppBar(
+          title: "Compare property",
+          helpMessage: """
+        1. Scroll legend list horizontally
+        
+        2. Click legend to toggle visibility
+
+        3. Click a single bar to view detail
+
+        4. Hold down to view details
+        """,
+        ),
         body: Center(
             child: Padding(
                 padding: const EdgeInsets.all(10),

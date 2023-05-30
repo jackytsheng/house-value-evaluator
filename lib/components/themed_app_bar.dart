@@ -4,14 +4,52 @@ class ThemedAppBar extends StatelessWidget implements PreferredSizeWidget {
   @override
   final Size preferredSize;
   final String title;
+  final String helpMessage;
 
-  const ThemedAppBar({super.key, required this.title})
+  const ThemedAppBar(
+      {super.key, required this.title, required this.helpMessage})
       : preferredSize = const Size.fromHeight(50.0);
 
   @override
   Widget build(BuildContext context) {
     return AppBar(
       backgroundColor: Theme.of(context).colorScheme.inversePrimary,
+      actions: [
+        IconButton(
+            icon: Icon(Icons.info_rounded,
+                color: Theme.of(context).colorScheme.onInverseSurface,
+                size: 30),
+            tooltip: 'Show help message',
+            enableFeedback: true,
+            onPressed: () => showDialog<String>(
+                  context: context,
+                  builder: (BuildContext context) => Dialog(
+                    child: Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Column(
+                        mainAxisSize: MainAxisSize.min,
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: <Widget>[
+                          Padding(
+                              padding: EdgeInsets.only(top: 15, right: 30),
+                              child: Text(helpMessage)),
+                          TextButton(
+                            onPressed: () {
+                              Navigator.pop(context);
+                            },
+                            child: ElevatedButton(
+                              onPressed: () {
+                                Navigator.pop(context);
+                              },
+                              child: const Text('Close'),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                )),
+      ],
       leading: Builder(
         builder: (BuildContext context) {
           return IconButton(

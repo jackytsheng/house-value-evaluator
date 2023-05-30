@@ -7,7 +7,10 @@ class SettingsRoute extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: const ThemedAppBar(title: "Budget settings"),
+      appBar: const ThemedAppBar(
+        title: "Budget settings",
+        helpMessage: "",
+      ),
       body: Center(
         child: ElevatedButton(
           onPressed: () {
