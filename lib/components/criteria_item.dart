@@ -22,27 +22,44 @@ class CriteriaItem extends StatelessWidget {
                       hintText: "Enter Name"),
                 ),
               ),
-              SizedBox(
-                width: 50,
-                height: 50,
+              Container(
+                width: 45,
+                height: 45,
+                decoration: BoxDecoration(
+                    // borderRadius: BorderRadius.circular(16),
+                    border: Border(
+                        bottom: BorderSide(
+                            width: 5,
+                            color:
+                                Theme.of(context).colorScheme.inversePrimary))),
+                margin: EdgeInsets.only(right: 5),
                 child: NumberPicker(
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(16),
-                    border: Border.all(color: Colors.black38),
-                  ),
+                  itemWidth: 40,
+                  itemHeight: 40,
                   haptics: true,
                   selectedTextStyle: TextStyle(
                       fontSize: 30,
+                      color: Theme.of(context).colorScheme.primary,
                       fontWeight: FontWeight.bold,
                       fontFamily: "RobotoMono"),
-                  textStyle:
-                      TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                  textStyle: TextStyle(
+                      fontSize: 18,
+                      fontWeight: FontWeight.bold,
+                      color: Theme.of(context).colorScheme.secondary,
+                      fontFamily: "RobotoMono"),
                   value: 2,
                   itemCount: 1,
                   minValue: 0,
                   maxValue: 100,
                   onChanged: (value) => print(value),
                 ),
+              ),
+              Text(
+                "%",
+                style: TextStyle(
+                    fontSize: 16,
+                    fontWeight: FontWeight.bold,
+                    color: Theme.of(context).colorScheme.primary),
               )
             ])));
   }
