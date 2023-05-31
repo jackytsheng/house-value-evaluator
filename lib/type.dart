@@ -2,6 +2,8 @@ enum PropertyType { townHouse, house, apartment }
 
 enum PriceState { estimated, sold }
 
+enum PropertyAction { newProperty, editProperty }
+
 class Price {
   PriceState state;
   double amount;

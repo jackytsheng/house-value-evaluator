@@ -53,12 +53,12 @@ class HouseCard extends StatelessWidget {
       return Container(
           margin: EdgeInsets.only(right: 10),
           child: CircleAvatar(
-              radius: 14,
+              radius: 10,
               backgroundColor: color,
               child: Text(labelText,
                   style: TextStyle(
                       color: Theme.of(context).colorScheme.onPrimary,
-                      fontSize: 11,
+                      fontSize: 8,
                       fontWeight: FontWeight.bold))));
     }
 
@@ -66,7 +66,7 @@ class HouseCard extends StatelessWidget {
       FlowCard(
           margin: EdgeInsets.all(20),
           child: Container(
-              height: 120,
+              height: 150,
               padding: const EdgeInsets.all(16.0),
               child: Column(
                 children: <Widget>[
@@ -94,13 +94,27 @@ class HouseCard extends StatelessWidget {
                         )),
                       ),
                       const Spacer(),
-                      getChip(price.state),
-                      Text(
-                        "${convertedToMoneyFormat(price.amount)} AUD",
-                        style: TextStyle(
-                          fontFamily: "RobotoMono",
-                        ),
-                      ),
+                      Column(
+                          crossAxisAlignment: CrossAxisAlignment.end,
+                          children: [
+                            Row(children: [
+                              getChip(price.state),
+                              Text(
+                                "${convertedToMoneyFormat(price.amount)} AUD",
+                                style: TextStyle(
+                                  fontFamily: "RobotoMono",
+                                ),
+                              ),
+                            ]),
+                            Text(
+                                "Unit Price: ${convertedToMoneyFormat(price.amount / overallScore)} AUD",
+                                style: TextStyle(
+                                  fontSize: 12,
+                                  color:
+                                      Theme.of(context).colorScheme.secondary,
+                                  fontFamily: "RobotoMono",
+                                ))
+                          ])
                     ],
                   ),
                 ],

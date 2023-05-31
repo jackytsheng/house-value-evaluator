@@ -3,7 +3,7 @@ import 'package:house_evaluator/route/additional_rost_route.dart';
 import 'package:house_evaluator/components/house_card.dart';
 import 'package:house_evaluator/route/compare_route.dart';
 import 'package:house_evaluator/route/criteria_route.dart';
-import 'package:house_evaluator/route/new_property_route.dart';
+import 'package:house_evaluator/route/property_route.dart';
 import 'package:house_evaluator/route/settings_route.dart';
 import 'package:house_evaluator/type.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -64,6 +64,9 @@ class MyHomePage extends StatelessWidget {
               icon: Icon(Icons.palette_rounded,
                   color: Theme.of(context).colorScheme.onInverseSurface,
                   size: 30),
+              elevation: 8,
+              tooltip: "Change color theme",
+              position: PopupMenuPosition.under,
               itemBuilder: (context) {
                 return [
                   PopupMenuItem<Color>(
@@ -132,7 +135,7 @@ class MyHomePage extends StatelessWidget {
                   PopupMenuItem<Color>(
                     value: Colors.green.shade400,
                     child: Row(children: <Widget>[
-                      Text("Green"),
+                      Text("Avacado"),
                       const Spacer(),
                       Icon(Icons.fiber_manual_record_rounded,
                           color: Colors.green.shade400),
