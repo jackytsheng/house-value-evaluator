@@ -12,10 +12,26 @@ class CriteriaRoute extends StatelessWidget {
           title: "Criteria",
           helpMessage: "",
         ),
-        body: Column(children: <Widget>[
+        body: SingleChildScrollView(
+            child: Column(children: <Widget>[
           CriteriaItem(),
           CriteriaItem(),
           CriteriaItem()
-        ]));
+        ])),
+        floatingActionButton: FloatingActionButton(
+          onPressed: () {},
+          shape: const CircleBorder(),
+          tooltip: 'Add new criteria',
+          child: Icon(Icons.post_add_rounded,
+              size: 30, color: Theme.of(context).colorScheme.onPrimary),
+        ),
+        floatingActionButtonLocation: FloatingActionButtonLocation.endDocked,
+        bottomNavigationBar: BottomAppBar(
+          height: 70,
+          color: Theme.of(context).colorScheme.inversePrimary,
+          clipBehavior: Clip.hardEdge,
+          shape: const CircularNotchedRectangle(),
+          notchMargin: 8,
+        ));
   }
 }

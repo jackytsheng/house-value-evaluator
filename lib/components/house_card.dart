@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:house_evaluator/components/color_scale_widget.dart';
 import 'package:house_evaluator/components/float_card.dart';
+import 'package:house_evaluator/route/property_route.dart';
 import 'package:house_evaluator/type.dart';
 import 'package:intl/intl.dart';
 
@@ -53,7 +54,7 @@ class HouseCard extends StatelessWidget {
       return Container(
           margin: EdgeInsets.only(right: 10),
           child: CircleAvatar(
-              radius: 10,
+              radius: 11,
               backgroundColor: color,
               child: Text(labelText,
                   style: TextStyle(
@@ -65,6 +66,14 @@ class HouseCard extends StatelessWidget {
     return Stack(children: <Widget>[
       FlowCard(
           margin: EdgeInsets.all(20),
+          onTapAction: () {
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                  builder: (context) => PropertyRoute(
+                      propertyAction: PropertyAction.editProperty)),
+            );
+          },
           child: Container(
               height: 150,
               padding: const EdgeInsets.all(16.0),

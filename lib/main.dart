@@ -196,10 +196,8 @@ class MyHomePage extends StatelessWidget {
         ),
         floatingActionButton: FloatingActionButton(
           onPressed: () {
-            Navigator.push(
-                context,
-                MaterialPageRoute(
-                    builder: (context) => const NewPropertyRoute()));
+            Navigator.push(context,
+                MaterialPageRoute(builder: (context) => PropertyRoute()));
           },
           shape: const CircleBorder(),
           tooltip: 'Add new address',
@@ -208,7 +206,7 @@ class MyHomePage extends StatelessWidget {
         ),
         floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
         bottomNavigationBar: BottomAppBar(
-            height: 80,
+            height: 70,
             color: Theme.of(context).colorScheme.inversePrimary,
             clipBehavior: Clip.hardEdge,
             shape: const CircularNotchedRectangle(),

@@ -3,22 +3,23 @@ import 'package:house_evaluator/route/property_route.dart';
 import 'package:house_evaluator/type.dart';
 
 class FlowCard extends StatelessWidget {
-  FlowCard({super.key, required this.child, this.margin, this.padding});
+  FlowCard(
+      {super.key,
+      required this.child,
+      this.margin,
+      this.padding,
+      this.onTapAction});
 
   final Widget child;
   final EdgeInsetsGeometry? margin;
   final EdgeInsetsGeometry? padding;
+  final Function()? onTapAction;
 
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
         onTap: () {
-          Navigator.push(
-            context,
-            MaterialPageRoute(
-                builder: (context) =>
-                    PropertyRoute(propertyAction: PropertyAction.editProperty)),
-          );
+          onTapAction?.call();
         },
         child: Card(
             elevation: 4,
