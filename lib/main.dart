@@ -55,16 +55,15 @@ class MyHomePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // TODO: turn the payload into mock json and mapper
     return Scaffold(
         appBar: AppBar(
+          toolbarHeight: 50,
           backgroundColor: Theme.of(context).colorScheme.inversePrimary,
           actions: <Widget>[
             PopupMenuButton(
               icon: Icon(Icons.palette_rounded,
                   color: Theme.of(context).colorScheme.onInverseSurface,
                   size: 30),
-              elevation: 8,
               tooltip: "Change color theme",
               position: PopupMenuPosition.under,
               itemBuilder: (context) {
@@ -72,73 +71,37 @@ class MyHomePage extends StatelessWidget {
                   PopupMenuItem<Color>(
                     value: Colors.pink.shade200,
                     child: Row(children: <Widget>[
-                      Text("Pink"),
+                      Text("Cherry"),
                       const Spacer(),
                       Icon(Icons.fiber_manual_record_rounded,
-                          color: Colors.pink.shade200),
-                    ]),
-                  ),
-                  PopupMenuItem<Color>(
-                    value: Colors.redAccent.shade700,
-                    child: Row(children: <Widget>[
-                      Text("Red"),
-                      const Spacer(),
-                      Icon(Icons.fiber_manual_record_rounded,
-                          color: Colors.redAccent.shade700),
-                    ]),
-                  ),
-                  PopupMenuItem<Color>(
-                    value: Colors.amberAccent.shade100,
-                    child: Row(children: <Widget>[
-                      Text("Amber"),
-                      const Spacer(),
-                      Icon(Icons.fiber_manual_record_rounded,
-                          color: Colors.amberAccent.shade100),
+                          color: Colors.pink.shade100),
                     ]),
                   ),
                   PopupMenuItem<Color>(
                     value: Colors.deepPurple.shade400,
                     child: Row(children: <Widget>[
-                      Text("Purple"),
+                      Text("Lavender"),
                       const Spacer(),
                       Icon(Icons.fiber_manual_record_rounded,
-                          color: Colors.deepPurple.shade400),
+                          color: Colors.deepPurple.shade100),
                     ]),
                   ),
                   PopupMenuItem<Color>(
                     value: Colors.blue.shade400,
                     child: Row(children: <Widget>[
-                      Text("Blue"),
+                      Text("Arctic"),
                       const Spacer(),
                       Icon(Icons.fiber_manual_record_rounded,
-                          color: Colors.blue.shade400),
-                    ]),
-                  ),
-                  PopupMenuItem<Color>(
-                    value: Colors.cyan.shade400,
-                    child: Row(children: <Widget>[
-                      Text("Cyan"),
-                      const Spacer(),
-                      Icon(Icons.fiber_manual_record_rounded,
-                          color: Colors.cyan.shade400),
-                    ]),
-                  ),
-                  PopupMenuItem<Color>(
-                    value: Colors.teal.shade400,
-                    child: Row(children: <Widget>[
-                      Text("Teal"),
-                      const Spacer(),
-                      Icon(Icons.fiber_manual_record_rounded,
-                          color: Colors.teal.shade400),
+                          color: Colors.blue.shade100),
                     ]),
                   ),
                   PopupMenuItem<Color>(
                     value: Colors.green.shade400,
                     child: Row(children: <Widget>[
-                      Text("Avacado"),
+                      Text("Avocado"),
                       const Spacer(),
                       Icon(Icons.fiber_manual_record_rounded,
-                          color: Colors.green.shade400),
+                          color: Colors.green.shade200),
                     ]),
                   ),
                 ];

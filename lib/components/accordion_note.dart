@@ -15,7 +15,8 @@ class _AccordionNote extends State<AccordionNote> {
   Widget build(BuildContext context) {
     return ExpansionPanelList(
         expandedHeaderPadding: EdgeInsets.all(0),
-        elevation: 1,
+        elevation: 0,
+        // dividerColor: Theme.of(context).colorScheme.oninversePrimary,
         expandIconColor: Theme.of(context).colorScheme.secondary,
         expansionCallback: (int index, bool isExpanded) {
           setState(() {
@@ -23,6 +24,23 @@ class _AccordionNote extends State<AccordionNote> {
           });
         },
         children: [
+          ExpansionPanel(
+            headerBuilder: (BuildContext context, bool isExpanded) {
+              return ListTile(
+                title: Text(
+                  "Note",
+                  style:
+                      TextStyle(color: Theme.of(context).colorScheme.secondary),
+                ),
+              );
+            },
+            body: ListTile(
+                title: Text("Common"),
+                subtitle:
+                    const Text('To delete this panel, tap the trash can icon'),
+                onTap: () {}),
+            isExpanded: _isExpanded,
+          ),
           ExpansionPanel(
             headerBuilder: (BuildContext context, bool isExpanded) {
               return ListTile(
