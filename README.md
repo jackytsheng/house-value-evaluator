@@ -10,3 +10,4 @@ A new Flutter project.
 - Theme changing (refactor the logics)
 - adding a Select statement
 - to delete or to compare
+- Add tests
