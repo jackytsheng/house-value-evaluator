@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:house_evaluator/components/help_icon_button.dart';
 import 'package:house_evaluator/route/additional_cost_route.dart';
 import 'package:house_evaluator/components/house_card.dart';
@@ -9,6 +10,10 @@ import 'package:house_evaluator/route/settings_route.dart';
 import 'package:house_evaluator/type.dart';
 
 void main() {
+  WidgetsFlutterBinding.ensureInitialized();
+  SystemChrome.setPreferredOrientations(
+      [DeviceOrientation.portraitUp, DeviceOrientation.portraitDown]);
+
   runApp(HomeEvaluatorApp());
 }
 
