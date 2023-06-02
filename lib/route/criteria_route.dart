@@ -10,7 +10,13 @@ class CriteriaRoute extends StatelessWidget {
     return Scaffold(
         appBar: const ThemedAppBar(
           title: "Criteria",
-          helpMessage: "",
+          helpMessage: """
+        1. Swipe left to delete criteria
+        
+        2. Swipe up to choose weighting
+
+        3. Weighting must add up to 100%
+        """,
         ),
         body: SingleChildScrollView(
             child: Column(children: <Widget>[

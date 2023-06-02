@@ -6,7 +6,6 @@ import 'package:house_evaluator/route/criteria_route.dart';
 import 'package:house_evaluator/route/property_route.dart';
 import 'package:house_evaluator/route/settings_route.dart';
 import 'package:house_evaluator/type.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 void main() {
   runApp(HomeEvaluatorApp());

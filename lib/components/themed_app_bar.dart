@@ -33,16 +33,12 @@ class ThemedAppBar extends StatelessWidget implements PreferredSizeWidget {
                           Padding(
                               padding: EdgeInsets.only(top: 15, right: 30),
                               child: Text(helpMessage)),
-                          TextButton(
+                          ElevatedButton(
+                            style: ElevatedButton.styleFrom(elevation: 0),
                             onPressed: () {
                               Navigator.pop(context);
                             },
-                            child: ElevatedButton(
-                              onPressed: () {
-                                Navigator.pop(context);
-                              },
-                              child: const Text('Close'),
-                            ),
+                            child: const Text('Close'),
                           ),
                         ],
                       ),
