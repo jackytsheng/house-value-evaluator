@@ -83,17 +83,10 @@ class _CriteriaItem extends State<CriteriaItem> {
         child: Column(children: [
           Slidable(
               key: const ValueKey(0),
-              // The start action pane is the one at the left or the top side.
               endActionPane: ActionPane(
-                // A motion is a widget used to control how the pane animates.
                 motion: const ScrollMotion(),
-
-                // A pane can dismiss the Slidable.
                 dismissible: DismissiblePane(onDismissed: () {}),
-
-                // All actions are defined in the children parameter.
                 children: [
-                  // A SlidableAction can have an icon and/or a label.
                   SlidableAction(
                     onPressed: null,
                     backgroundColor: Theme.of(context).colorScheme.primary,
@@ -108,16 +101,11 @@ class _CriteriaItem extends State<CriteriaItem> {
               ),
               child: Row(children: [
                 SizedBox(
-                  width: 150,
+                  width: 180,
                   child: TextFormField(
-                    maxLength: 10,
-                    validator: (value) {
-                      if (value != null && value.length > 20) {
-                        return "Criteria name must be less than 20 characters";
-                      }
-                      return null;
-                    },
+                    maxLength: 18,
                     decoration: InputDecoration(
+                        counterText: "",
                         border: InputBorder.none,
                         labelText: "Criteria",
                         hintText: "Enter Name"),
