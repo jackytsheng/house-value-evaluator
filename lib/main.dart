@@ -31,7 +31,7 @@ class _HomeEvaluatorApp extends State<HomeEvaluatorApp> {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Sweet Home',
+      title: 'House Evaluator',
       theme: ThemeData(
         colorScheme: ColorScheme.fromSeed(seedColor: selectedThemeColor),
         useMaterial3: true,
@@ -115,7 +115,7 @@ class MyHomePage extends StatelessWidget {
                 ),
               ],
               scrolledUnderElevation: 0,
-              title: Text("Home Evaluator",
+              title: Text("House Evaluator",
                   style: TextStyle(
                       color: Theme.of(context).colorScheme.onPrimary,
                       fontWeight: FontWeight.bold)),
