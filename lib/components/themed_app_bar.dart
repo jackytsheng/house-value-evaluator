@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:house_evaluator/components/help_icon_button.dart';
 
 class ThemedAppBar extends StatelessWidget implements PreferredSizeWidget {
   @override
@@ -14,38 +15,7 @@ class ThemedAppBar extends StatelessWidget implements PreferredSizeWidget {
   Widget build(BuildContext context) {
     return AppBar(
       backgroundColor: Theme.of(context).colorScheme.inversePrimary,
-      actions: [
-        IconButton(
-            icon: Icon(Icons.info_rounded,
-                color: Theme.of(context).colorScheme.onInverseSurface,
-                size: 30),
-            tooltip: 'Show help message',
-            enableFeedback: true,
-            onPressed: () => showDialog<String>(
-                  context: context,
-                  builder: (BuildContext context) => Dialog(
-                    child: Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: Column(
-                        mainAxisSize: MainAxisSize.min,
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: <Widget>[
-                          Padding(
-                              padding: EdgeInsets.only(top: 15, right: 30),
-                              child: Text(helpMessage)),
-                          ElevatedButton(
-                            style: ElevatedButton.styleFrom(elevation: 0),
-                            onPressed: () {
-                              Navigator.pop(context);
-                            },
-                            child: const Text('Close'),
-                          ),
-                        ],
-                      ),
-                    ),
-                  ),
-                )),
-      ],
+      actions: [HelpIconButton(helpMessage: helpMessage)],
       leading: Builder(
         builder: (BuildContext context) {
           return IconButton(

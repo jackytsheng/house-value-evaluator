@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:house_evaluator/route/additional_rost_route.dart';
+import 'package:house_evaluator/components/help_icon_button.dart';
+import 'package:house_evaluator/route/additional_cost_route.dart';
 import 'package:house_evaluator/components/house_card.dart';
 import 'package:house_evaluator/route/compare_route.dart';
 import 'package:house_evaluator/route/criteria_route.dart';
@@ -30,7 +31,7 @@ class _HomeEvaluatorApp extends State<HomeEvaluatorApp> {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Home Value Evaluator',
+      title: 'Sweet Home',
       theme: ThemeData(
         colorScheme: ColorScheme.fromSeed(seedColor: selectedThemeColor),
         useMaterial3: true,
@@ -61,6 +62,7 @@ class MyHomePage extends StatelessWidget {
               toolbarHeight: 50,
               backgroundColor: Theme.of(context).colorScheme.inversePrimary,
               actions: <Widget>[
+                HelpIconButton(helpMessage: "Unit price consist of maxi"),
                 PopupMenuButton(
                   icon: Icon(Icons.palette_rounded,
                       color: Theme.of(context).colorScheme.onInverseSurface,
@@ -113,7 +115,7 @@ class MyHomePage extends StatelessWidget {
                 ),
               ],
               scrolledUnderElevation: 0,
-              title: Text("Home Value Evaluator",
+              title: Text("Home Evaluator",
                   style: TextStyle(
                       color: Theme.of(context).colorScheme.onPrimary,
                       fontWeight: FontWeight.bold)),

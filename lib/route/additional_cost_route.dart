@@ -7,7 +7,9 @@ class AdditionalCostRoute extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: const ThemedAppBar(title: "Additional cost", helpMessage: ""),
+      appBar: const ThemedAppBar(
+          title: "Additional cost",
+          helpMessage: "different tax amount, different cost"),
       body: Center(
         child: ElevatedButton(
           onPressed: () {

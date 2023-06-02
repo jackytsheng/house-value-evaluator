@@ -9,7 +9,8 @@ class SettingsRoute extends StatelessWidget {
     return Scaffold(
       appBar: const ThemedAppBar(
         title: "Budget settings",
-        helpMessage: "",
+        helpMessage:
+            "To enable highlight for score, and to enable flagging budget, currency",
       ),
       body: Center(
         child: ElevatedButton(

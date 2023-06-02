@@ -53,6 +53,6 @@ class ColorScaleWidget extends StatelessWidget {
             0.114 * backgroundColor.blue) /
         255;
 
-    return luminance > 0.5 ? darkTextColor : lightTextColor;
+    return luminance > 0.85 ? darkTextColor : lightTextColor;
   }
 }

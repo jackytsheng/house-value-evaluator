@@ -11,3 +11,7 @@ A new Flutter project.
 - adding a Select statement
 - to delete or to compare
 - Add tests
+- select delete & add show chart
+- Support different currency
+- TODO make criteria allow inner width adjustment
+- Scoring chart in new property

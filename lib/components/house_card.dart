@@ -3,7 +3,7 @@ import 'package:house_evaluator/components/color_scale_widget.dart';
 import 'package:house_evaluator/components/float_card.dart';
 import 'package:house_evaluator/route/property_route.dart';
 import 'package:house_evaluator/type.dart';
-import 'package:intl/intl.dart';
+import 'package:house_evaluator/utils/currency_formatter.dart';
 
 class HouseCard extends StatelessWidget {
   const HouseCard({
@@ -18,13 +18,6 @@ class HouseCard extends StatelessWidget {
   final PropertyType propertyType;
   final Price price;
   final double overallScore;
-
-  String convertedToMoneyFormat(double amount) {
-    return NumberFormat.currency(
-      symbol: '\$', // Symbol to be displayed
-      decimalDigits: 0, // Number of decimal places
-    ).format(amount);
-  }
 
   IconData iconPicker(PropertyType type) {
     switch (type) {
@@ -94,7 +87,7 @@ class HouseCard extends StatelessWidget {
                         maxValue: 10,
                         darkTextColor:
                             Theme.of(context).colorScheme.inverseSurface,
-                        maxColor: Theme.of(context).colorScheme.secondary,
+                        maxColor: Theme.of(context).colorScheme.inversePrimary,
                         child: Center(
                             child: Text(
                           overallScore.toStringAsFixed(2),

@@ -18,7 +18,11 @@ class NoteItem {
 }
 
 class CriteriaItem extends StatefulWidget {
-  const CriteriaItem({super.key});
+  const CriteriaItem(
+      {super.key, this.criteriaReadOnly = false, this.criteriaName = ""});
+
+  final bool criteriaReadOnly;
+  final String criteriaName;
 
   @override
   State<CriteriaItem> createState() => _CriteriaItem();
@@ -82,6 +86,7 @@ class _CriteriaItem extends State<CriteriaItem> {
         padding: EdgeInsets.all(15),
         child: Column(children: [
           Slidable(
+              enabled: !widget.criteriaReadOnly,
               key: const ValueKey(0),
               endActionPane: ActionPane(
                 motion: const ScrollMotion(),
@@ -104,6 +109,7 @@ class _CriteriaItem extends State<CriteriaItem> {
                   width: 180,
                   child: TextFormField(
                     maxLength: 18,
+                    initialValue: widget.criteriaName,
                     decoration: InputDecoration(
                         counterText: "",
                         border: InputBorder.none,
