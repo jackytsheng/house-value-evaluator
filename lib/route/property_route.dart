@@ -31,8 +31,6 @@ class PropertyRoute extends StatefulWidget {
 }
 
 class _PropertyRoute extends State<PropertyRoute> {
-  _PropertyRoute();
-
   static const _locale = 'en';
   final _priceController = TextEditingController();
   String _formatNumber(String s) =>
@@ -47,8 +45,8 @@ class _PropertyRoute extends State<PropertyRoute> {
     super.dispose();
   }
 
-  final List<bool> _selectedWeather = <bool>[false, false, true];
-  final List<bool> _selectedCostType = <bool>[false, true];
+  final List<bool> _selectedPropertyType = <bool>[false, false, true];
+  final List<bool> _selectedPriceType = <bool>[false, true];
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
@@ -94,8 +92,8 @@ class _PropertyRoute extends State<PropertyRoute> {
                 onPressed: (int index) {
                   setState(() {
                     // The button that is tapped is set to true, and the others to false.
-                    for (int i = 0; i < _selectedWeather.length; i++) {
-                      _selectedWeather[i] = i == index;
+                    for (int i = 0; i < _selectedPropertyType.length; i++) {
+                      _selectedPropertyType[i] = i == index;
                     }
                   });
                 },
@@ -103,7 +101,7 @@ class _PropertyRoute extends State<PropertyRoute> {
                 selectedColor: Theme.of(context).colorScheme.onInverseSurface,
                 fillColor: Theme.of(context).colorScheme.inversePrimary,
                 color: Theme.of(context).colorScheme.inversePrimary,
-                isSelected: _selectedWeather,
+                isSelected: _selectedPropertyType,
                 children: <Widget>[
                   SizedBox(
                       width: 110,
@@ -121,8 +119,8 @@ class _PropertyRoute extends State<PropertyRoute> {
                 onPressed: (int index) {
                   setState(() {
                     // The button that is tapped is set to true, and the others to false.
-                    for (int i = 0; i < _selectedCostType.length; i++) {
-                      _selectedCostType[i] = i == index;
+                    for (int i = 0; i < _selectedPriceType.length; i++) {
+                      _selectedPriceType[i] = i == index;
                     }
                   });
                 },
@@ -130,7 +128,7 @@ class _PropertyRoute extends State<PropertyRoute> {
                 selectedColor: Theme.of(context).colorScheme.onInverseSurface,
                 fillColor: Theme.of(context).colorScheme.inversePrimary,
                 color: Theme.of(context).colorScheme.inversePrimary,
-                isSelected: _selectedCostType,
+                isSelected: _selectedPriceType,
                 children: <Widget>[
                   SizedBox(
                       width: 165,

@@ -4,6 +4,8 @@ import 'package:house_evaluator/components/accordion_note.dart';
 import 'package:numberpicker/numberpicker.dart';
 import 'package:uuid/uuid.dart';
 
+const double GAP_HEIGHT = 20;
+
 class NoteItem {
   NoteItem({
     this.expandedValue,
@@ -104,76 +106,80 @@ class _CriteriaItem extends State<CriteriaItem> {
                   )
                 ],
               ),
-              child: Row(children: [
-                SizedBox(
-                  width: 180,
-                  child: TextFormField(
-                    maxLength: 18,
-                    initialValue: widget.criteriaName,
-                    decoration: InputDecoration(
-                        counterText: "",
-                        border: InputBorder.none,
-                        labelText: "Criteria",
-                        hintText: "Enter Name"),
-                  ),
-                ),
-                const Spacer(),
-                Text(
-                  "Weight: ",
-                  style: TextStyle(
-                      fontSize: 12,
-                      color: Theme.of(context).colorScheme.secondary),
-                ),
-                Container(
-                  width: 45,
-                  height: 45,
-                  decoration: BoxDecoration(
-                      // borderRadius: BorderRadius.circular(16),
-                      border: Border(
-                          bottom: BorderSide(
-                              width: 5,
-                              color: Theme.of(context)
-                                  .colorScheme
-                                  .inversePrimary))),
-                  margin: EdgeInsets.only(right: 5),
-                  child: NumberPicker(
-                    itemWidth: 40,
-                    itemHeight: 40,
-                    haptics: true,
-                    selectedTextStyle: TextStyle(
-                        fontSize: 30,
-                        color: Theme.of(context).colorScheme.primary,
-                        fontWeight: FontWeight.bold,
-                        fontFamily: "RobotoMono"),
-                    textStyle: TextStyle(
-                        fontSize: 18,
-                        fontWeight: FontWeight.bold,
-                        color: Theme.of(context).colorScheme.secondary,
-                        fontFamily: "RobotoMono"),
-                    value: 0,
-                    itemCount: 1,
-                    minValue: 0,
-                    maxValue: 100,
-                    onChanged: (value) => print(value),
-                  ),
-                ),
-                Text(
-                  "%",
-                  style: TextStyle(
-                      fontSize: 16,
-                      // fontWeight: FontWeight.bold,
-                      color: Theme.of(context).colorScheme.secondary),
-                )
-              ])),
-          const SizedBox(height: 20),
-          AccordionNote(
-            toggleExpand: toggleExpand,
-            notes: _notes,
-            handleDelete: deleteNote,
-            setNoteHeader: setNoteHeader,
-            setExpandedValue: setExpandedValue,
-          ),
-          const SizedBox(height: 20),
+              child: Container(
+                  padding: EdgeInsets.symmetric(horizontal: 20),
+                  child: Row(children: [
+                    SizedBox(
+                      width: 180,
+                      child: TextFormField(
+                        maxLength: 15,
+                        initialValue: widget.criteriaName,
+                        decoration: InputDecoration(
+                            counterText: "",
+                            border: InputBorder.none,
+                            labelText: "Criteria",
+                            hintText: "Enter Name"),
+                      ),
+                    ),
+                    const Spacer(),
+                    Text(
+                      "Weight: ",
+                      style: TextStyle(
+                          fontSize: 12,
+                          color: Theme.of(context).colorScheme.secondary),
+                    ),
+                    Container(
+                      width: 45,
+                      height: 45,
+                      decoration: BoxDecoration(
+                          // borderRadius: BorderRadius.circular(16),
+                          border: Border(
+                              bottom: BorderSide(
+                                  width: 5,
+                                  color: Theme.of(context)
+                                      .colorScheme
+                                      .inversePrimary))),
+                      margin: EdgeInsets.only(right: 5),
+                      child: NumberPicker(
+                        itemWidth: 40,
+                        itemHeight: 40,
+                        haptics: true,
+                        selectedTextStyle: TextStyle(
+                            fontSize: 30,
+                            color: Theme.of(context).colorScheme.primary,
+                            fontWeight: FontWeight.bold,
+                            fontFamily: "RobotoMono"),
+                        textStyle: TextStyle(
+                            fontSize: 18,
+                            fontWeight: FontWeight.bold,
+                            color: Theme.of(context).colorScheme.secondary,
+                            fontFamily: "RobotoMono"),
+                        value: 0,
+                        itemCount: 1,
+                        minValue: 0,
+                        maxValue: 100,
+                        onChanged: (value) => print(value),
+                      ),
+                    ),
+                    Text(
+                      "%",
+                      style: TextStyle(
+                          fontSize: 16,
+                          // fontWeight: FontWeight.bold,
+                          color: Theme.of(context).colorScheme.secondary),
+                    )
+                  ]))),
+          const SizedBox(height: GAP_HEIGHT),
+          Container(
+              padding: EdgeInsets.symmetric(horizontal: 15),
+              child: AccordionNote(
+                toggleExpand: toggleExpand,
+                notes: _notes,
+                handleDelete: deleteNote,
+                setNoteHeader: setNoteHeader,
+                setExpandedValue: setExpandedValue,
+              )),
+          const SizedBox(height: GAP_HEIGHT),
           ElevatedButton.icon(
               onPressed: () {
                 setState(() {
@@ -186,7 +192,7 @@ class _CriteriaItem extends State<CriteriaItem> {
               },
               icon: Icon(Icons.add_rounded),
               label: Text("Add a new note")),
-          const SizedBox(height: 20),
+          const SizedBox(height: GAP_HEIGHT),
           const Divider(
             indent: 40,
             endIndent: 40,
