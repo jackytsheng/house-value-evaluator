@@ -12,12 +12,14 @@ class HouseCard extends StatelessWidget {
     required this.overallScore,
     required this.price,
     required this.propertyType,
+    this.isEditMode = false,
   });
 
   final String address;
   final PropertyType propertyType;
   final Price price;
   final double overallScore;
+  final bool isEditMode;
 
   IconData iconPicker(PropertyType type) {
     switch (type) {
@@ -56,79 +58,93 @@ class HouseCard extends StatelessWidget {
                       fontWeight: FontWeight.bold))));
     }
 
-    return Stack(children: <Widget>[
-      FlowCard(
-          margin: EdgeInsets.all(20),
-          onTapAction: () {
-            Navigator.push(
-              context,
-              MaterialPageRoute(
-                  builder: (context) => PropertyRoute(
-                      propertyAction: PropertyAction.editProperty)),
-            );
-          },
-          child: Container(
-              height: 150,
-              padding: const EdgeInsets.all(16.0),
-              child: Column(
-                children: <Widget>[
-                  Text(address,
-                      textAlign: TextAlign.center,
-                      style: const TextStyle(fontWeight: FontWeight.bold)),
-                  const Spacer(),
-                  Row(
+    return ListTile(
+        horizontalTitleGap: 0,
+        leading: isEditMode
+            ? Radio<String>(
+                value: "first",
+                groupValue: "first",
+                onChanged: (value) {
+                  print(value);
+                })
+            : null,
+        trailing: null,
+        contentPadding: EdgeInsets.all(0),
+        title: Stack(children: <Widget>[
+          FloatCard(
+              margin: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+              onTapAction: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) => PropertyRoute(
+                          propertyAction: PropertyAction.editProperty)),
+                );
+              },
+              child: Container(
+                  height: 150,
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 12, vertical: 16),
+                  child: Column(
                     children: <Widget>[
-                      ColorScaleWidget(
-                        value: overallScore,
-                        minValue: 0,
-                        minColor: Theme.of(context).colorScheme.onPrimary,
-                        lightTextColor:
-                            Theme.of(context).colorScheme.onSecondary,
-                        maxValue: 10,
-                        darkTextColor:
-                            Theme.of(context).colorScheme.inverseSurface,
-                        maxColor: Theme.of(context).colorScheme.inversePrimary,
-                        child: Center(
-                            child: Text(
-                          overallScore.toStringAsFixed(2),
-                          style: TextStyle(
-                              fontSize: 12, fontWeight: FontWeight.bold),
-                        )),
-                      ),
+                      Text(address,
+                          textAlign: TextAlign.center,
+                          style: const TextStyle(fontWeight: FontWeight.bold)),
                       const Spacer(),
-                      Column(
-                          crossAxisAlignment: CrossAxisAlignment.end,
-                          children: [
-                            Row(children: [
-                              getChip(price.state),
-                              Text(
-                                "${convertedToMoneyFormat(price.amount)} AUD",
-                                style: TextStyle(
-                                  fontFamily: "RobotoMono",
-                                ),
-                              ),
-                            ]),
-                            Text(
-                                "Unit Price: ${convertedToMoneyFormat(price.amount / overallScore)} AUD",
-                                style: TextStyle(
-                                  fontSize: 12,
-                                  color:
-                                      Theme.of(context).colorScheme.secondary,
-                                  fontFamily: "RobotoMono",
-                                ))
-                          ])
+                      Row(
+                        children: <Widget>[
+                          ColorScaleWidget(
+                            value: overallScore,
+                            minValue: 0,
+                            minColor: Theme.of(context).colorScheme.onPrimary,
+                            lightTextColor:
+                                Theme.of(context).colorScheme.onSecondary,
+                            maxValue: 10,
+                            darkTextColor:
+                                Theme.of(context).colorScheme.inverseSurface,
+                            maxColor:
+                                Theme.of(context).colorScheme.inversePrimary,
+                            child: Center(
+                                child: Text(
+                              overallScore.toStringAsFixed(2),
+                              style: TextStyle(
+                                  fontSize: 12, fontWeight: FontWeight.bold),
+                            )),
+                          ),
+                          const Spacer(),
+                          Column(
+                              crossAxisAlignment: CrossAxisAlignment.end,
+                              children: [
+                                Row(children: [
+                                  getChip(price.state),
+                                  Text(
+                                    "${convertedToMoneyFormat(price.amount)} AUD",
+                                    style: TextStyle(
+                                      fontFamily: "RobotoMono",
+                                    ),
+                                  ),
+                                ]),
+                                Text(
+                                    "Unit Price: ${convertedToMoneyFormat(price.amount / overallScore)} AUD",
+                                    style: TextStyle(
+                                      fontSize: 11,
+                                      color: Theme.of(context)
+                                          .colorScheme
+                                          .secondary,
+                                      fontFamily: "RobotoMono",
+                                    ))
+                              ])
+                        ],
+                      ),
                     ],
-                  ),
-                ],
-              ))),
-      Positioned(
-          top: 10,
-          left: 10,
-          child: Icon(
-            color: Theme.of(context).colorScheme.inversePrimary,
-            size: 30,
-            iconPicker(propertyType),
-          )),
-    ]);
+                  ))),
+          Positioned(
+              left: 10,
+              child: Icon(
+                color: Theme.of(context).colorScheme.inversePrimary,
+                size: 30,
+                iconPicker(propertyType),
+              )),
+        ]));
   }
 }

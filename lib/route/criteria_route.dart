@@ -38,7 +38,7 @@ class CriteriaRoute extends StatelessWidget {
             floatingActionButtonLocation:
                 FloatingActionButtonLocation.endDocked,
             bottomNavigationBar: BottomAppBar(
-              height: 70,
+              height: 80,
               color: Theme.of(context).colorScheme.inversePrimary,
               clipBehavior: Clip.hardEdge,
               shape: const CircularNotchedRectangle(),
