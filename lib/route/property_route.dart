@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:house_evaluator/components/criteria_item.dart';
+import 'package:house_evaluator/components/radial_score.dart';
 import 'package:house_evaluator/components/themed_app_bar.dart';
 import 'package:house_evaluator/type.dart';
 import 'package:house_evaluator/utils/currency_formatter.dart';
@@ -57,7 +58,7 @@ class _PropertyRoute extends State<PropertyRoute> {
               title: widget.propertyAction == PropertyAction.newProperty
                   ? "Add a new property"
                   : "Edit a property",
-              helpMessage: "",
+              helpMessage: "Tap to view score, hide legend available",
             ),
             body: SingleChildScrollView(
                 child: Column(children: [
@@ -142,7 +143,7 @@ class _PropertyRoute extends State<PropertyRoute> {
                   SizedBox(
                       width: 165,
                       child: Text(
-                        "Cost",
+                        "Sold",
                         textAlign: TextAlign.center,
                         style: TextStyle(
                             fontSize: 18, fontWeight: FontWeight.bold),
@@ -237,6 +238,7 @@ class _PropertyRoute extends State<PropertyRoute> {
                 indent: 40,
                 endIndent: 40,
               ),
+              RadialScore(),
               CriteriaItem(criteriaReadOnly: true, criteriaName: "School"),
               CriteriaItem(),
               CriteriaItem(),
