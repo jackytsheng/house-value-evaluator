@@ -8,8 +8,6 @@ import 'package:house_evaluator/route/criteria_route.dart';
 import 'package:house_evaluator/route/home_route.dart';
 import 'package:uuid/uuid.dart';
 
-// Can't choose too big because it will ended up in a loop
-const DEBOUNCED_MILLISECONDS = 10;
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
   SystemChrome.setPreferredOrientations(
@@ -40,6 +38,7 @@ class _HomeEvaluatorApp extends State<HomeEvaluatorApp> {
     super.initState();
   }
 
+// --- Criteria State Handlers ---
   void toggleNoteExpandStatusFromCriteria(
       String criteriaId, String noteId, bool isExpanded) {
     setState(() {
@@ -152,6 +151,7 @@ class _HomeEvaluatorApp extends State<HomeEvaluatorApp> {
     _validateWeightingSum();
   }
 
+// --- Main Route Handlers ---
   void changeThemeColor(Color color) {
     setState(() {
       selectedThemeColor = color;

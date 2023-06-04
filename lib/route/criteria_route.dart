@@ -47,6 +47,8 @@ class CriteriaRoute extends StatelessWidget {
         2. Number can be swipe up/down
         
         3. Criteria 15 characters max
+
+        4. Criteria name can be changed
         """,
             ),
             body: SingleChildScrollView(
