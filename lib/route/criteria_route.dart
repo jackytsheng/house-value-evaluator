@@ -1,9 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:house_evaluator/components/criteria_item.dart';
 import 'package:house_evaluator/components/themed_app_bar.dart';
+import 'package:house_evaluator/model/criteria_item.dart';
 
 class CriteriaRoute extends StatelessWidget {
-  const CriteriaRoute({super.key});
+  const CriteriaRoute({super.key, required this.criteriaItems});
+
+  final List<CriteriaItemEntity> criteriaItems;
 
   @override
   Widget build(BuildContext context) {
@@ -20,14 +23,17 @@ class CriteriaRoute extends StatelessWidget {
         3. Weighting add up to 100%
         
         4. Criteria 15 characters max
+
+        5. At least one criteria required
         """,
             ),
             body: SingleChildScrollView(
-                child: Column(children: <Widget>[
-              CriteriaItem(),
-              CriteriaItem(),
-              CriteriaItem()
-            ])),
+                child: Column(
+                    children: criteriaItems
+                        .map<CriteriaItem>((criteriaItem) => CriteriaItem(
+                              item: criteriaItem,
+                            ))
+                        .toList())),
             floatingActionButton: FloatingActionButton(
               onPressed: () {},
               shape: const CircleBorder(),

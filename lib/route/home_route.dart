@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:house_evaluator/components/help_icon_button.dart';
 import 'package:house_evaluator/components/house_card.dart';
+import 'package:house_evaluator/constants/route.dart';
 import 'package:house_evaluator/route/additional_cost_route.dart';
 import 'package:house_evaluator/route/compare_route.dart';
-import 'package:house_evaluator/route/criteria_route.dart';
 import 'package:house_evaluator/model/house_card.dart';
 
 import 'package:house_evaluator/route/property_route.dart';
@@ -205,12 +205,7 @@ class _HomeRoute extends State<HomeRoute> {
                             tooltip: 'Criteria',
                             icon: const Icon(Icons.assignment_rounded),
                             onPressed: () {
-                              Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                    builder: (context) =>
-                                        const CriteriaRoute()),
-                              );
+                              Navigator.pushNamed(context, CRITERIA_ROUTE);
                             },
                           ),
                           const Spacer(),

@@ -3,6 +3,7 @@ import 'package:flutter/services.dart';
 import 'package:house_evaluator/components/criteria_item.dart';
 import 'package:house_evaluator/components/radial_score.dart';
 import 'package:house_evaluator/components/themed_app_bar.dart';
+import 'package:house_evaluator/model/criteria_item.dart';
 import 'package:house_evaluator/model/house_card.dart';
 import 'package:house_evaluator/utils/currency_formatter.dart';
 import 'package:intl/intl.dart';
@@ -237,9 +238,15 @@ class _PropertyRoute extends State<PropertyRoute> {
                 endIndent: 40,
               ),
               RadialScore(),
-              CriteriaItem(criteriaReadOnly: true, criteriaName: "School"),
-              CriteriaItem(),
-              CriteriaItem(),
+              CriteriaItem(
+                  criteriaReadOnly: true,
+                  item: CriteriaItemEntity([], "School", 10)),
+              CriteriaItem(
+                  criteriaReadOnly: true,
+                  item: CriteriaItemEntity([], "Condition", 10)),
+              CriteriaItem(
+                  criteriaReadOnly: true,
+                  item: CriteriaItemEntity([], "Traffic", 10)),
             ]))));
   }
 }

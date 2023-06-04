@@ -14,10 +14,10 @@ class NoteItem {
 }
 
 class CriteriaItemEntity {
-  String criteriaId = Uuid().v4();
-  String criteriaName;
-  double weighting;
-  List<NoteItem> comments;
+  final String criteriaId = Uuid().v4();
+  final String criteriaName;
+  final List<NoteItem> comments;
+  final double weighting;
 
   CriteriaItemEntity(this.comments, this.criteriaName, this.weighting);
 }

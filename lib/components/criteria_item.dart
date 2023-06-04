@@ -7,16 +7,16 @@ import 'package:numberpicker/numberpicker.dart';
 const double GAP_HEIGHT = 20;
 
 class CriteriaItem extends StatefulWidget {
-  const CriteriaItem(
-      {super.key, this.criteriaReadOnly = false, this.criteriaName = ""});
+  CriteriaItem({super.key, this.criteriaReadOnly = false, required this.item});
 
   final bool criteriaReadOnly;
-  final String criteriaName;
+  final CriteriaItemEntity item;
 
   @override
   State<CriteriaItem> createState() => _CriteriaItem();
 }
 
+//TODO: Validation is required
 class _CriteriaItem extends State<CriteriaItem> {
   final List<NoteItem> _notes = [];
 
@@ -100,7 +100,7 @@ class _CriteriaItem extends State<CriteriaItem> {
                       width: 180,
                       child: TextFormField(
                         maxLength: 15,
-                        initialValue: widget.criteriaName,
+                        initialValue: widget.item.criteriaName,
                         decoration: InputDecoration(
                             counterText: "",
                             border: InputBorder.none,
@@ -132,7 +132,7 @@ class _CriteriaItem extends State<CriteriaItem> {
                         itemHeight: 40,
                         haptics: true,
                         selectedTextStyle: TextStyle(
-                            fontSize: 30,
+                            fontSize: 22,
                             color: Theme.of(context).colorScheme.primary,
                             fontWeight: FontWeight.bold,
                             fontFamily: "RobotoMono"),
@@ -141,7 +141,7 @@ class _CriteriaItem extends State<CriteriaItem> {
                             fontWeight: FontWeight.bold,
                             color: Theme.of(context).colorScheme.secondary,
                             fontFamily: "RobotoMono"),
-                        value: 0,
+                        value: (widget.item.weighting * 100).toInt(),
                         itemCount: 1,
                         minValue: 0,
                         maxValue: 100,
