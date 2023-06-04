@@ -4,8 +4,26 @@ import 'package:house_evaluator/components/themed_app_bar.dart';
 import 'package:house_evaluator/model/criteria_item.dart';
 
 class CriteriaRoute extends StatelessWidget {
-  const CriteriaRoute({super.key, required this.criteriaItems});
+  const CriteriaRoute({
+    super.key,
+    required this.criteriaItems,
+    required this.toggleExpand,
+    required this.deleteNote,
+    required this.addNote,
+    required this.setNoteBody,
+    required this.setNoteHeader,
+    required this.addCriteria,
+  });
 
+  final Function(String criteriaId, String noteId, bool isExpanded)
+      toggleExpand;
+  final Function(String criteriaId, String noteId) deleteNote;
+  final Function(String criteriaId, NoteItem newNote) addNote;
+  final Function(String criteriaId, int noteIndex, String expandedValue)
+      setNoteBody;
+  final Function(String criteriaId, int noteIndex, String headerValue)
+      setNoteHeader;
+  final Function() addCriteria;
   final List<CriteriaItemEntity> criteriaItems;
 
   @override
@@ -31,11 +49,16 @@ class CriteriaRoute extends StatelessWidget {
                 child: Column(
                     children: criteriaItems
                         .map<CriteriaItem>((criteriaItem) => CriteriaItem(
+                              toggleExpand: toggleExpand,
+                              deleteNote: deleteNote,
+                              addNote: addNote,
+                              setNoteHeader: setNoteHeader,
+                              setNoteBody: setNoteBody,
                               item: criteriaItem,
                             ))
                         .toList())),
             floatingActionButton: FloatingActionButton(
-              onPressed: () {},
+              onPressed: addCriteria,
               shape: const CircleBorder(),
               tooltip: 'Add new criteria',
               child: Icon(Icons.post_add_rounded,

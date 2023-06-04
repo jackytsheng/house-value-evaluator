@@ -6,68 +6,28 @@ import 'package:numberpicker/numberpicker.dart';
 
 const double GAP_HEIGHT = 20;
 
-class CriteriaItem extends StatefulWidget {
-  CriteriaItem({super.key, this.criteriaReadOnly = false, required this.item});
+class CriteriaItem extends StatelessWidget {
+  CriteriaItem({
+    super.key,
+    this.criteriaReadOnly = false,
+    required this.item,
+    this.toggleExpand,
+    this.deleteNote,
+    this.addNote,
+    this.setNoteHeader,
+    this.setNoteBody,
+  });
 
+  final Function(String criteriaId, String noteId, bool isExpanded)?
+      toggleExpand;
+  final Function(String criteriaId, String noteId)? deleteNote;
+  final Function(String criteriaId, NoteItem newNote)? addNote;
+  final Function(String criteriaId, int noteIndex, String expandedValue)?
+      setNoteBody;
+  final Function(String criteriaId, int noteIndex, String headerValue)?
+      setNoteHeader;
   final bool criteriaReadOnly;
   final CriteriaItemEntity item;
-
-  @override
-  State<CriteriaItem> createState() => _CriteriaItem();
-}
-
-//TODO: Validation is required
-class _CriteriaItem extends State<CriteriaItem> {
-  final List<NoteItem> _notes = [];
-
-  void toggleExpand(int index, bool isExpanded) {
-    setState(() {
-      String noteId = _notes[index].noteId;
-      _notes.forEach((NoteItem item) => {
-            if (noteId == item.noteId)
-              {item.isExpanded = !isExpanded}
-            else
-              {item.isExpanded = false}
-          });
-      print(
-          'element at index ${index}, id: ${noteId}, is setting from ${isExpanded}');
-    });
-  }
-
-  void deleteNote(NoteItem currentItem) {
-    setState(() {
-      print("removing item: " + currentItem.noteId);
-      _notes.removeWhere((NoteItem item) => currentItem.noteId == item.noteId);
-      _notes.forEach((NoteItem element) {
-        print(element.noteId);
-        print(element.headerValue);
-      });
-    });
-  }
-
-  void setNoteHeader(String noteId, String headerValue) {
-    setState(() {
-      _notes.forEach((NoteItem item) {
-        if (item.noteId == noteId) {
-          print("setting header for: " + noteId);
-          item.headerValue = headerValue;
-        }
-      });
-    });
-  }
-
-  void setExpandedValue(String noteId, String expandedValue) {
-    setState(() {
-      setState(() {
-        _notes.forEach((NoteItem item) {
-          if (item.noteId == noteId) {
-            print("setting content for: " + noteId);
-            item.expandedValue = expandedValue;
-          }
-        });
-      });
-    });
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -75,7 +35,7 @@ class _CriteriaItem extends State<CriteriaItem> {
         padding: EdgeInsets.all(15),
         child: Column(children: [
           Slidable(
-              enabled: !widget.criteriaReadOnly,
+              enabled: !criteriaReadOnly,
               key: const ValueKey(0),
               endActionPane: ActionPane(
                 motion: const ScrollMotion(),
@@ -100,7 +60,7 @@ class _CriteriaItem extends State<CriteriaItem> {
                       width: 180,
                       child: TextFormField(
                         maxLength: 15,
-                        initialValue: widget.item.criteriaName,
+                        initialValue: item.criteriaName,
                         decoration: InputDecoration(
                             counterText: "",
                             border: InputBorder.none,
@@ -141,7 +101,7 @@ class _CriteriaItem extends State<CriteriaItem> {
                             fontWeight: FontWeight.bold,
                             color: Theme.of(context).colorScheme.secondary,
                             fontFamily: "RobotoMono"),
-                        value: (widget.item.weighting * 100).toInt(),
+                        value: (item.weighting * 100).toInt(),
                         itemCount: 1,
                         minValue: 0,
                         maxValue: 100,
@@ -160,22 +120,24 @@ class _CriteriaItem extends State<CriteriaItem> {
           Container(
               padding: EdgeInsets.symmetric(horizontal: 15),
               child: AccordionNote(
-                toggleExpand: toggleExpand,
-                notes: _notes,
-                handleDelete: deleteNote,
-                setNoteHeader: setNoteHeader,
-                setExpandedValue: setExpandedValue,
+                toggleExpand: (noteId, isExpand) {
+                  toggleExpand?.call(item.criteriaId, noteId, isExpand);
+                },
+                deleteNote: (noteId) {
+                  deleteNote?.call(item.criteriaId, noteId);
+                },
+                setNoteHeader: (noteIndex, value) {
+                  setNoteHeader?.call(item.criteriaId, noteIndex, value);
+                },
+                setNoteBody: (noteIndex, value) {
+                  setNoteBody?.call(item.criteriaId, noteIndex, value);
+                },
+                notes: item.notes,
               )),
           const SizedBox(height: GAP_HEIGHT),
           ElevatedButton.icon(
               onPressed: () {
-                setState(() {
-                  _notes.forEach((NoteItem item) {
-                    item.isExpanded = false;
-                  });
-                  // collapse all when added new to prevent bug that when one is open there other is then clicked
-                  _notes.add(NoteItem());
-                });
+                addNote?.call(item.criteriaId, NoteItem());
               },
               icon: Icon(Icons.add_rounded),
               label: Text("Add a new note")),

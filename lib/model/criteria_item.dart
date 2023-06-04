@@ -14,10 +14,11 @@ class NoteItem {
 }
 
 class CriteriaItemEntity {
-  final String criteriaId = Uuid().v4();
+  final String criteriaId;
   final String criteriaName;
-  final List<NoteItem> comments;
+  final List<NoteItem> notes;
   final double weighting;
 
-  CriteriaItemEntity(this.comments, this.criteriaName, this.weighting);
+  CriteriaItemEntity(
+      this.criteriaId, this.notes, this.criteriaName, this.weighting);
 }

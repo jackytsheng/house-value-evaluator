@@ -238,15 +238,15 @@ class _PropertyRoute extends State<PropertyRoute> {
                 endIndent: 40,
               ),
               RadialScore(),
-              CriteriaItem(
-                  criteriaReadOnly: true,
-                  item: CriteriaItemEntity([], "School", 10)),
-              CriteriaItem(
-                  criteriaReadOnly: true,
-                  item: CriteriaItemEntity([], "Condition", 10)),
-              CriteriaItem(
-                  criteriaReadOnly: true,
-                  item: CriteriaItemEntity([], "Traffic", 10)),
+              // CriteriaItem(
+              //     criteriaReadOnly: true,
+              //     item: CriteriaItemEntity([], "School", 10)),
+              // CriteriaItem(
+              //     criteriaReadOnly: true,
+              //     item: CriteriaItemEntity([], "Condition", 10)),
+              // CriteriaItem(
+              //     criteriaReadOnly: true,
+              //     item: CriteriaItemEntity([], "Traffic", 10)),
             ]))));
   }
 }
