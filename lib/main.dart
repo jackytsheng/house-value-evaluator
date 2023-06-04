@@ -1,3 +1,5 @@
+import 'dart:developer' as developer;
+import 'package:easy_debounce/easy_debounce.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:house_evaluator/constants/route.dart';
@@ -6,6 +8,8 @@ import 'package:house_evaluator/route/criteria_route.dart';
 import 'package:house_evaluator/route/home_route.dart';
 import 'package:uuid/uuid.dart';
 
+// Can't choose too big because it will ended up in a loop
+const DEBOUNCED_MILLISECONDS = 10;
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
   SystemChrome.setPreferredOrientations(
@@ -24,6 +28,7 @@ class HomeEvaluatorApp extends StatefulWidget {
 class _HomeEvaluatorApp extends State<HomeEvaluatorApp> {
   Color selectedThemeColor = Colors.blue.shade200;
   Map<String, CriteriaItemEntity> criteriaItemsMap = {};
+  bool shouldShowWeightingValidationError = false;
 
   @override
   void initState() {
@@ -31,6 +36,7 @@ class _HomeEvaluatorApp extends State<HomeEvaluatorApp> {
     criteriaItemsMap = {
       initialScoreId: CriteriaItemEntity(initialScoreId, [], "Score", 1)
     };
+
     super.initState();
   }
 
@@ -40,7 +46,7 @@ class _HomeEvaluatorApp extends State<HomeEvaluatorApp> {
       criteriaItemsMap[criteriaId]?.notes.forEach((NoteItem note) {
         if (note.noteId == noteId) {
           note.isExpanded = !isExpanded;
-          print(
+          developer.log(
               'toggling criteria Id : ${criteriaId},note id: ${note.noteId}, is setting from ${isExpanded} to ${note.isExpanded}');
         } else {
           note.isExpanded = false;
@@ -54,7 +60,7 @@ class _HomeEvaluatorApp extends State<HomeEvaluatorApp> {
       criteriaItemsMap[criteriaId]
           ?.notes
           .removeWhere((NoteItem note) => note.noteId == noteId);
-      print(
+      developer.log(
           "removing note item with Id: ${noteId} from criteria Id : ${criteriaId}");
     });
   }
@@ -63,7 +69,7 @@ class _HomeEvaluatorApp extends State<HomeEvaluatorApp> {
       String criteriaId, int noteIndex, String headerValue) {
     setState(() {
       criteriaItemsMap[criteriaId]?.notes[noteIndex].headerValue = headerValue;
-      print(
+      developer.log(
           "setting header for note index: ${noteIndex} from criteria Id : ${criteriaId}");
     });
   }
@@ -73,7 +79,7 @@ class _HomeEvaluatorApp extends State<HomeEvaluatorApp> {
     setState(() {
       criteriaItemsMap[criteriaId]?.notes[noteIndex].expandedValue =
           expandedValue;
-      print(
+      developer.log(
           "setting expandedValue for note index: ${noteIndex} from criteria Id : ${criteriaId}");
     });
   }
@@ -81,19 +87,70 @@ class _HomeEvaluatorApp extends State<HomeEvaluatorApp> {
   void addNoteToCriteria(String criteriaId, NoteItem newNote) {
     setState(() {
       criteriaItemsMap[criteriaId]?.notes.add(newNote);
-      print(
+      developer.log(
           "adding new note with Id: ${newNote.noteId} to criteria Id : ${criteriaId}");
     });
   }
 
   void addCriteria() {
-    String newCriteriaId = Uuid().v4();
-    criteriaItemsMap[newCriteriaId] =
-        CriteriaItemEntity(newCriteriaId, [], "", 0);
-    print("adding new criteria with Id: ${newCriteriaId}");
+    setState(() {
+      String newCriteriaId = Uuid().v4();
+      criteriaItemsMap[newCriteriaId] =
+          CriteriaItemEntity(newCriteriaId, [], "", 0);
+      developer.log("adding new criteria with Id: ${newCriteriaId}");
+    });
   }
 
-// TODO: set weighting , set criteria name;
+  void setCriteriaName(String criteriaId, String criteriaName) {
+    setState(() {
+      criteriaItemsMap[criteriaId]?.criteriaName = criteriaName;
+      developer.log(
+          "setting criteria with Id: ${criteriaId} to name : ${criteriaName}");
+    });
+  }
+
+  void deleteCriteria(String criteriaId) {
+    setState(() {
+      criteriaItemsMap.remove(criteriaId);
+      developer.log("removing criteria with Id: ${criteriaId}");
+    });
+
+    _validateWeightingSum();
+  }
+
+  void _validateWeightingSum() {
+    EasyDebounce.debounce(
+        'WeightingValidator',
+        Duration(milliseconds: 500),
+        () => setState(() {
+              double totalWeighting = criteriaItemsMap.values
+                  .toList()
+                  .fold<double>(
+                      0,
+                      (totalWeighting, item) =>
+                          totalWeighting + item.weighting * 100);
+              if (totalWeighting.toInt() != 100) {
+                shouldShowWeightingValidationError = true;
+                developer.log(
+                    "total weighting value is ${totalWeighting} %, doesn't equal 100 %");
+              } else {
+                developer.log("total weighting value equals 100 %");
+                shouldShowWeightingValidationError = false;
+              }
+            }));
+  }
+
+  void setCriteriaWeighting(String criteriaId, int weightingValue) {
+    EasyDebounce.debounce(
+        'NumberPickerDebouncer',
+        Duration(milliseconds: 10),
+        () => setState(() {
+              criteriaItemsMap[criteriaId]?.weighting = weightingValue / 100;
+              developer.log(
+                  "setting criteria Id: ${criteriaId} weighting to ${weightingValue} %");
+            }));
+    _validateWeightingSum();
+  }
 
   void changeThemeColor(Color color) {
     setState(() {
@@ -111,13 +168,19 @@ class _HomeEvaluatorApp extends State<HomeEvaluatorApp> {
       ),
       routes: {
         CRITERIA_ROUTE: (context) => CriteriaRoute(
-            toggleExpand: toggleNoteExpandStatusFromCriteria,
-            deleteNote: deleteNoteFromCriteria,
-            addNote: addNoteToCriteria,
-            setNoteHeader: setNoteHeaderToCriteria,
-            setNoteBody: setNoteExpandedValueToCriteria,
-            addCriteria: addCriteria,
-            criteriaItems: criteriaItemsMap.values.toList()),
+              toggleExpand: toggleNoteExpandStatusFromCriteria,
+              deleteNote: deleteNoteFromCriteria,
+              addNote: addNoteToCriteria,
+              setNoteHeader: setNoteHeaderToCriteria,
+              setNoteBody: setNoteExpandedValueToCriteria,
+              addCriteria: addCriteria,
+              deleteCriteria: deleteCriteria,
+              setName: setCriteriaName,
+              setWeighting: setCriteriaWeighting,
+              criteriaItems: criteriaItemsMap.values.toList(),
+              shouldShowWeightingValidationError:
+                  shouldShowWeightingValidationError,
+            ),
       },
       home: HomeRoute(
         changeThemeColor: changeThemeColor,

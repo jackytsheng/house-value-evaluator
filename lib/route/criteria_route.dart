@@ -13,6 +13,10 @@ class CriteriaRoute extends StatelessWidget {
     required this.setNoteBody,
     required this.setNoteHeader,
     required this.addCriteria,
+    required this.deleteCriteria,
+    required this.setWeighting,
+    required this.setName,
+    required this.shouldShowWeightingValidationError,
   });
 
   final Function(String criteriaId, String noteId, bool isExpanded)
@@ -24,7 +28,11 @@ class CriteriaRoute extends StatelessWidget {
   final Function(String criteriaId, int noteIndex, String headerValue)
       setNoteHeader;
   final Function() addCriteria;
+  final Function(String criteriaId) deleteCriteria;
+  final Function(String criteriaId, int weightingValue) setWeighting;
+  final Function(String criteriaId, String criteriaName) setName;
   final List<CriteriaItemEntity> criteriaItems;
+  final bool shouldShowWeightingValidationError;
 
   @override
   Widget build(BuildContext context) {
@@ -34,28 +42,26 @@ class CriteriaRoute extends StatelessWidget {
             appBar: const ThemedAppBar(
               title: "Criteria",
               helpMessage: """
-        1. Swipe left to delete criteria
+        1. Swipe left to delete a criteria
         
-        2. Swipe up to choose weighting
-
-        3. Weighting add up to 100%
+        2. Number can be swipe up/down
         
-        4. Criteria 15 characters max
-
-        5. At least one criteria required
+        3. Criteria 15 characters max
         """,
             ),
             body: SingleChildScrollView(
                 child: Column(
                     children: criteriaItems
                         .map<CriteriaItem>((criteriaItem) => CriteriaItem(
-                              toggleExpand: toggleExpand,
-                              deleteNote: deleteNote,
-                              addNote: addNote,
-                              setNoteHeader: setNoteHeader,
-                              setNoteBody: setNoteBody,
-                              item: criteriaItem,
-                            ))
+                            toggleExpand: toggleExpand,
+                            deleteNote: deleteNote,
+                            addNote: addNote,
+                            setNoteHeader: setNoteHeader,
+                            setNoteBody: setNoteBody,
+                            setWeighting: setWeighting,
+                            deleteCriteria: deleteCriteria,
+                            item: criteriaItem,
+                            setName: setName))
                         .toList())),
             floatingActionButton: FloatingActionButton(
               onPressed: addCriteria,
@@ -66,6 +72,25 @@ class CriteriaRoute extends StatelessWidget {
             ),
             floatingActionButtonLocation:
                 FloatingActionButtonLocation.endDocked,
+            bottomSheet: shouldShowWeightingValidationError
+                ? Container(
+                    height: 70,
+                    decoration: BoxDecoration(
+                      color: Theme.of(context).colorScheme.primary,
+                      borderRadius:
+                          BorderRadius.vertical(top: Radius.circular(20)),
+                    ),
+                    width: double.infinity,
+                    child: Center(
+                        child: Text(
+                      "Value does not add up to 100% !",
+                      style: TextStyle(
+                        color: Theme.of(context).colorScheme.onPrimary,
+                        fontSize: 14,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    )))
+                : null,
             bottomNavigationBar: BottomAppBar(
               height: 80,
               color: Theme.of(context).colorScheme.inversePrimary,

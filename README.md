@@ -11,5 +11,8 @@ A new Flutter project.
 - Add tests to the enter project
 - select delete & add show chart
 - Support different currency
-- Animate radio button on the home page and annotation in the pie chart
 - One Dark theme
+- Animation:
+  - Bottom sheet appearing
+  - Removing item
+  - Radio button on the home page annotation

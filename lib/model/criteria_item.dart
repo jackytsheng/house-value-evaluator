@@ -15,9 +15,9 @@ class NoteItem {
 
 class CriteriaItemEntity {
   final String criteriaId;
-  final String criteriaName;
   final List<NoteItem> notes;
-  final double weighting;
+  String criteriaName;
+  double weighting;
 
   CriteriaItemEntity(
       this.criteriaId, this.notes, this.criteriaName, this.weighting);

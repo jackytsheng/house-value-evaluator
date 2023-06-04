@@ -15,6 +15,9 @@ class CriteriaItem extends StatelessWidget {
     this.deleteNote,
     this.addNote,
     this.setNoteHeader,
+    this.setWeighting,
+    this.setName,
+    this.deleteCriteria,
     this.setNoteBody,
   });
 
@@ -26,6 +29,9 @@ class CriteriaItem extends StatelessWidget {
       setNoteBody;
   final Function(String criteriaId, int noteIndex, String headerValue)?
       setNoteHeader;
+  final Function(String criteriaId, int weightingValue)? setWeighting;
+  final Function(String criteriaId, String criteriaName)? setName;
+  final Function(String criteriaId)? deleteCriteria;
   final bool criteriaReadOnly;
   final CriteriaItemEntity item;
 
@@ -39,7 +45,9 @@ class CriteriaItem extends StatelessWidget {
               key: const ValueKey(0),
               endActionPane: ActionPane(
                 motion: const ScrollMotion(),
-                dismissible: DismissiblePane(onDismissed: () {}),
+                dismissible: DismissiblePane(onDismissed: () {
+                  deleteCriteria?.call(item.criteriaId);
+                }),
                 children: [
                   SlidableAction(
                     onPressed: null,
@@ -61,6 +69,8 @@ class CriteriaItem extends StatelessWidget {
                       child: TextFormField(
                         maxLength: 15,
                         initialValue: item.criteriaName,
+                        onChanged: (value) =>
+                            setName?.call(item.criteriaId, value),
                         decoration: InputDecoration(
                             counterText: "",
                             border: InputBorder.none,
@@ -105,7 +115,9 @@ class CriteriaItem extends StatelessWidget {
                         itemCount: 1,
                         minValue: 0,
                         maxValue: 100,
-                        onChanged: (value) => print(value),
+                        onChanged: (value) {
+                          setWeighting?.call(item.criteriaId, value);
+                        },
                       ),
                     ),
                     Text(
