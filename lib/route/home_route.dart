@@ -4,7 +4,7 @@ import 'package:house_evaluator/components/house_card.dart';
 import 'package:house_evaluator/route/additional_cost_route.dart';
 import 'package:house_evaluator/route/compare_route.dart';
 import 'package:house_evaluator/route/criteria_route.dart';
-import 'package:house_evaluator/type.dart';
+import 'package:house_evaluator/model/house_card.dart';
 
 import 'package:house_evaluator/route/property_route.dart';
 

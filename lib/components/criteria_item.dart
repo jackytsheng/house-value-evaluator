@@ -1,23 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:house_evaluator/components/accordion_note.dart';
+import 'package:house_evaluator/model/criteria_item.dart';
 import 'package:numberpicker/numberpicker.dart';
-import 'package:uuid/uuid.dart';
 
 const double GAP_HEIGHT = 20;
-
-class NoteItem {
-  NoteItem({
-    this.expandedValue,
-    this.headerValue,
-    this.isExpanded = false,
-  });
-
-  String noteId = Uuid().v4();
-  String? expandedValue;
-  String? headerValue;
-  bool isExpanded;
-}
 
 class CriteriaItem extends StatefulWidget {
   const CriteriaItem(

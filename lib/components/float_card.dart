@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:house_evaluator/route/property_route.dart';
-import 'package:house_evaluator/type.dart';
+import 'package:house_evaluator/model/house_card.dart';
 
 class FloatCard extends StatelessWidget {
   FloatCard(

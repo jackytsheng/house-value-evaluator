@@ -3,7 +3,7 @@ import 'package:flutter/services.dart';
 import 'package:house_evaluator/components/criteria_item.dart';
 import 'package:house_evaluator/components/radial_score.dart';
 import 'package:house_evaluator/components/themed_app_bar.dart';
-import 'package:house_evaluator/type.dart';
+import 'package:house_evaluator/model/house_card.dart';
 import 'package:house_evaluator/utils/currency_formatter.dart';
 import 'package:intl/intl.dart';
 
