@@ -113,15 +113,8 @@ class _HomeEvaluatorApp extends State<HomeEvaluatorApp> {
       String newCriteriaId = Uuid().v4();
       criteriaItemsMap[newCriteriaId] =
           CriteriaItemEntity(newCriteriaId, [], "", 0);
+      _addCriteriaToAllHouse(criteriaItemsMap[newCriteriaId]!);
       developer.log("adding new criteria with Id: ${newCriteriaId}");
-    });
-  }
-
-  void setCriteriaName(String criteriaId, String criteriaName) {
-    setState(() {
-      criteriaItemsMap[criteriaId]?.criteriaName = criteriaName;
-      developer.log(
-          "setting criteria with Id: ${criteriaId} to name : ${criteriaName}");
     });
   }
 
@@ -129,9 +122,19 @@ class _HomeEvaluatorApp extends State<HomeEvaluatorApp> {
     setState(() {
       criteriaItemsMap.remove(criteriaId);
       developer.log("removing criteria with Id: ${criteriaId}");
+      _removeCriteriaFromAllHouse(criteriaId);
     });
 
     _validateWeightingSum();
+  }
+
+  void setCriteriaName(String criteriaId, String criteriaName) {
+    setState(() {
+      criteriaItemsMap[criteriaId]?.criteriaName = criteriaName;
+      _updateCriteriaFromAllHouse(criteriaItemsMap[criteriaId]!);
+      developer.log(
+          "setting criteria with Id: ${criteriaId} to name : ${criteriaName}");
+    });
   }
 
   void setCriteriaWeighting(String criteriaId, int weightingValue) {
@@ -140,10 +143,45 @@ class _HomeEvaluatorApp extends State<HomeEvaluatorApp> {
         Duration(milliseconds: 10),
         () => setState(() {
               criteriaItemsMap[criteriaId]?.weighting = weightingValue / 100;
+              _updateCriteriaFromAllHouse(criteriaItemsMap[criteriaId]!);
               developer.log(
                   "setting criteria Id: ${criteriaId} weighting to ${weightingValue} %");
             }));
     _validateWeightingSum();
+  }
+
+  void _removeCriteriaFromAllHouse(String criteriaId) {
+    for (final house in housesMap.values) {
+      house.houseAssessmentMap.remove(criteriaId);
+    }
+
+    developer.log(
+        "finish removing criteria with Id: ${criteriaId} from all the houses");
+  }
+
+  void _updateCriteriaFromAllHouse(CriteriaItemEntity criteria) {
+    for (var house in housesMap.values) {
+      house.houseAssessmentMap[criteria.criteriaId]?.criteriaName =
+          criteria.criteriaName;
+      house.houseAssessmentMap[criteria.criteriaId]?.criteriaWeight =
+          criteria.weighting;
+    }
+
+    developer.log(
+        "finish updating criteria with Id: ${criteria.criteriaId} to all the houses");
+  }
+
+  void _addCriteriaToAllHouse(CriteriaItemEntity criteria) {
+    for (var house in housesMap.values) {
+      house.houseAssessmentMap[criteria.criteriaId] = HouseAssessment(
+          criteria.criteriaId,
+          criteria.criteriaName,
+          criteria.weighting,
+          0, []);
+    }
+
+    developer.log(
+        "finish adding criteria with Id: ${criteria.criteriaId} from all the houses");
   }
 
   void _validateWeightingSum() {
@@ -209,5 +247,3 @@ class _HomeEvaluatorApp extends State<HomeEvaluatorApp> {
     );
   }
 }
-
-class CriteriaEntity {}

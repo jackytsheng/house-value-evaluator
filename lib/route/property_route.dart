@@ -244,9 +244,11 @@ class _PropertyRoute extends State<PropertyRoute> {
                 indent: 40,
                 endIndent: 40,
               ),
-              RadialScore(
-                  totalScore: _getTotalScore(),
-                  houseAssessments: widget.houseAssessments),
+              widget.houseAssessments.length != 0
+                  ? RadialScore(
+                      totalScore: _getTotalScore(),
+                      houseAssessments: widget.houseAssessments)
+                  : const SizedBox(),
               Column(
                   children: widget.houseAssessments
                       .map<CriteriaItem>((assessment) => CriteriaItem(

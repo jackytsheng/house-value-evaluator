@@ -42,7 +42,7 @@ class CriteriaItem extends StatelessWidget {
         child: Column(children: [
           Slidable(
               enabled: !fromPropertyRoute,
-              key: const ValueKey(0),
+              key: ValueKey(item.criteriaId),
               endActionPane: ActionPane(
                 motion: const ScrollMotion(),
                 dismissible: DismissiblePane(onDismissed: () {

@@ -12,6 +12,7 @@ A new Flutter project.
 - select delete & add show chart
 - Support different currency
 - One Dark theme
+- Better way to manage state
 - Animation:
   - Bottom sheet appearing
   - Removing item

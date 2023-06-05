@@ -16,9 +16,9 @@ class Price {
 }
 
 class HouseAssessment {
-  final String criteriaId;
-  final String criteriaName;
-  final double criteriaWeight;
+  String criteriaId;
+  String criteriaName;
+  double criteriaWeight;
   int score;
   List<NoteItem> comments;
 
