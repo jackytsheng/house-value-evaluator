@@ -244,7 +244,7 @@ class _PropertyRoute extends State<PropertyRoute> {
               Column(
                   children: widget.houseAssessments
                       .map<CriteriaItem>((assessment) => CriteriaItem(
-                          criteriaReadOnly: true,
+                          fromPropertyRoute: true,
                           item: CriteriaItemEntity(assessment.criteriaId,
                               assessment.comments, assessment.criteriaName, 0)))
                       .toList())

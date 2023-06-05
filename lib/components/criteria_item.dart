@@ -9,7 +9,7 @@ const double GAP_HEIGHT = 20;
 class CriteriaItem extends StatelessWidget {
   CriteriaItem({
     super.key,
-    this.criteriaReadOnly = false,
+    this.fromPropertyRoute = false,
     required this.item,
     this.toggleExpand,
     this.deleteNote,
@@ -32,7 +32,7 @@ class CriteriaItem extends StatelessWidget {
   final Function(String criteriaId, int weightingValue)? setWeighting;
   final Function(String criteriaId, String criteriaName)? setName;
   final Function(String criteriaId)? deleteCriteria;
-  final bool criteriaReadOnly;
+  final bool fromPropertyRoute;
   final CriteriaItemEntity item;
 
   @override
@@ -41,7 +41,7 @@ class CriteriaItem extends StatelessWidget {
         padding: EdgeInsets.all(15),
         child: Column(children: [
           Slidable(
-              enabled: !criteriaReadOnly,
+              enabled: !fromPropertyRoute,
               key: const ValueKey(0),
               endActionPane: ActionPane(
                 motion: const ScrollMotion(),
@@ -67,12 +67,12 @@ class CriteriaItem extends StatelessWidget {
                     SizedBox(
                       width: 180,
                       child: TextFormField(
-                        style: criteriaReadOnly
+                        style: fromPropertyRoute
                             ? TextStyle(
                                 color: Theme.of(context).colorScheme.primary,
                                 fontWeight: FontWeight.bold)
                             : null,
-                        enabled: !criteriaReadOnly,
+                        enabled: !fromPropertyRoute,
                         maxLength: 15,
                         initialValue: item.criteriaName,
                         onChanged: (value) =>
@@ -86,7 +86,7 @@ class CriteriaItem extends StatelessWidget {
                     ),
                     const Spacer(),
                     Text(
-                      criteriaReadOnly ? "Score: " : "Weight: ",
+                      fromPropertyRoute ? "Score: " : "Weight: ",
                       style: TextStyle(
                           fontSize: 12,
                           color: Theme.of(context).colorScheme.secondary),
@@ -120,13 +120,13 @@ class CriteriaItem extends StatelessWidget {
                         value: (item.weighting * 100).toInt(),
                         itemCount: 1,
                         minValue: 0,
-                        maxValue: criteriaReadOnly ? 10 : 100,
+                        maxValue: fromPropertyRoute ? 10 : 100,
                         onChanged: (value) {
                           setWeighting?.call(item.criteriaId, value);
                         },
                       ),
                     ),
-                    criteriaReadOnly
+                    fromPropertyRoute
                         ? const SizedBox()
                         : Text(
                             "%",
