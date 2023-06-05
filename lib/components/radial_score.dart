@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:house_evaluator/components/color_scale_widget.dart';
+import 'package:house_evaluator/model/house_card.dart';
 import 'package:syncfusion_flutter_charts/charts.dart';
 
 class ChartData {
@@ -9,28 +10,23 @@ class ChartData {
 }
 
 class RadialScore extends StatelessWidget {
-  RadialScore({super.key});
+  RadialScore(
+      {super.key, required this.totalScore, required this.houseAssessments});
+
+  final double totalScore;
+  final List<HouseAssessment> houseAssessments;
   @override
   Widget build(BuildContext context) {
-    final List<ChartData> chartData = [
-      ChartData('Score', 2),
-      ChartData('School', 8),
-      ChartData('Traffic', 8),
-      ChartData('Gym', 3),
-      ChartData('Traffic', 8),
-      ChartData('Traffic', 8),
-      ChartData('Gym', 3),
-      ChartData('Gym', 3),
-      ChartData('Gym', 3),
-      ChartData('Gym', 3),
-      ChartData('Gym', 3),
-    ];
+    final List<ChartData> chartData = houseAssessments
+        .map((assessment) =>
+            ChartData(assessment.criteriaName, assessment.score))
+        .toList();
     return SfCircularChart(
         tooltipBehavior: TooltipBehavior(enable: true),
         annotations: [
           CircularChartAnnotation(
               widget: ColorScaleWidget(
-                  value: 8,
+                  value: totalScore,
                   minValue: 0,
                   minColor: Theme.of(context).colorScheme.onPrimary,
                   lightTextColor: Theme.of(context).colorScheme.onSecondary,
@@ -42,7 +38,7 @@ class RadialScore extends StatelessWidget {
                   borderRadius: 100,
                   child: Center(
                       child: Text(
-                    8.toStringAsFixed(2),
+                    totalScore.toStringAsFixed(2),
                     style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
                   ))))
         ],

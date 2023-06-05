@@ -43,7 +43,7 @@ class _HomeEvaluatorApp extends State<HomeEvaluatorApp> {
     housesMap = {
       initialHouseId: HouseEntity(
           initialHouseId,
-          "36 test property, Glen Waverley",
+          "36 Campbell Street, Glen Waverley",
           Price(PriceState.estimated, 1850000),
           PropertyType.house, {
         for (var item in criteriaItemsMap.values)

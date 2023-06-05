@@ -51,6 +51,10 @@ class _PropertyRoute extends State<PropertyRoute> {
 
   final List<bool> _selectedPropertyType = <bool>[false, false, true];
   final List<bool> _selectedPriceType = <bool>[false, true];
+
+  double _getTotalScore() => widget.houseAssessments.fold(0,
+      (acc, assessment) => acc + assessment.score * assessment.criteriaWeight);
+
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
@@ -240,23 +244,19 @@ class _PropertyRoute extends State<PropertyRoute> {
                 indent: 40,
                 endIndent: 40,
               ),
-              RadialScore(),
+              RadialScore(
+                  totalScore: _getTotalScore(),
+                  houseAssessments: widget.houseAssessments),
               Column(
                   children: widget.houseAssessments
                       .map<CriteriaItem>((assessment) => CriteriaItem(
                           fromPropertyRoute: true,
-                          item: CriteriaItemEntity(assessment.criteriaId,
-                              assessment.comments, assessment.criteriaName, 0)))
+                          item: CriteriaItemEntity(
+                              assessment.criteriaId,
+                              assessment.comments,
+                              assessment.criteriaName,
+                              assessment.score.toDouble())))
                       .toList())
-              // CriteriaItem(
-              //     criteriaReadOnly: true,
-              //     item: CriteriaItemEntity([], "School", 10)),
-              // CriteriaItem(
-              //     criteriaReadOnly: true,
-              //     item: CriteriaItemEntity([], "Condition", 10)),
-              // CriteriaItem(
-              //     criteriaReadOnly: true,
-              //     item: CriteriaItemEntity([], "Traffic", 10)),
             ]))));
   }
 }
