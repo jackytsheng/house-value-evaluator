@@ -16,8 +16,9 @@ class AdditionalCostRoute extends StatelessWidget {
             appBar: const ThemedAppBar(
               title: "Additional cost",
               helpMessage: """
-1. Number can be swipe up/down
         
+1 TODO: swipe left to delete cost
+
 2. Percentage applied to the sold price
 
 3. Cost applied after percentage
@@ -31,8 +32,8 @@ class AdditionalCostRoute extends StatelessWidget {
             floatingActionButton: FloatingActionButton(
               onPressed: () {},
               shape: const CircleBorder(),
-              tooltip: 'Add new criteria',
-              child: Icon(Icons.post_add_rounded,
+              tooltip: 'Add new cost',
+              child: Icon(Icons.add_card_rounded,
                   size: 30, color: Theme.of(context).colorScheme.onPrimary),
             ),
             floatingActionButtonLocation:
