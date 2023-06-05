@@ -60,205 +60,229 @@ class _PropertyRoute extends State<PropertyRoute> {
     return GestureDetector(
         onTap: () => FocusManager.instance.primaryFocus?.unfocus(),
         child: Scaffold(
-            appBar: ThemedAppBar(
-              title: widget.propertyAction == PropertyAction.newProperty
-                  ? "Add a new property"
-                  : "Edit a property",
-              helpMessage: "Tap to view score, hide legend available",
-            ),
-            body: SingleChildScrollView(
+          appBar: ThemedAppBar(
+            title: widget.propertyAction == PropertyAction.newProperty
+                ? "Add a new property"
+                : "Edit a property",
+            helpMessage: """
+1. Legend list can be scrolled
+
+2. Click legend to toggle visibility
+
+3. Number can be swipe up or down
+
+4. Click a track to view score
+
+5. Total Score = sum(Weight * Score)
+            """,
+          ),
+          body: SingleChildScrollView(
+              child: Column(children: [
+            const SizedBox(height: COLUMN_GAP),
+            SizedBox(
+                width: WIDGET_INNER_WIDTH,
+                child: TextFormField(
+                  maxLines: 2,
+                  maxLength: 50,
+                  maxLengthEnforcement: MaxLengthEnforcement.enforced,
+                  cursorColor: Theme.of(context).colorScheme.inversePrimary,
+                  decoration: InputDecoration(
+                      label: Text("Address"),
+                      alignLabelWithHint: true,
+                      hintText: "Enter an address",
+                      focusColor: Theme.of(context).colorScheme.inversePrimary,
+                      focusedBorder: OutlineInputBorder(
+                          borderSide: BorderSide(
+                            color: Theme.of(context).colorScheme.inversePrimary,
+                          ),
+                          borderRadius: BorderRadius.circular(24)),
+                      enabledBorder: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(24),
+                        borderSide: BorderSide(color: Colors.black12),
+                      )),
+                )),
+            const SizedBox(height: 10),
+            Center(
+                child: ToggleButtons(
+              direction: Axis.horizontal,
+              onPressed: (int index) {
+                setState(() {
+                  // The button that is tapped is set to true, and the others to false.
+                  for (int i = 0; i < _selectedPropertyType.length; i++) {
+                    _selectedPropertyType[i] = i == index;
+                  }
+                });
+              },
+              borderRadius: const BorderRadius.all(Radius.circular(20)),
+              selectedColor: Theme.of(context).colorScheme.onInverseSurface,
+              fillColor: Theme.of(context).colorScheme.inversePrimary,
+              color: Theme.of(context).colorScheme.inversePrimary,
+              isSelected: _selectedPropertyType,
+              children: <Widget>[
+                SizedBox(
+                    width: 110, child: Icon(Icons.apartment_rounded, size: 40)),
+                SizedBox(
+                    width: 110, child: Icon(Icons.house_rounded, size: 40)),
+                SizedBox(
+                    width: 110, child: Icon(Icons.villa_rounded, size: 40)),
+              ],
+            )),
+            const SizedBox(height: 20),
+            Center(
+                child: ToggleButtons(
+              direction: Axis.horizontal,
+              onPressed: (int index) {
+                setState(() {
+                  // The button that is tapped is set to true, and the others to false.
+                  for (int i = 0; i < _selectedPriceType.length; i++) {
+                    _selectedPriceType[i] = i == index;
+                  }
+                });
+              },
+              borderRadius: const BorderRadius.all(Radius.circular(20)),
+              selectedColor: Theme.of(context).colorScheme.onInverseSurface,
+              fillColor: Theme.of(context).colorScheme.inversePrimary,
+              color: Theme.of(context).colorScheme.inversePrimary,
+              isSelected: _selectedPriceType,
+              children: <Widget>[
+                SizedBox(
+                    width: 165,
+                    child: Text(
+                      "Estimated",
+                      textAlign: TextAlign.center,
+                      style:
+                          TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                    )),
+                SizedBox(
+                    width: 165,
+                    child: Text(
+                      "Sold",
+                      textAlign: TextAlign.center,
+                      style:
+                          TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                    )),
+              ],
+            )),
+            const SizedBox(height: COLUMN_GAP),
+            SizedBox(
+                width: WIDGET_INNER_WIDTH,
+                child: TextFormField(
+                  cursorColor: Theme.of(context).colorScheme.inversePrimary,
+                  keyboardType: TextInputType.number,
+                  maxLength: 13,
+                  controller: _priceController,
+                  style: TextStyle(fontFamily: "RobotoMono"),
+                  onChanged: (string) {
+                    string = '${_formatNumber(string.replaceAll(',', ''))}';
+                    _priceController.value = TextEditingValue(
+                      text: string,
+                      selection: TextSelection.collapsed(offset: string.length),
+                    );
+                  },
+                  decoration: InputDecoration(
+                      focusColor: Theme.of(context).colorScheme.inversePrimary,
+                      label: Text("Price"),
+                      prefix: Text("\$"),
+                      suffix: Text("AUD"),
+                      contentPadding:
+                          EdgeInsets.symmetric(vertical: 15, horizontal: 14),
+                      focusedBorder: OutlineInputBorder(
+                          borderSide: BorderSide(
+                            color: Theme.of(context).colorScheme.inversePrimary,
+                          ),
+                          borderRadius: BorderRadius.circular(24)),
+                      enabledBorder: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(24),
+                        borderSide: BorderSide(color: Colors.black12),
+                      )),
+                )),
+            SizedBox(
+                width: WIDGET_INNER_WIDTH,
                 child: Column(children: [
-              const SizedBox(height: COLUMN_GAP),
-              SizedBox(
-                  width: WIDGET_INNER_WIDTH,
-                  child: TextFormField(
-                    maxLines: 2,
-                    maxLength: 50,
-                    maxLengthEnforcement: MaxLengthEnforcement.enforced,
-                    cursorColor: Theme.of(context).colorScheme.inversePrimary,
-                    decoration: InputDecoration(
-                        label: Text("Address"),
-                        alignLabelWithHint: true,
-                        hintText: "Enter an address",
-                        focusColor:
-                            Theme.of(context).colorScheme.inversePrimary,
-                        focusedBorder: OutlineInputBorder(
-                            borderSide: BorderSide(
-                              color:
-                                  Theme.of(context).colorScheme.inversePrimary,
-                            ),
-                            borderRadius: BorderRadius.circular(24)),
-                        enabledBorder: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(24),
-                          borderSide: BorderSide(color: Colors.black12),
-                        )),
-                  )),
-              const SizedBox(height: 10),
-              Center(
-                  child: ToggleButtons(
-                direction: Axis.horizontal,
-                onPressed: (int index) {
-                  setState(() {
-                    // The button that is tapped is set to true, and the others to false.
-                    for (int i = 0; i < _selectedPropertyType.length; i++) {
-                      _selectedPropertyType[i] = i == index;
-                    }
-                  });
-                },
-                borderRadius: const BorderRadius.all(Radius.circular(20)),
-                selectedColor: Theme.of(context).colorScheme.onInverseSurface,
-                fillColor: Theme.of(context).colorScheme.inversePrimary,
-                color: Theme.of(context).colorScheme.inversePrimary,
-                isSelected: _selectedPropertyType,
-                children: <Widget>[
-                  SizedBox(
-                      width: 110,
-                      child: Icon(Icons.apartment_rounded, size: 40)),
-                  SizedBox(
-                      width: 110, child: Icon(Icons.house_rounded, size: 40)),
-                  SizedBox(
-                      width: 110, child: Icon(Icons.villa_rounded, size: 40)),
-                ],
-              )),
-              const SizedBox(height: 20),
-              Center(
-                  child: ToggleButtons(
-                direction: Axis.horizontal,
-                onPressed: (int index) {
-                  setState(() {
-                    // The button that is tapped is set to true, and the others to false.
-                    for (int i = 0; i < _selectedPriceType.length; i++) {
-                      _selectedPriceType[i] = i == index;
-                    }
-                  });
-                },
-                borderRadius: const BorderRadius.all(Radius.circular(20)),
-                selectedColor: Theme.of(context).colorScheme.onInverseSurface,
-                fillColor: Theme.of(context).colorScheme.inversePrimary,
-                color: Theme.of(context).colorScheme.inversePrimary,
-                isSelected: _selectedPriceType,
-                children: <Widget>[
-                  SizedBox(
-                      width: 165,
+                  Row(
+                    children: <Widget>[
+                      Text("Tax: ${convertedToMoneyFormat(2223)} AUD",
+                          style: TextStyle(
+                            fontSize: 12,
+                            color: Theme.of(context).colorScheme.secondary,
+                            fontFamily: "RobotoMono",
+                          ))
+                    ],
+                  ),
+                  Row(
+                    children: <Widget>[
+                      Text(
+                          "Additional cost: ${convertedToMoneyFormat(22223)} AUD",
+                          style: TextStyle(
+                            fontSize: 12,
+                            color: Theme.of(context).colorScheme.secondary,
+                            fontFamily: "RobotoMono",
+                          ))
+                    ],
+                  ),
+                  Row(
+                    children: <Widget>[
+                      Text(
+                          "Total cost: ${convertedToMoneyFormat(2222342323)} AUD",
+                          style: TextStyle(
+                            fontSize: 12,
+                            color: Theme.of(context).colorScheme.secondary,
+                            fontFamily: "RobotoMono",
+                          ))
+                    ],
+                  ),
+                  Row(
+                    children: <Widget>[
+                      Text(
+                          "Unit Price: ${convertedToMoneyFormat(22223)} AUD / pt",
+                          style: TextStyle(
+                            fontSize: 12,
+                            color: Theme.of(context).colorScheme.secondary,
+                            fontFamily: "RobotoMono",
+                          ))
+                    ],
+                  )
+                ])),
+            const SizedBox(height: COLUMN_GAP),
+            const Divider(
+              indent: 40,
+              endIndent: 40,
+            ),
+            widget.houseAssessments.length != 0
+                ? RadialScore(
+                    totalScore: _getTotalScore(),
+                    houseAssessments: widget.houseAssessments)
+                : const SizedBox(),
+            Column(
+                children: widget.houseAssessments
+                    .map<CriteriaItem>((assessment) => CriteriaItem(
+                        fromPropertyRoute: true,
+                        item: CriteriaItemEntity(
+                            assessment.criteriaId,
+                            assessment.comments,
+                            assessment.criteriaName,
+                            assessment.score.toDouble())))
+                    .toList())
+          ])),
+          bottomSheet: widget.houseAssessments.length == 0
+              ? Container(
+                  height: 100,
+                  decoration: BoxDecoration(
+                    color: Theme.of(context).colorScheme.primary,
+                    borderRadius:
+                        BorderRadius.vertical(top: Radius.circular(20)),
+                  ),
+                  width: double.infinity,
+                  child: Center(
                       child: Text(
-                        "Estimated",
-                        textAlign: TextAlign.center,
-                        style: TextStyle(
-                            fontSize: 18, fontWeight: FontWeight.bold),
-                      )),
-                  SizedBox(
-                      width: 165,
-                      child: Text(
-                        "Sold",
-                        textAlign: TextAlign.center,
-                        style: TextStyle(
-                            fontSize: 18, fontWeight: FontWeight.bold),
-                      )),
-                ],
-              )),
-              const SizedBox(height: COLUMN_GAP),
-              SizedBox(
-                  width: WIDGET_INNER_WIDTH,
-                  child: TextFormField(
-                    cursorColor: Theme.of(context).colorScheme.inversePrimary,
-                    keyboardType: TextInputType.number,
-                    maxLength: 13,
-                    controller: _priceController,
-                    style: TextStyle(fontFamily: "RobotoMono"),
-                    onChanged: (string) {
-                      string = '${_formatNumber(string.replaceAll(',', ''))}';
-                      _priceController.value = TextEditingValue(
-                        text: string,
-                        selection:
-                            TextSelection.collapsed(offset: string.length),
-                      );
-                    },
-                    decoration: InputDecoration(
-                        focusColor:
-                            Theme.of(context).colorScheme.inversePrimary,
-                        label: Text("Price"),
-                        prefix: Text("\$"),
-                        suffix: Text("AUD"),
-                        contentPadding:
-                            EdgeInsets.symmetric(vertical: 15, horizontal: 14),
-                        focusedBorder: OutlineInputBorder(
-                            borderSide: BorderSide(
-                              color:
-                                  Theme.of(context).colorScheme.inversePrimary,
-                            ),
-                            borderRadius: BorderRadius.circular(24)),
-                        enabledBorder: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(24),
-                          borderSide: BorderSide(color: Colors.black12),
-                        )),
-                  )),
-              SizedBox(
-                  width: WIDGET_INNER_WIDTH,
-                  child: Column(children: [
-                    Row(
-                      children: <Widget>[
-                        Text("Tax: ${convertedToMoneyFormat(2223)} AUD",
-                            style: TextStyle(
-                              fontSize: 12,
-                              color: Theme.of(context).colorScheme.secondary,
-                              fontFamily: "RobotoMono",
-                            ))
-                      ],
+                    "Create at least one criteria !",
+                    style: TextStyle(
+                      color: Theme.of(context).colorScheme.onPrimary,
+                      fontSize: 14,
+                      fontWeight: FontWeight.bold,
                     ),
-                    Row(
-                      children: <Widget>[
-                        Text(
-                            "Additional cost: ${convertedToMoneyFormat(22223)} AUD",
-                            style: TextStyle(
-                              fontSize: 12,
-                              color: Theme.of(context).colorScheme.secondary,
-                              fontFamily: "RobotoMono",
-                            ))
-                      ],
-                    ),
-                    Row(
-                      children: <Widget>[
-                        Text(
-                            "Total cost: ${convertedToMoneyFormat(2222342323)} AUD",
-                            style: TextStyle(
-                              fontSize: 12,
-                              color: Theme.of(context).colorScheme.secondary,
-                              fontFamily: "RobotoMono",
-                            ))
-                      ],
-                    ),
-                    Row(
-                      children: <Widget>[
-                        Text(
-                            "Unit Price: ${convertedToMoneyFormat(22223)} AUD / pt",
-                            style: TextStyle(
-                              fontSize: 12,
-                              color: Theme.of(context).colorScheme.secondary,
-                              fontFamily: "RobotoMono",
-                            ))
-                      ],
-                    )
-                  ])),
-              const SizedBox(height: COLUMN_GAP),
-              const Divider(
-                indent: 40,
-                endIndent: 40,
-              ),
-              widget.houseAssessments.length != 0
-                  ? RadialScore(
-                      totalScore: _getTotalScore(),
-                      houseAssessments: widget.houseAssessments)
-                  : const SizedBox(),
-              Column(
-                  children: widget.houseAssessments
-                      .map<CriteriaItem>((assessment) => CriteriaItem(
-                          fromPropertyRoute: true,
-                          item: CriteriaItemEntity(
-                              assessment.criteriaId,
-                              assessment.comments,
-                              assessment.criteriaName,
-                              assessment.score.toDouble())))
-                      .toList())
-            ]))));
+                  )))
+              : null,
+        ));
   }
 }

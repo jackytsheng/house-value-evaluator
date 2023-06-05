@@ -42,16 +42,15 @@ class CriteriaRoute extends StatelessWidget {
             appBar: const ThemedAppBar(
               title: "Criteria",
               helpMessage: """
-        1. Swipe left to delete a criteria
+1. Swipe left to delete a single criteria
         
-        [Warning!!]
-        2. Delete criteria remove all notes
+2. ⚠️ Delete criteria remove all notes ⚠️
 
-        3. Number can be swipe up/down
+3. Number can be swipe up or down
         
-        4. Criteria 15 characters max
+4. Criteria can have 15 characters max
 
-        5. Criteria name can be changed
+5. Criteria name can be changed
         """,
             ),
             body: SingleChildScrollView(
@@ -88,7 +87,9 @@ class CriteriaRoute extends StatelessWidget {
                     width: double.infinity,
                     child: Center(
                         child: Text(
-                      "Value does not add up to 100% !",
+                      criteriaItems.length == 0
+                          ? "Create at least one criteria !"
+                          : "Value does not add up to 100% !",
                       style: TextStyle(
                         color: Theme.of(context).colorScheme.onPrimary,
                         fontSize: 14,

@@ -16,13 +16,11 @@ class AdditionalCostRoute extends StatelessWidget {
             appBar: const ThemedAppBar(
               title: "Additional cost",
               helpMessage: """
-
-        1. Swipe left to delete cost
+1. Number can be swipe up/down
         
-        2. Percentage applied to the sold price
+2. Percentage applied to the sold price
 
-        3. Cost applied after percentage
-        
+3. Cost applied after percentage
         """,
             ),
             body: SingleChildScrollView(

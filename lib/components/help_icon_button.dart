@@ -22,7 +22,7 @@ class HelpIconButton extends StatelessWidget {
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: <Widget>[
                       Padding(
-                          padding: EdgeInsets.only(top: 15, right: 30),
+                          padding: EdgeInsets.all(15),
                           child: Text(helpMessage)),
                       ElevatedButton(
                         style: ElevatedButton.styleFrom(elevation: 0),

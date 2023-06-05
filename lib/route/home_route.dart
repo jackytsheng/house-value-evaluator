@@ -47,7 +47,7 @@ class _HomeRoute extends State<HomeRoute> {
                         _editMode = !_editMode;
                       });
                     }),
-                HelpIconButton(helpMessage: "Unit price consist of maxi"),
+                HelpIconButton(helpMessage: "to be included"),
                 PopupMenuButton(
                   icon: Icon(Icons.palette_rounded,
                       color: Theme.of(context).colorScheme.onInverseSurface,

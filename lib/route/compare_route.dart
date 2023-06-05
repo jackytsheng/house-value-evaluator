@@ -28,13 +28,13 @@ class CompareRoute extends StatelessWidget {
         appBar: const ThemedAppBar(
           title: "Compare property",
           helpMessage: """
-        1. Scroll legend list horizontally
+1. Legend list can be scrolled
         
-        2. Click legend to toggle visibility
+2. Click legend to toggle visibility
 
-        3. Click a single bar to view detail
+3. Click a single bar to view score
 
-        4. Hold down to view details
+4. Hold down to view all score
         """,
         ),
         body: Center(
