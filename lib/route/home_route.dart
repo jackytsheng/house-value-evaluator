@@ -9,13 +9,16 @@ import 'package:house_evaluator/model/house_card.dart';
 import 'package:house_evaluator/route/property_route.dart';
 
 class HomeRoute extends StatefulWidget {
-  HomeRoute(
-      {super.key,
-      required this.changeThemeColor,
-      required this.currentThemeColor});
+  HomeRoute({
+    super.key,
+    required this.changeThemeColor,
+    required this.currentThemeColor,
+    required this.houses,
+  });
 
   final Function(Color color) changeThemeColor;
   final Color currentThemeColor;
+  final List<HouseEntity> houses;
 
   @override
   State<StatefulWidget> createState() => _HomeRoute();
@@ -106,52 +109,28 @@ class _HomeRoute extends State<HomeRoute> {
               child: Padding(
                 padding: const EdgeInsets.only(top: 20),
                 child: Column(
-                  children: <Widget>[
-                    HouseCard(
-                      isEditMode: _editMode,
-                      address: "2 Exeter Ct, Wheelers Hill",
-                      overallScore: 5.9,
-                      price: Price(PriceState.sold, 1524000),
-                      propertyType: PropertyType.house,
-                    ),
-                    HouseCard(
-                      isEditMode: _editMode,
-                      address: "2/15 Packham Crescent, Glen Waverley",
-                      overallScore: 6.05,
-                      price: Price(PriceState.estimated, 15050000),
-                      propertyType: PropertyType.townHouse,
-                    ),
-                    HouseCard(
-                      address: "1704 33 Blackwood Street, North Melbourne",
-                      overallScore: 4.05,
-                      price: Price(PriceState.sold, 550000),
-                      propertyType: PropertyType.apartment,
-                    ),
-                    HouseCard(
-                      address: "2/15 Packham Crescent, Glen Waverley",
-                      overallScore: 10,
-                      price: Price(PriceState.estimated, 15050000),
-                      propertyType: PropertyType.townHouse,
-                    ),
-                    HouseCard(
-                      address: "2/15 Packham Crescent, Glen Waverley",
-                      overallScore: 1,
-                      price: Price(PriceState.estimated, 15050000),
-                      propertyType: PropertyType.townHouse,
-                    )
-                  ],
-                ),
+                    children: widget.houses
+                        .map<HouseCard>((house) => HouseCard(
+                              isEditMode: _editMode,
+                              address: house.address,
+                              overallScore: house.getOverAllScore(),
+                              price: house.price,
+                              propertyType: house.propertyType,
+                              houseAssessments:
+                                  house.houseAssessmentMap.values.toList(),
+                            ))
+                        .toList()),
               ),
-              // This trailing comma makes auto-formatting nicer for build methods.
             ),
+            // This trailing comma makes auto-formatting nicer for build methods.
             floatingActionButton: _editMode
                 ? null
                 : FloatingActionButton(
                     onPressed: () {
-                      Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => PropertyRoute()));
+                      // Navigator.push(
+                      //     context,
+                      //     MaterialPageRoute(
+                      //         builder: (context) => PropertyRoute()));
                     },
                     shape: const CircleBorder(),
                     tooltip: 'Add new address',

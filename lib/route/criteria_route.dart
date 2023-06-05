@@ -44,11 +44,14 @@ class CriteriaRoute extends StatelessWidget {
               helpMessage: """
         1. Swipe left to delete a criteria
         
-        2. Number can be swipe up/down
-        
-        3. Criteria 15 characters max
+        [Warning!!]
+        2. Delete criteria remove all notes
 
-        4. Criteria name can be changed
+        3. Number can be swipe up/down
+        
+        4. Criteria 15 characters max
+
+        5. Criteria name can be changed
         """,
             ),
             body: SingleChildScrollView(

@@ -12,6 +12,7 @@ class HouseCard extends StatelessWidget {
     required this.overallScore,
     required this.price,
     required this.propertyType,
+    required this.houseAssessments,
     this.isEditMode = false,
   });
 
@@ -20,6 +21,7 @@ class HouseCard extends StatelessWidget {
   final Price price;
   final double overallScore;
   final bool isEditMode;
+  final List<HouseAssessment> houseAssessments;
 
   IconData iconPicker(PropertyType type) {
     switch (type) {
@@ -78,7 +80,8 @@ class HouseCard extends StatelessWidget {
                   context,
                   MaterialPageRoute(
                       builder: (context) => PropertyRoute(
-                          propertyAction: PropertyAction.editProperty)),
+                          propertyAction: PropertyAction.editProperty,
+                          houseAssessments: houseAssessments)),
                 );
               },
               child: Container(
@@ -125,14 +128,16 @@ class HouseCard extends StatelessWidget {
                                   ),
                                 ]),
                                 Text(
-                                    "Unit Price: ${convertedToMoneyFormat(price.amount / overallScore)} AUD",
+                                    overallScore.toInt() != 0
+                                        ? "Unit Price: ${convertedToMoneyFormat(price.amount / overallScore)} AUD"
+                                        : "Unit Price Not Available",
                                     style: TextStyle(
                                       fontSize: 11,
                                       color: Theme.of(context)
                                           .colorScheme
                                           .secondary,
                                       fontFamily: "RobotoMono",
-                                    ))
+                                    )),
                               ])
                         ],
                       ),

@@ -67,6 +67,12 @@ class CriteriaItem extends StatelessWidget {
                     SizedBox(
                       width: 180,
                       child: TextFormField(
+                        style: criteriaReadOnly
+                            ? TextStyle(
+                                color: Theme.of(context).colorScheme.primary,
+                                fontWeight: FontWeight.bold)
+                            : null,
+                        enabled: !criteriaReadOnly,
                         maxLength: 15,
                         initialValue: item.criteriaName,
                         onChanged: (value) =>
@@ -80,7 +86,7 @@ class CriteriaItem extends StatelessWidget {
                     ),
                     const Spacer(),
                     Text(
-                      "Weight: ",
+                      criteriaReadOnly ? "Score: " : "Weight: ",
                       style: TextStyle(
                           fontSize: 12,
                           color: Theme.of(context).colorScheme.secondary),
@@ -114,19 +120,21 @@ class CriteriaItem extends StatelessWidget {
                         value: (item.weighting * 100).toInt(),
                         itemCount: 1,
                         minValue: 0,
-                        maxValue: 100,
+                        maxValue: criteriaReadOnly ? 10 : 100,
                         onChanged: (value) {
                           setWeighting?.call(item.criteriaId, value);
                         },
                       ),
                     ),
-                    Text(
-                      "%",
-                      style: TextStyle(
-                          fontSize: 16,
-                          // fontWeight: FontWeight.bold,
-                          color: Theme.of(context).colorScheme.secondary),
-                    )
+                    criteriaReadOnly
+                        ? const SizedBox()
+                        : Text(
+                            "%",
+                            style: TextStyle(
+                                fontSize: 16,
+                                // fontWeight: FontWeight.bold,
+                                color: Theme.of(context).colorScheme.secondary),
+                          )
                   ]))),
           const SizedBox(height: GAP_HEIGHT),
           Container(

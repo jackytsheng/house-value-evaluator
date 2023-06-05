@@ -4,8 +4,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:house_evaluator/constants/route.dart';
 import 'package:house_evaluator/model/criteria_item.dart';
+import 'package:house_evaluator/model/house_card.dart';
 import 'package:house_evaluator/route/criteria_route.dart';
 import 'package:house_evaluator/route/home_route.dart';
+import 'package:house_evaluator/route/property_route.dart';
 import 'package:uuid/uuid.dart';
 
 void main() {
@@ -27,12 +29,27 @@ class _HomeEvaluatorApp extends State<HomeEvaluatorApp> {
   Color selectedThemeColor = Colors.blue.shade200;
   Map<String, CriteriaItemEntity> criteriaItemsMap = {};
   bool shouldShowWeightingValidationError = false;
+  Map<String, HouseEntity> housesMap = {};
 
   @override
   void initState() {
-    String initialScoreId = Uuid().v4();
+    String initialCriteriaId = Uuid().v4();
     criteriaItemsMap = {
-      initialScoreId: CriteriaItemEntity(initialScoreId, [], "Score", 1)
+      initialCriteriaId: CriteriaItemEntity(initialCriteriaId, [], "Score", 1)
+    };
+
+    // TODO: Delete this initial house;
+    String initialHouseId = Uuid().v4();
+    housesMap = {
+      initialHouseId: HouseEntity(
+          initialHouseId,
+          "36 test property, Glen Waverley",
+          Price(PriceState.estimated, 1850000),
+          PropertyType.house, {
+        for (var item in criteriaItemsMap.values)
+          item.criteriaId: HouseAssessment(
+              item.criteriaId, item.criteriaName, item.weighting, 0, [])
+      })
     };
 
     super.initState();
@@ -117,6 +134,18 @@ class _HomeEvaluatorApp extends State<HomeEvaluatorApp> {
     _validateWeightingSum();
   }
 
+  void setCriteriaWeighting(String criteriaId, int weightingValue) {
+    EasyDebounce.debounce(
+        'NumberPickerDebouncer',
+        Duration(milliseconds: 10),
+        () => setState(() {
+              criteriaItemsMap[criteriaId]?.weighting = weightingValue / 100;
+              developer.log(
+                  "setting criteria Id: ${criteriaId} weighting to ${weightingValue} %");
+            }));
+    _validateWeightingSum();
+  }
+
   void _validateWeightingSum() {
     EasyDebounce.debounce(
         'WeightingValidator',
@@ -139,17 +168,7 @@ class _HomeEvaluatorApp extends State<HomeEvaluatorApp> {
             }));
   }
 
-  void setCriteriaWeighting(String criteriaId, int weightingValue) {
-    EasyDebounce.debounce(
-        'NumberPickerDebouncer',
-        Duration(milliseconds: 10),
-        () => setState(() {
-              criteriaItemsMap[criteriaId]?.weighting = weightingValue / 100;
-              developer.log(
-                  "setting criteria Id: ${criteriaId} weighting to ${weightingValue} %");
-            }));
-    _validateWeightingSum();
-  }
+  void _updateHouseAssements() {}
 
 // --- Main Route Handlers ---
   void changeThemeColor(Color color) {
@@ -185,7 +204,10 @@ class _HomeEvaluatorApp extends State<HomeEvaluatorApp> {
       home: HomeRoute(
         changeThemeColor: changeThemeColor,
         currentThemeColor: selectedThemeColor,
+        houses: housesMap.values.toList(),
       ),
     );
   }
 }
+
+class CriteriaEntity {}

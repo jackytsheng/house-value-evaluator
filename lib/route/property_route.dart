@@ -24,9 +24,12 @@ IconData iconPicker(PropertyType type) {
 
 class PropertyRoute extends StatefulWidget {
   const PropertyRoute(
-      {super.key, this.propertyAction = PropertyAction.newProperty});
+      {super.key,
+      this.propertyAction = PropertyAction.newProperty,
+      required this.houseAssessments});
 
   final PropertyAction propertyAction;
+  final List<HouseAssessment> houseAssessments;
   @override
   State<PropertyRoute> createState() => _PropertyRoute();
 }
@@ -238,6 +241,13 @@ class _PropertyRoute extends State<PropertyRoute> {
                 endIndent: 40,
               ),
               RadialScore(),
+              Column(
+                  children: widget.houseAssessments
+                      .map<CriteriaItem>((assessment) => CriteriaItem(
+                          criteriaReadOnly: true,
+                          item: CriteriaItemEntity(assessment.criteriaId,
+                              assessment.comments, assessment.criteriaName, 0)))
+                      .toList())
               // CriteriaItem(
               //     criteriaReadOnly: true,
               //     item: CriteriaItemEntity([], "School", 10)),

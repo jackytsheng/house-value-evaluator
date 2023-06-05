@@ -16,28 +16,29 @@ class Price {
 }
 
 class HouseAssessment {
-  String criteriaName;
-  double criteriaWeight;
+  final String criteriaId;
+  final String criteriaName;
+  final double criteriaWeight;
   int score;
   List<NoteItem> comments;
 
-  HouseAssessment(
-      this.criteriaName, this.criteriaWeight, this.score, this.comments);
+  HouseAssessment(this.criteriaId, this.criteriaName, this.criteriaWeight,
+      this.score, this.comments);
 }
 
-class HouseCardEntity {
-  String houseId = Uuid().v4();
+class HouseEntity {
+  String houseId;
   String address;
   Price price;
   PropertyType propertyType;
-  List<HouseAssessment> houseAssessment;
+  Map<String, HouseAssessment> houseAssessmentMap;
 
-  HouseCardEntity(
-      this.address, this.price, this.propertyType, this.houseAssessment);
+  HouseEntity(this.houseId, this.address, this.price, this.propertyType,
+      this.houseAssessmentMap);
 
   double getOverAllScore() {
     double score = 0.0;
-    houseAssessment.forEach((assessment) {
+    houseAssessmentMap.values.forEach((assessment) {
       score += assessment.criteriaWeight * assessment.score;
     });
     return score;
