@@ -3,8 +3,6 @@ import 'package:house_evaluator/components/cost_item.dart';
 import 'package:house_evaluator/components/themed_app_bar.dart';
 import 'package:house_evaluator/model/addition_cost.dart';
 
-import '../components/criteria_item.dart';
-
 class AdditionalCostRoute extends StatelessWidget {
   const AdditionalCostRoute({super.key});
 

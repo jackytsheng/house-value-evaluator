@@ -3,65 +3,55 @@ import 'package:flutter/services.dart';
 import 'package:house_evaluator/components/criteria_item.dart';
 import 'package:house_evaluator/components/radial_score.dart';
 import 'package:house_evaluator/components/themed_app_bar.dart';
-import 'package:house_evaluator/model/criteria_item.dart';
-import 'package:house_evaluator/model/house_card.dart';
+import 'package:house_evaluator/model/criteria.dart';
+import 'package:house_evaluator/model/property.dart';
 import 'package:house_evaluator/utils/currency_formatter.dart';
-import 'package:intl/intl.dart';
+import 'package:house_evaluator/utils/icon_picker.dart';
 
 const double COLUMN_GAP = 30;
 const double WIDGET_INNER_WIDTH = 330;
 
-IconData iconPicker(PropertyType type) {
-  switch (type) {
-    case PropertyType.house:
-      return Icons.house_rounded;
-    case PropertyType.townHouse:
-      return Icons.holiday_village_rounded;
-    case PropertyType.apartment:
-      return Icons.apartment_rounded;
-  }
-}
-
-class PropertyRoute extends StatefulWidget {
-  const PropertyRoute(
-      {super.key,
-      this.propertyAction = PropertyAction.newProperty,
-      required this.houseAssessments});
-
+class PropertyRouteArguments {
+  final PropertyEntity propertyEntity;
   final PropertyAction propertyAction;
-  final List<HouseAssessment> houseAssessments;
-  @override
-  State<PropertyRoute> createState() => _PropertyRoute();
+
+  PropertyRouteArguments(this.propertyAction, this.propertyEntity);
 }
 
-class _PropertyRoute extends State<PropertyRoute> {
-  static const _locale = 'en';
-  final _priceController = TextEditingController();
-  String _formatNumber(String s) =>
-      s != "" ? NumberFormat.decimalPattern(_locale).format(int.parse(s)) : "";
+class PropertyRoute extends StatelessWidget {
+  PropertyRoute({
+    super.key,
+    required this.setAddress,
+    required this.setType,
+    required this.setPrice,
+    required this.setScore,
+  });
 
-  String get _currency =>
-      NumberFormat.compactSimpleCurrency(locale: _locale).currencySymbol;
-
-  @override
-  void dispose() {
-    _priceController.dispose();
-    super.dispose();
-  }
-
-  final List<bool> _selectedPropertyType = <bool>[false, false, true];
-  final List<bool> _selectedPriceType = <bool>[false, true];
-
-  double _getTotalScore() => widget.houseAssessments.fold(0,
-      (acc, assessment) => acc + assessment.score * assessment.criteriaWeight);
+  final Function(String propertyId, String address) setAddress;
+  final Function(String propertyId, PropertyType propertyType) setType;
+  final Function(String propertyId, Price price) setPrice;
+  final Function(String propertyId, String criteriaId, int score) setScore;
 
   @override
   Widget build(BuildContext context) {
+    final args =
+        ModalRoute.of(context)!.settings.arguments as PropertyRouteArguments;
+
+    final assessments =
+        args.propertyEntity.propertyAssessmentMap.values.toList();
+
+    double _getTotalScore() => assessments.fold(
+        0,
+        (acc, assessment) =>
+            acc + assessment.score * assessment.criteriaWeight);
+    final List<double> mockCost = [111, 2222];
+    double _getTotalCost() => mockCost.fold(
+        args.propertyEntity.price.amount, (pre, current) => pre + current);
     return GestureDetector(
         onTap: () => FocusManager.instance.primaryFocus?.unfocus(),
         child: Scaffold(
           appBar: ThemedAppBar(
-            title: widget.propertyAction == PropertyAction.newProperty
+            title: args.propertyAction == PropertyAction.newProperty
                 ? "Add a new property"
                 : "Edit a property",
             helpMessage: """
@@ -86,6 +76,9 @@ class _PropertyRoute extends State<PropertyRoute> {
                   maxLength: 50,
                   maxLengthEnforcement: MaxLengthEnforcement.enforced,
                   cursorColor: Theme.of(context).colorScheme.inversePrimary,
+                  initialValue: args.propertyEntity.address,
+                  onChanged: (address) =>
+                      setAddress(args.propertyEntity.propertyId, address),
                   decoration: InputDecoration(
                       label: Text("Address"),
                       alignLabelWithHint: true,
@@ -106,62 +99,48 @@ class _PropertyRoute extends State<PropertyRoute> {
                 child: ToggleButtons(
               direction: Axis.horizontal,
               onPressed: (int index) {
-                setState(() {
-                  // The button that is tapped is set to true, and the others to false.
-                  for (int i = 0; i < _selectedPropertyType.length; i++) {
-                    _selectedPropertyType[i] = i == index;
-                  }
-                });
+                setType(
+                    args.propertyEntity.propertyId, PropertyType.values[index]);
               },
               borderRadius: const BorderRadius.all(Radius.circular(20)),
               selectedColor: Theme.of(context).colorScheme.onInverseSurface,
               fillColor: Theme.of(context).colorScheme.inversePrimary,
               color: Theme.of(context).colorScheme.inversePrimary,
-              isSelected: _selectedPropertyType,
-              children: <Widget>[
-                SizedBox(
-                    width: 110, child: Icon(Icons.apartment_rounded, size: 40)),
-                SizedBox(
-                    width: 110, child: Icon(Icons.house_rounded, size: 40)),
-                SizedBox(
-                    width: 110, child: Icon(Icons.villa_rounded, size: 40)),
-              ],
+              isSelected: PropertyType.values
+                  .map((type) => type == args.propertyEntity.propertyType)
+                  .toList(),
+              children: PropertyType.values
+                  .map((type) => SizedBox(
+                      width: 110, child: Icon(iconPicker(type), size: 40)))
+                  .toList(),
             )),
             const SizedBox(height: 20),
             Center(
                 child: ToggleButtons(
               direction: Axis.horizontal,
               onPressed: (int index) {
-                setState(() {
-                  // The button that is tapped is set to true, and the others to false.
-                  for (int i = 0; i < _selectedPriceType.length; i++) {
-                    _selectedPriceType[i] = i == index;
-                  }
-                });
+                setPrice(
+                    args.propertyEntity.propertyId,
+                    Price(PriceState.values[index],
+                        args.propertyEntity.price.amount));
               },
               borderRadius: const BorderRadius.all(Radius.circular(20)),
               selectedColor: Theme.of(context).colorScheme.onInverseSurface,
               fillColor: Theme.of(context).colorScheme.inversePrimary,
               color: Theme.of(context).colorScheme.inversePrimary,
-              isSelected: _selectedPriceType,
-              children: <Widget>[
-                SizedBox(
-                    width: 165,
-                    child: Text(
-                      "Estimated",
-                      textAlign: TextAlign.center,
-                      style:
-                          TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
-                    )),
-                SizedBox(
-                    width: 165,
-                    child: Text(
-                      "Sold",
-                      textAlign: TextAlign.center,
-                      style:
-                          TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
-                    )),
-              ],
+              isSelected: PriceState.values
+                  .map((state) => state == args.propertyEntity.price.state)
+                  .toList(),
+              children: PriceState.values
+                  .map((state) => SizedBox(
+                      width: 165,
+                      child: Text(
+                        state.name.toUpperCase(),
+                        textAlign: TextAlign.center,
+                        style: TextStyle(
+                            fontSize: 18, fontWeight: FontWeight.bold),
+                      )))
+                  .toList(),
             )),
             const SizedBox(height: COLUMN_GAP),
             SizedBox(
@@ -170,22 +149,25 @@ class _PropertyRoute extends State<PropertyRoute> {
                   cursorColor: Theme.of(context).colorScheme.inversePrimary,
                   keyboardType: TextInputType.number,
                   maxLength: 13,
-                  controller: _priceController,
                   style: TextStyle(fontFamily: "RobotoMono"),
-                  onChanged: (string) {
-                    string = '${_formatNumber(string.replaceAll(',', ''))}';
-                    _priceController.value = TextEditingValue(
-                      text: string,
-                      selection: TextSelection.collapsed(offset: string.length),
-                    );
+                  initialValue:
+                      args.propertyEntity.price.amount.toStringAsFixed(0),
+                  onChanged: (value) {
+                    setPrice(
+                        args.propertyEntity.propertyId,
+                        Price(args.propertyEntity.price.state,
+                            double.parse(value)));
                   },
+                  textAlign: TextAlign.end,
                   decoration: InputDecoration(
                       focusColor: Theme.of(context).colorScheme.inversePrimary,
                       label: Text("Price"),
                       prefix: Text("\$"),
-                      suffix: Text("AUD"),
+                      suffix: Padding(
+                          padding: EdgeInsets.only(left: 20),
+                          child: Text("AUD")),
                       contentPadding:
-                          EdgeInsets.symmetric(vertical: 15, horizontal: 14),
+                          EdgeInsets.symmetric(vertical: 15, horizontal: 30),
                       focusedBorder: OutlineInputBorder(
                           borderSide: BorderSide(
                             color: Theme.of(context).colorScheme.inversePrimary,
@@ -223,7 +205,7 @@ class _PropertyRoute extends State<PropertyRoute> {
                   Row(
                     children: <Widget>[
                       Text(
-                          "Total cost: ${convertedToMoneyFormat(2222342323)} AUD",
+                          "Total cost: ${convertedToMoneyFormat(_getTotalCost())} AUD",
                           style: TextStyle(
                             fontSize: 12,
                             color: Theme.of(context).colorScheme.secondary,
@@ -234,7 +216,9 @@ class _PropertyRoute extends State<PropertyRoute> {
                   Row(
                     children: <Widget>[
                       Text(
-                          "Unit Price: ${convertedToMoneyFormat(22223)} AUD / pt",
+                          _getTotalScore().toInt() != 0
+                              ? "Unit Price: ${convertedToMoneyFormat(22223)} AUD / Score"
+                              : "Unit Price Not Available For Zero Score",
                           style: TextStyle(
                             fontSize: 12,
                             color: Theme.of(context).colorScheme.secondary,
@@ -248,15 +232,19 @@ class _PropertyRoute extends State<PropertyRoute> {
               indent: 40,
               endIndent: 40,
             ),
-            widget.houseAssessments.length != 0
+            assessments.length != 0
                 ? RadialScore(
                     totalScore: _getTotalScore(),
-                    houseAssessments: widget.houseAssessments)
+                    propertyAssessments: assessments)
                 : const SizedBox(),
             Column(
-                children: widget.houseAssessments
+                children: assessments
                     .map<CriteriaItem>((assessment) => CriteriaItem(
                         fromPropertyRoute: true,
+                        setNumber: (score) {
+                          setScore(args.propertyEntity.propertyId,
+                              assessment.criteriaId, score);
+                        },
                         item: CriteriaItemEntity(
                             assessment.criteriaId,
                             assessment.comments,
@@ -264,7 +252,7 @@ class _PropertyRoute extends State<PropertyRoute> {
                             assessment.score.toDouble())))
                     .toList())
           ])),
-          bottomSheet: widget.houseAssessments.length == 0
+          bottomSheet: assessments.length == 0
               ? Container(
                   height: 100,
                   decoration: BoxDecoration(

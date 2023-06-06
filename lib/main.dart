@@ -3,8 +3,8 @@ import 'package:easy_debounce/easy_debounce.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:house_evaluator/constants/route.dart';
-import 'package:house_evaluator/model/criteria_item.dart';
-import 'package:house_evaluator/model/house_card.dart';
+import 'package:house_evaluator/model/criteria.dart';
+import 'package:house_evaluator/model/property.dart';
 import 'package:house_evaluator/route/criteria_route.dart';
 import 'package:house_evaluator/route/home_route.dart';
 import 'package:house_evaluator/route/property_route.dart';
@@ -26,10 +26,13 @@ class HomeEvaluatorApp extends StatefulWidget {
 }
 
 class _HomeEvaluatorApp extends State<HomeEvaluatorApp> {
+  // Criteria Item State
   Color selectedThemeColor = Colors.blue.shade200;
   Map<String, CriteriaItemEntity> criteriaItemsMap = {};
   bool shouldShowWeightingValidationError = false;
-  Map<String, HouseEntity> housesMap = {};
+
+  // Property Route State
+  Map<String, PropertyEntity> propertiesMap = {};
 
   @override
   void initState() {
@@ -40,14 +43,14 @@ class _HomeEvaluatorApp extends State<HomeEvaluatorApp> {
 
     // TODO: Delete this initial house;
     String initialHouseId = Uuid().v4();
-    housesMap = {
-      initialHouseId: HouseEntity(
+    propertiesMap = {
+      initialHouseId: PropertyEntity(
           initialHouseId,
           "36 Campbell Street, Glen Waverley",
           Price(PriceState.estimated, 1850000),
           PropertyType.house, {
         for (var item in criteriaItemsMap.values)
-          item.criteriaId: HouseAssessment(
+          item.criteriaId: PropertyAssessment(
               item.criteriaId, item.criteriaName, item.weighting, 0, [])
       })
     };
@@ -139,7 +142,7 @@ class _HomeEvaluatorApp extends State<HomeEvaluatorApp> {
 
   void setCriteriaWeighting(String criteriaId, int weightingValue) {
     EasyDebounce.debounce(
-        'NumberPickerDebouncer',
+        'NumberPickerWeightingDebouncer',
         Duration(milliseconds: 10),
         () => setState(() {
               criteriaItemsMap[criteriaId]?.weighting = weightingValue / 100;
@@ -151,8 +154,8 @@ class _HomeEvaluatorApp extends State<HomeEvaluatorApp> {
   }
 
   void _removeCriteriaFromAllHouse(String criteriaId) {
-    for (final house in housesMap.values) {
-      house.houseAssessmentMap.remove(criteriaId);
+    for (final house in propertiesMap.values) {
+      house.propertyAssessmentMap.remove(criteriaId);
     }
 
     developer.log(
@@ -160,10 +163,10 @@ class _HomeEvaluatorApp extends State<HomeEvaluatorApp> {
   }
 
   void _updateCriteriaFromAllHouse(CriteriaItemEntity criteria) {
-    for (var house in housesMap.values) {
-      house.houseAssessmentMap[criteria.criteriaId]?.criteriaName =
+    for (var house in propertiesMap.values) {
+      house.propertyAssessmentMap[criteria.criteriaId]?.criteriaName =
           criteria.criteriaName;
-      house.houseAssessmentMap[criteria.criteriaId]?.criteriaWeight =
+      house.propertyAssessmentMap[criteria.criteriaId]?.criteriaWeight =
           criteria.weighting;
     }
 
@@ -172,8 +175,8 @@ class _HomeEvaluatorApp extends State<HomeEvaluatorApp> {
   }
 
   void _addCriteriaToAllHouse(CriteriaItemEntity criteria) {
-    for (var house in housesMap.values) {
-      house.houseAssessmentMap[criteria.criteriaId] = HouseAssessment(
+    for (var house in propertiesMap.values) {
+      house.propertyAssessmentMap[criteria.criteriaId] = PropertyAssessment(
           criteria.criteriaId,
           criteria.criteriaName,
           criteria.weighting,
@@ -206,9 +209,47 @@ class _HomeEvaluatorApp extends State<HomeEvaluatorApp> {
             }));
   }
 
-  void _updateHouseAssements() {}
+// --- Property Route Handlers ---
+  void setPropertyAddress(String propertyId, String address) {
+    setState(() {
+      propertiesMap[propertyId]?.address = address;
+      developer.log(
+          "setting property with Id: ${propertyId} to address : ${address}");
+    });
+  }
 
-// --- Main Route Handlers ---
+  void setPropertyPrice(String propertyId, Price price) {
+    setState(() {
+      propertiesMap[propertyId]?.price = price;
+      developer.log(
+          "setting property with Id: ${propertyId} to price amount : ${price.state} ${price.amount}");
+    });
+  }
+
+  void setPropertyType(String propertyId, PropertyType propertyType) {
+    setState(() {
+      propertiesMap[propertyId]?.propertyType = propertyType;
+      developer.log(
+          "setting property with Id: ${propertyId} to be : ${propertyType.name}");
+    });
+  }
+
+  void setPropertyAssessmentScore(
+      String propertyId, String criteriaId, int score) {
+    EasyDebounce.debounce(
+        'NumberPickerScoreDebouncer',
+        Duration(milliseconds: 10),
+        () => setState(() {
+              propertiesMap[propertyId]
+                  ?.propertyAssessmentMap[criteriaId]
+                  ?.score = score;
+              developer.log(
+                  "setting criteria Id: ${criteriaId} of property Id: ${propertyId} score to ${score}");
+            }));
+    _validateWeightingSum();
+  }
+
+  // Main Route
   void changeThemeColor(Color color) {
     setState(() {
       selectedThemeColor = color;
@@ -224,6 +265,12 @@ class _HomeEvaluatorApp extends State<HomeEvaluatorApp> {
         useMaterial3: true,
       ),
       routes: {
+        PROPERTY_ROUTE: (context) => PropertyRoute(
+              setAddress: setPropertyAddress,
+              setPrice: setPropertyPrice,
+              setType: setPropertyType,
+              setScore: setPropertyAssessmentScore,
+            ),
         CRITERIA_ROUTE: (context) => CriteriaRoute(
               toggleExpand: toggleNoteExpandStatusFromCriteria,
               deleteNote: deleteNoteFromCriteria,
@@ -242,7 +289,7 @@ class _HomeEvaluatorApp extends State<HomeEvaluatorApp> {
       home: HomeRoute(
         changeThemeColor: changeThemeColor,
         currentThemeColor: selectedThemeColor,
-        houses: housesMap.values.toList(),
+        properties: propertiesMap.values.toList(),
       ),
     );
   }

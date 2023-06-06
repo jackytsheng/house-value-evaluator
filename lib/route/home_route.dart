@@ -1,24 +1,22 @@
 import 'package:flutter/material.dart';
 import 'package:house_evaluator/components/help_icon_button.dart';
-import 'package:house_evaluator/components/house_card.dart';
+import 'package:house_evaluator/components/property_card.dart';
 import 'package:house_evaluator/constants/route.dart';
 import 'package:house_evaluator/route/additional_cost_route.dart';
 import 'package:house_evaluator/route/compare_route.dart';
-import 'package:house_evaluator/model/house_card.dart';
-
-import 'package:house_evaluator/route/property_route.dart';
+import 'package:house_evaluator/model/property.dart';
 
 class HomeRoute extends StatefulWidget {
   HomeRoute({
     super.key,
     required this.changeThemeColor,
     required this.currentThemeColor,
-    required this.houses,
+    required this.properties,
   });
 
   final Function(Color color) changeThemeColor;
   final Color currentThemeColor;
-  final List<HouseEntity> houses;
+  final List<PropertyEntity> properties;
 
   @override
   State<StatefulWidget> createState() => _HomeRoute();
@@ -100,7 +98,7 @@ class _HomeRoute extends State<HomeRoute> {
                 ),
               ],
               scrolledUnderElevation: 0,
-              title: Text("House Evaluator",
+              title: Text("Property Evaluator",
                   style: TextStyle(
                       color: Theme.of(context).colorScheme.onPrimary,
                       fontWeight: FontWeight.bold)),
@@ -109,15 +107,10 @@ class _HomeRoute extends State<HomeRoute> {
               child: Padding(
                 padding: const EdgeInsets.only(top: 20),
                 child: Column(
-                    children: widget.houses
-                        .map<HouseCard>((house) => HouseCard(
+                    children: widget.properties
+                        .map<PropertyCard>((property) => PropertyCard(
                               isEditMode: _editMode,
-                              address: house.address,
-                              overallScore: house.getOverAllScore(),
-                              price: house.price,
-                              propertyType: house.propertyType,
-                              houseAssessments:
-                                  house.houseAssessmentMap.values.toList(),
+                              property: property,
                             ))
                         .toList()),
               ),

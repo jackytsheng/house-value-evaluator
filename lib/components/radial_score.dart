@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:house_evaluator/components/color_scale_widget.dart';
-import 'package:house_evaluator/model/house_card.dart';
+import 'package:house_evaluator/model/property.dart';
 import 'package:syncfusion_flutter_charts/charts.dart';
 
 class ChartData {
@@ -11,13 +11,13 @@ class ChartData {
 
 class RadialScore extends StatelessWidget {
   RadialScore(
-      {super.key, required this.totalScore, required this.houseAssessments});
+      {super.key, required this.totalScore, required this.propertyAssessments});
 
   final double totalScore;
-  final List<HouseAssessment> houseAssessments;
+  final List<PropertyAssessment> propertyAssessments;
   @override
   Widget build(BuildContext context) {
-    final List<ChartData> chartData = houseAssessments
+    final List<ChartData> chartData = propertyAssessments
         .map((assessment) =>
             ChartData(assessment.criteriaName, assessment.score))
         .toList();

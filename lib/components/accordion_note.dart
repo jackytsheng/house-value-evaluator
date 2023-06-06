@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:house_evaluator/model/criteria_item.dart';
+import 'package:house_evaluator/model/criteria.dart';
 
 class AccordionNote extends StatelessWidget {
   AccordionNote({

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:house_evaluator/components/accordion_note.dart';
-import 'package:house_evaluator/model/criteria_item.dart';
+import 'package:house_evaluator/model/criteria.dart';
 import 'package:numberpicker/numberpicker.dart';
 
 const double GAP_HEIGHT = 20;
@@ -15,7 +15,7 @@ class CriteriaItem extends StatelessWidget {
     this.deleteNote,
     this.addNote,
     this.setNoteHeader,
-    this.setWeighting,
+    required this.setNumber,
     this.setName,
     this.deleteCriteria,
     this.setNoteBody,
@@ -29,7 +29,7 @@ class CriteriaItem extends StatelessWidget {
       setNoteBody;
   final Function(String criteriaId, int noteIndex, String headerValue)?
       setNoteHeader;
-  final Function(String criteriaId, int weightingValue)? setWeighting;
+  final Function(int numberValue) setNumber;
   final Function(String criteriaId, String criteriaName)? setName;
   final Function(String criteriaId)? deleteCriteria;
   final bool fromPropertyRoute;
@@ -104,27 +104,26 @@ class CriteriaItem extends StatelessWidget {
                                       .inversePrimary))),
                       margin: EdgeInsets.only(right: 5),
                       child: NumberPicker(
-                        itemWidth: 40,
-                        itemHeight: 40,
-                        haptics: true,
-                        selectedTextStyle: TextStyle(
-                            fontSize: 22,
-                            color: Theme.of(context).colorScheme.primary,
-                            fontWeight: FontWeight.bold,
-                            fontFamily: "RobotoMono"),
-                        textStyle: TextStyle(
-                            fontSize: 18,
-                            fontWeight: FontWeight.bold,
-                            color: Theme.of(context).colorScheme.secondary,
-                            fontFamily: "RobotoMono"),
-                        value: (item.weighting * 100).toInt(),
-                        itemCount: 1,
-                        minValue: 0,
-                        maxValue: fromPropertyRoute ? 10 : 100,
-                        onChanged: (value) {
-                          setWeighting?.call(item.criteriaId, value);
-                        },
-                      ),
+                          itemWidth: 40,
+                          itemHeight: 40,
+                          haptics: true,
+                          selectedTextStyle: TextStyle(
+                              fontSize: 22,
+                              color: Theme.of(context).colorScheme.primary,
+                              fontWeight: FontWeight.bold,
+                              fontFamily: "RobotoMono"),
+                          textStyle: TextStyle(
+                              fontSize: 18,
+                              fontWeight: FontWeight.bold,
+                              color: Theme.of(context).colorScheme.secondary,
+                              fontFamily: "RobotoMono"),
+                          value: fromPropertyRoute
+                              ? item.weighting.toInt()
+                              : (item.weighting * 100).toInt(),
+                          itemCount: 1,
+                          minValue: 0,
+                          maxValue: fromPropertyRoute ? 10 : 100,
+                          onChanged: setNumber),
                     ),
                     fromPropertyRoute
                         ? const SizedBox()

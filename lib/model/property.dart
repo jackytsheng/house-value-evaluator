@@ -1,6 +1,4 @@
-import 'package:house_evaluator/components/criteria_item.dart';
-import 'package:house_evaluator/model/criteria_item.dart';
-import 'package:uuid/uuid.dart';
+import 'package:house_evaluator/model/criteria.dart';
 
 enum PropertyType { townHouse, house, apartment }
 
@@ -15,30 +13,30 @@ class Price {
   Price(this.state, this.amount);
 }
 
-class HouseAssessment {
+class PropertyAssessment {
   String criteriaId;
   String criteriaName;
   double criteriaWeight;
   int score;
   List<NoteItem> comments;
 
-  HouseAssessment(this.criteriaId, this.criteriaName, this.criteriaWeight,
+  PropertyAssessment(this.criteriaId, this.criteriaName, this.criteriaWeight,
       this.score, this.comments);
 }
 
-class HouseEntity {
-  String houseId;
+class PropertyEntity {
+  String propertyId;
   String address;
   Price price;
   PropertyType propertyType;
-  Map<String, HouseAssessment> houseAssessmentMap;
+  Map<String, PropertyAssessment> propertyAssessmentMap;
 
-  HouseEntity(this.houseId, this.address, this.price, this.propertyType,
-      this.houseAssessmentMap);
+  PropertyEntity(this.propertyId, this.address, this.price, this.propertyType,
+      this.propertyAssessmentMap);
 
   double getOverAllScore() {
     double score = 0.0;
-    houseAssessmentMap.values.forEach((assessment) {
+    propertyAssessmentMap.values.forEach((assessment) {
       score += assessment.criteriaWeight * assessment.score;
     });
     return score;

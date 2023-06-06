@@ -1,65 +1,26 @@
 import 'package:flutter/material.dart';
 import 'package:house_evaluator/components/color_scale_widget.dart';
 import 'package:house_evaluator/components/float_card.dart';
+import 'package:house_evaluator/constants/route.dart';
 import 'package:house_evaluator/route/property_route.dart';
-import 'package:house_evaluator/model/house_card.dart';
+import 'package:house_evaluator/model/property.dart';
 import 'package:house_evaluator/utils/currency_formatter.dart';
+import 'package:house_evaluator/utils/icon_picker.dart';
+import 'package:house_evaluator/utils/property_chip_picker.dart';
 
-class HouseCard extends StatelessWidget {
-  const HouseCard({
+class PropertyCard extends StatelessWidget {
+  const PropertyCard({
     super.key,
-    required this.address,
-    required this.overallScore,
-    required this.price,
-    required this.propertyType,
-    required this.houseAssessments,
+    required this.property,
     this.isEditMode = false,
   });
 
-  final String address;
-  final PropertyType propertyType;
-  final Price price;
-  final double overallScore;
+  final PropertyEntity property;
   final bool isEditMode;
-  final List<HouseAssessment> houseAssessments;
-
-  IconData iconPicker(PropertyType type) {
-    switch (type) {
-      case PropertyType.house:
-        return Icons.house_rounded;
-      case PropertyType.townHouse:
-        return Icons.holiday_village_rounded;
-      case PropertyType.apartment:
-        return Icons.apartment_rounded;
-    }
-  }
 
   @override
   Widget build(BuildContext context) {
-    Widget getChip(PriceState priceState) {
-      String labelText;
-      Color color;
-      switch (priceState) {
-        case PriceState.estimated:
-          labelText = "Est";
-          color = Theme.of(context).colorScheme.primary;
-        case PriceState.sold:
-          labelText = "Sold";
-          color = Theme.of(context).colorScheme.inversePrimary;
-      }
-
-      return Container(
-          margin: EdgeInsets.only(right: 10),
-          child: CircleAvatar(
-              radius: 11,
-              backgroundColor: color,
-              child: Text(labelText,
-                  style: TextStyle(
-                      color: Theme.of(context).colorScheme.onPrimary,
-                      fontSize: 8,
-                      fontWeight: FontWeight.bold))));
-    }
-
+    final overAllScore = property.getOverAllScore();
     return ListTile(
         horizontalTitleGap: 0,
         leading: isEditMode
@@ -76,12 +37,11 @@ class HouseCard extends StatelessWidget {
           FloatCard(
               margin: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
               onTapAction: () {
-                Navigator.push(
+                Navigator.pushNamed(
                   context,
-                  MaterialPageRoute(
-                      builder: (context) => PropertyRoute(
-                          propertyAction: PropertyAction.editProperty,
-                          houseAssessments: houseAssessments)),
+                  PROPERTY_ROUTE,
+                  arguments: PropertyRouteArguments(
+                      PropertyAction.editProperty, property),
                 );
               },
               child: Container(
@@ -90,14 +50,14 @@ class HouseCard extends StatelessWidget {
                       const EdgeInsets.symmetric(horizontal: 12, vertical: 16),
                   child: Column(
                     children: <Widget>[
-                      Text(address,
+                      Text(property.address,
                           textAlign: TextAlign.center,
                           style: const TextStyle(fontWeight: FontWeight.bold)),
                       const Spacer(),
                       Row(
                         children: <Widget>[
                           ColorScaleWidget(
-                            value: overallScore,
+                            value: overAllScore,
                             minValue: 0,
                             minColor: Theme.of(context).colorScheme.onPrimary,
                             lightTextColor:
@@ -109,7 +69,7 @@ class HouseCard extends StatelessWidget {
                                 Theme.of(context).colorScheme.inversePrimary,
                             child: Center(
                                 child: Text(
-                              overallScore.toStringAsFixed(2),
+                              overAllScore.toStringAsFixed(2),
                               style: TextStyle(
                                   fontSize: 12, fontWeight: FontWeight.bold),
                             )),
@@ -119,17 +79,17 @@ class HouseCard extends StatelessWidget {
                               crossAxisAlignment: CrossAxisAlignment.end,
                               children: [
                                 Row(children: [
-                                  getChip(price.state),
+                                  getChip(context, property.price.state),
                                   Text(
-                                    "${convertedToMoneyFormat(price.amount)} AUD",
+                                    "${convertedToMoneyFormat(property.price.amount)} AUD",
                                     style: TextStyle(
                                       fontFamily: "RobotoMono",
                                     ),
                                   ),
                                 ]),
                                 Text(
-                                    overallScore.toInt() != 0
-                                        ? "Unit Price: ${convertedToMoneyFormat(price.amount / overallScore)} AUD"
+                                    overAllScore.toInt() != 0
+                                        ? "Unit Price: ${convertedToMoneyFormat(property.price.amount / overAllScore)} AUD"
                                         : "Unit Price Not Available",
                                     style: TextStyle(
                                       fontSize: 11,
@@ -148,7 +108,7 @@ class HouseCard extends StatelessWidget {
               child: Icon(
                 color: Theme.of(context).colorScheme.inversePrimary,
                 size: 30,
-                iconPicker(propertyType),
+                iconPicker(property.propertyType),
               )),
         ]));
   }
