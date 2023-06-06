@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
-import 'package:house_evaluator/components/color_scale_widget.dart';
-import 'package:house_evaluator/components/float_card.dart';
-import 'package:house_evaluator/constants/route.dart';
-import 'package:house_evaluator/route/property_route.dart';
-import 'package:house_evaluator/model/property.dart';
-import 'package:house_evaluator/utils/currency_formatter.dart';
-import 'package:house_evaluator/utils/icon_picker.dart';
-import 'package:house_evaluator/utils/property_chip_picker.dart';
+import 'package:property_evaluator/components/color_scale_widget.dart';
+import 'package:property_evaluator/components/float_card.dart';
+import 'package:property_evaluator/constants/route.dart';
+import 'package:property_evaluator/route/property_route.dart';
+import 'package:property_evaluator/model/property.dart';
+import 'package:property_evaluator/utils/currency_formatter.dart';
+import 'package:property_evaluator/utils/icon_picker.dart';
+import 'package:property_evaluator/utils/property_chip_picker.dart';
 
 class PropertyCard extends StatelessWidget {
   const PropertyCard({

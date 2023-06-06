@@ -1,5 +1,5 @@
-name: house_evaluator
-description: A flutter app about home value evaluation
+name: property_evaluator
+description: A flutter app about property evaluation with custom scoring system
 # The following line prevents the package from being accidentally published to
 # pub.dev using `flutter pub publish`. This is preferred for private packages.
 publish_to: 'none' # Remove this line if you wish to publish to pub.dev

@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:house_evaluator/components/themed_app_bar.dart';
+import 'package:property_evaluator/components/themed_app_bar.dart';
 import 'package:syncfusion_flutter_charts/charts.dart';
 // import 'package:syncfusion_flutter_charts/charts.dart';
 // class House {

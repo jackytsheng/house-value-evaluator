@@ -1,4 +1,4 @@
-import 'package:house_evaluator/model/criteria.dart';
+import 'package:property_evaluator/model/criteria.dart';
 
 enum PropertyType { townHouse, house, apartment }
 

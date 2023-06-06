@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:house_evaluator/components/criteria_item.dart';
-import 'package:house_evaluator/components/themed_app_bar.dart';
-import 'package:house_evaluator/model/criteria.dart';
+import 'package:property_evaluator/components/criteria_item.dart';
+import 'package:property_evaluator/components/themed_app_bar.dart';
+import 'package:property_evaluator/model/criteria.dart';
 
 class CriteriaRoute extends StatelessWidget {
   const CriteriaRoute({

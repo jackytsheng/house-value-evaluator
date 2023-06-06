@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
-import 'package:house_evaluator/components/accordion_note.dart';
-import 'package:house_evaluator/model/criteria.dart';
+import 'package:property_evaluator/components/accordion_note.dart';
+import 'package:property_evaluator/model/criteria.dart';
 import 'package:numberpicker/numberpicker.dart';
 
 const double GAP_HEIGHT = 20;

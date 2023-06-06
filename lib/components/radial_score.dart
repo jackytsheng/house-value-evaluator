@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:house_evaluator/components/color_scale_widget.dart';
-import 'package:house_evaluator/model/property.dart';
+import 'package:property_evaluator/components/color_scale_widget.dart';
+import 'package:property_evaluator/model/property.dart';
 import 'package:syncfusion_flutter_charts/charts.dart';
 
 class ChartData {

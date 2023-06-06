@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
-import 'package:house_evaluator/components/accordion_note.dart';
-import 'package:house_evaluator/model/addition_cost.dart';
+import 'package:property_evaluator/components/accordion_note.dart';
+import 'package:property_evaluator/model/addition_cost.dart';
 import 'package:numberpicker/numberpicker.dart';
 import 'package:uuid/uuid.dart';
 

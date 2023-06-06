@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:house_evaluator/model/property.dart';
+import 'package:property_evaluator/model/property.dart';
 
 Widget getChip(BuildContext context, PriceState priceState) {
   String labelText;

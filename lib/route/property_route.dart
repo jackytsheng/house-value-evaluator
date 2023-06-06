@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:house_evaluator/components/criteria_item.dart';
-import 'package:house_evaluator/components/radial_score.dart';
-import 'package:house_evaluator/components/themed_app_bar.dart';
-import 'package:house_evaluator/model/criteria.dart';
-import 'package:house_evaluator/model/property.dart';
-import 'package:house_evaluator/utils/currency_formatter.dart';
-import 'package:house_evaluator/utils/icon_picker.dart';
+import 'package:property_evaluator/components/criteria_item.dart';
+import 'package:property_evaluator/components/radial_score.dart';
+import 'package:property_evaluator/components/themed_app_bar.dart';
+import 'package:property_evaluator/model/criteria.dart';
+import 'package:property_evaluator/model/property.dart';
+import 'package:property_evaluator/utils/currency_formatter.dart';
+import 'package:property_evaluator/utils/icon_picker.dart';
 
 const double COLUMN_GAP = 30;
 const double WIDGET_INNER_WIDTH = 330;

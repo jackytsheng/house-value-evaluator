@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:house_evaluator/components/help_icon_button.dart';
+import 'package:property_evaluator/components/help_icon_button.dart';
 
 class ThemedAppBar extends StatelessWidget implements PreferredSizeWidget {
   @override
