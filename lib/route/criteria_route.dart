@@ -57,17 +57,34 @@ class CriteriaRoute extends StatelessWidget {
                 child: Column(
                     children: criteriaItems
                         .map<CriteriaItem>((criteriaItem) => CriteriaItem(
-                            toggleExpand: toggleExpand,
-                            deleteNote: deleteNote,
-                            addNote: addNote,
-                            setNoteHeader: setNoteHeader,
-                            setNoteBody: setNoteBody,
+                            toggleExpand: (noteId, isExpanded) {
+                              toggleExpand(
+                                  criteriaItem.criteriaId, noteId, isExpanded);
+                            },
+                            deleteNote: (noteId) {
+                              deleteNote(criteriaItem.criteriaId, noteId);
+                            },
+                            addNote: (note) {
+                              addNote(criteriaItem.criteriaId, note);
+                            },
+                            setNoteHeader: ((noteIndex, headerValue) {
+                              setNoteHeader(criteriaItem.criteriaId, noteIndex,
+                                  headerValue);
+                            }),
+                            setNoteBody: (noteIndex, body) {
+                              setNoteBody(
+                                  criteriaItem.criteriaId, noteIndex, body);
+                            },
                             setNumber: (score) {
                               setWeighting(criteriaItem.criteriaId, score);
                             },
-                            deleteCriteria: deleteCriteria,
+                            deleteCriteria: () {
+                              deleteCriteria(criteriaItem.criteriaId);
+                            },
                             item: criteriaItem,
-                            setName: setName))
+                            setName: (name) {
+                              setName(criteriaItem.criteriaId, name);
+                            }))
                         .toList())),
             floatingActionButton: FloatingActionButton(
               onPressed: addCriteria,

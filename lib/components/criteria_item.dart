@@ -9,29 +9,26 @@ const double GAP_HEIGHT = 20;
 class CriteriaItem extends StatelessWidget {
   CriteriaItem({
     super.key,
-    this.fromPropertyRoute = false,
     required this.item,
-    this.toggleExpand,
-    this.deleteNote,
-    this.addNote,
-    this.setNoteHeader,
     required this.setNumber,
+    required this.toggleExpand,
+    required this.deleteNote,
+    required this.addNote,
+    required this.setNoteHeader,
+    required this.setNoteBody,
+    this.fromPropertyRoute = false,
     this.setName,
     this.deleteCriteria,
-    this.setNoteBody,
   });
 
-  final Function(String criteriaId, String noteId, bool isExpanded)?
-      toggleExpand;
-  final Function(String criteriaId, String noteId)? deleteNote;
-  final Function(String criteriaId, NoteItem newNote)? addNote;
-  final Function(String criteriaId, int noteIndex, String expandedValue)?
-      setNoteBody;
-  final Function(String criteriaId, int noteIndex, String headerValue)?
-      setNoteHeader;
+  final Function(String noteId, bool isExpanded) toggleExpand;
+  final Function(String noteId) deleteNote;
+  final Function(NoteItem newNote) addNote;
+  final Function(int noteIndex, String expandedValue) setNoteBody;
+  final Function(int noteIndex, String headerValue) setNoteHeader;
   final Function(int numberValue) setNumber;
-  final Function(String criteriaId, String criteriaName)? setName;
-  final Function(String criteriaId)? deleteCriteria;
+  final Function(String criteriaName)? setName;
+  final Function()? deleteCriteria;
   final bool fromPropertyRoute;
   final CriteriaItemEntity item;
 
@@ -46,7 +43,7 @@ class CriteriaItem extends StatelessWidget {
               endActionPane: ActionPane(
                 motion: const ScrollMotion(),
                 dismissible: DismissiblePane(onDismissed: () {
-                  deleteCriteria?.call(item.criteriaId);
+                  deleteCriteria?.call();
                 }),
                 children: [
                   SlidableAction(
@@ -75,8 +72,7 @@ class CriteriaItem extends StatelessWidget {
                         enabled: !fromPropertyRoute,
                         maxLength: 15,
                         initialValue: item.criteriaName,
-                        onChanged: (value) =>
-                            setName?.call(item.criteriaId, value),
+                        onChanged: (value) => setName?.call(value),
                         decoration: InputDecoration(
                             counterText: "",
                             border: InputBorder.none,
@@ -140,23 +136,23 @@ class CriteriaItem extends StatelessWidget {
               padding: EdgeInsets.symmetric(horizontal: 15),
               child: AccordionNote(
                 toggleExpand: (noteId, isExpand) {
-                  toggleExpand?.call(item.criteriaId, noteId, isExpand);
+                  toggleExpand?.call(noteId, isExpand);
                 },
                 deleteNote: (noteId) {
-                  deleteNote?.call(item.criteriaId, noteId);
+                  deleteNote?.call(noteId);
                 },
                 setNoteHeader: (noteIndex, value) {
-                  setNoteHeader?.call(item.criteriaId, noteIndex, value);
+                  setNoteHeader?.call(noteIndex, value);
                 },
                 setNoteBody: (noteIndex, value) {
-                  setNoteBody?.call(item.criteriaId, noteIndex, value);
+                  setNoteBody?.call(noteIndex, value);
                 },
                 notes: item.notes,
               )),
           const SizedBox(height: GAP_HEIGHT),
           ElevatedButton.icon(
               onPressed: () {
-                addNote?.call(item.criteriaId, NoteItem());
+                addNote.call(NoteItem());
               },
               icon: Icon(Icons.add_rounded),
               label: Text("Add a new note")),

@@ -13,15 +13,17 @@ class Price {
   Price(this.state, this.amount);
 }
 
-class PropertyAssessment {
-  String criteriaId;
-  String criteriaName;
-  double criteriaWeight;
+class PropertyAssessment extends CriteriaItemEntity {
   int score;
-  List<NoteItem> comments;
 
-  PropertyAssessment(this.criteriaId, this.criteriaName, this.criteriaWeight,
-      this.score, this.comments);
+  PropertyAssessment(String criteriaId, List<NoteItem> notes,
+      String criteriaName, double criteriaWeight, this.score)
+      : super(
+          criteriaId,
+          notes,
+          criteriaName,
+          criteriaWeight,
+        );
 }
 
 class PropertyEntity {
@@ -37,7 +39,7 @@ class PropertyEntity {
   double getOverAllScore() {
     double score = 0.0;
     propertyAssessmentMap.values.forEach((assessment) {
-      score += assessment.criteriaWeight * assessment.score;
+      score += assessment.weighting * assessment.score;
     });
     return score;
   }

@@ -88,8 +88,8 @@ class PropertyCard extends StatelessWidget {
                                   ),
                                 ]),
                                 Text(
-                                    overAllScore.toInt() != 0
-                                        ? "Unit Price: ${convertedToMoneyFormat(property.price.amount / overAllScore)} AUD"
+                                    overAllScore > 0
+                                        ? "Unit Price: ${convertedToMoneyFormat(property.price.amount / overAllScore)} AUD / Score"
                                         : "Unit Price Not Available",
                                     style: TextStyle(
                                       fontSize: 11,

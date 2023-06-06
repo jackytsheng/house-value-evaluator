@@ -51,18 +51,17 @@ class _HomeEvaluatorApp extends State<HomeEvaluatorApp> {
           PropertyType.house, {
         for (var item in criteriaItemsMap.values)
           item.criteriaId: PropertyAssessment(
-              item.criteriaId, item.criteriaName, item.weighting, 0, [])
+              item.criteriaId, [], item.criteriaName, item.weighting, 0)
       })
     };
 
     super.initState();
   }
 
-// --- Criteria State Handlers ---
-  void toggleNoteExpandStatusFromCriteria(
-      String criteriaId, String noteId, bool isExpanded) {
+  void toggleNoteExpandStatusFromCriteria(String criteriaId, String noteId,
+      bool isExpanded, Map<String, CriteriaItemEntity> criteriaMap) {
     setState(() {
-      criteriaItemsMap[criteriaId]?.notes.forEach((NoteItem note) {
+      criteriaMap[criteriaId]?.notes.forEach((NoteItem note) {
         if (note.noteId == noteId) {
           note.isExpanded = !isExpanded;
           developer.log(
@@ -74,9 +73,10 @@ class _HomeEvaluatorApp extends State<HomeEvaluatorApp> {
     });
   }
 
-  void deleteNoteFromCriteria(String criteriaId, String noteId) {
+  void deleteNoteFromCriteria(String criteriaId, String noteId,
+      covariant Map<String, CriteriaItemEntity> criteriaMap) {
     setState(() {
-      criteriaItemsMap[criteriaId]
+      criteriaMap[criteriaId]
           ?.notes
           .removeWhere((NoteItem note) => note.noteId == noteId);
       developer.log(
@@ -84,28 +84,31 @@ class _HomeEvaluatorApp extends State<HomeEvaluatorApp> {
     });
   }
 
-  void setNoteHeaderToCriteria(
-      String criteriaId, int noteIndex, String headerValue) {
+  void setNoteHeaderToCriteria(String criteriaId, int noteIndex,
+      String headerValue, Map<String, CriteriaItemEntity> criteriaMap) {
     setState(() {
-      criteriaItemsMap[criteriaId]?.notes[noteIndex].headerValue = headerValue;
+      criteriaMap[criteriaId]?.notes[noteIndex].headerValue = headerValue;
       developer.log(
           "setting header for note index: ${noteIndex} from criteria Id : ${criteriaId}");
     });
   }
 
-  void setNoteExpandedValueToCriteria(
-      String criteriaId, int noteIndex, String expandedValue) {
+  void setNoteExpandedValueToCriteria(String criteriaId, int noteIndex,
+      String expandedValue, Map<String, CriteriaItemEntity> criteriaMap) {
     setState(() {
-      criteriaItemsMap[criteriaId]?.notes[noteIndex].expandedValue =
-          expandedValue;
+      criteriaMap[criteriaId]?.notes[noteIndex].expandedValue = expandedValue;
       developer.log(
           "setting expandedValue for note index: ${noteIndex} from criteria Id : ${criteriaId}");
     });
   }
 
-  void addNoteToCriteria(String criteriaId, NoteItem newNote) {
+  void addNoteToCriteria(String criteriaId, NoteItem newNote,
+      Map<String, CriteriaItemEntity> criteriaMap) {
     setState(() {
-      criteriaItemsMap[criteriaId]?.notes.add(newNote);
+      criteriaMap[criteriaId]?.notes.forEach((note) {
+        note.isExpanded = false;
+      });
+      criteriaMap[criteriaId]?.notes.add(newNote);
       developer.log(
           "adding new note with Id: ${newNote.noteId} to criteria Id : ${criteriaId}");
     });
@@ -166,7 +169,7 @@ class _HomeEvaluatorApp extends State<HomeEvaluatorApp> {
     for (var house in propertiesMap.values) {
       house.propertyAssessmentMap[criteria.criteriaId]?.criteriaName =
           criteria.criteriaName;
-      house.propertyAssessmentMap[criteria.criteriaId]?.criteriaWeight =
+      house.propertyAssessmentMap[criteria.criteriaId]?.weighting =
           criteria.weighting;
     }
 
@@ -178,9 +181,10 @@ class _HomeEvaluatorApp extends State<HomeEvaluatorApp> {
     for (var house in propertiesMap.values) {
       house.propertyAssessmentMap[criteria.criteriaId] = PropertyAssessment(
           criteria.criteriaId,
+          [],
           criteria.criteriaName,
           criteria.weighting,
-          0, []);
+          0);
     }
 
     developer.log(
@@ -234,6 +238,27 @@ class _HomeEvaluatorApp extends State<HomeEvaluatorApp> {
     });
   }
 
+  void addProperty(BuildContext context) {
+    setState(() {
+      String newPropertyId = Uuid().v4();
+      PropertyEntity newProperty = PropertyEntity(
+          newPropertyId, "", Price(PriceState.sold, 0), PropertyType.house, {
+        for (var item in criteriaItemsMap.values)
+          item.criteriaId: PropertyAssessment(
+              item.criteriaId, [], item.criteriaName, item.weighting, 0)
+      });
+      propertiesMap[newPropertyId] = newProperty;
+      developer.log("adding new property with Id: ${newPropertyId}");
+
+      Navigator.pushNamed(
+        context,
+        PROPERTY_ROUTE,
+        arguments:
+            PropertyRouteArguments(PropertyAction.newProperty, newProperty),
+      );
+    });
+  }
+
   void setPropertyAssessmentScore(
       String propertyId, String criteriaId, int score) {
     EasyDebounce.debounce(
@@ -246,7 +271,6 @@ class _HomeEvaluatorApp extends State<HomeEvaluatorApp> {
               developer.log(
                   "setting criteria Id: ${criteriaId} of property Id: ${propertyId} score to ${score}");
             }));
-    _validateWeightingSum();
   }
 
   // Main Route
@@ -266,17 +290,34 @@ class _HomeEvaluatorApp extends State<HomeEvaluatorApp> {
       ),
       routes: {
         PROPERTY_ROUTE: (context) => PropertyRoute(
-              setAddress: setPropertyAddress,
-              setPrice: setPropertyPrice,
-              setType: setPropertyType,
-              setScore: setPropertyAssessmentScore,
-            ),
+            setAddress: setPropertyAddress,
+            setPrice: setPropertyPrice,
+            setType: setPropertyType,
+            setScore: setPropertyAssessmentScore,
+            toggleExpand: toggleNoteExpandStatusFromCriteria,
+            deleteNote: deleteNoteFromCriteria,
+            addNote: addNoteToCriteria,
+            setNoteHeader: setNoteHeaderToCriteria,
+            setNoteBody: setNoteExpandedValueToCriteria),
         CRITERIA_ROUTE: (context) => CriteriaRoute(
-              toggleExpand: toggleNoteExpandStatusFromCriteria,
-              deleteNote: deleteNoteFromCriteria,
-              addNote: addNoteToCriteria,
-              setNoteHeader: setNoteHeaderToCriteria,
-              setNoteBody: setNoteExpandedValueToCriteria,
+              toggleExpand: (criteriaId, noteId, isExpanded) {
+                toggleNoteExpandStatusFromCriteria(
+                    criteriaId, noteId, isExpanded, criteriaItemsMap);
+              },
+              deleteNote: (criteriaId, noteId) {
+                deleteNoteFromCriteria(criteriaId, noteId, criteriaItemsMap);
+              },
+              addNote: (criteriaId, note) {
+                addNoteToCriteria(criteriaId, note, criteriaItemsMap);
+              },
+              setNoteHeader: (criteriaId, index, value) {
+                setNoteHeaderToCriteria(
+                    criteriaId, index, value, criteriaItemsMap);
+              },
+              setNoteBody: (criteriaId, index, value) {
+                setNoteExpandedValueToCriteria(
+                    criteriaId, index, value, criteriaItemsMap);
+              },
               addCriteria: addCriteria,
               deleteCriteria: deleteCriteria,
               setName: setCriteriaName,
@@ -290,6 +331,7 @@ class _HomeEvaluatorApp extends State<HomeEvaluatorApp> {
         changeThemeColor: changeThemeColor,
         currentThemeColor: selectedThemeColor,
         properties: propertiesMap.values.toList(),
+        addProperty: addProperty,
       ),
     );
   }

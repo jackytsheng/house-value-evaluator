@@ -12,9 +12,11 @@ class HomeRoute extends StatefulWidget {
     required this.changeThemeColor,
     required this.currentThemeColor,
     required this.properties,
+    required this.addProperty,
   });
 
   final Function(Color color) changeThemeColor;
+  final Function(BuildContext context) addProperty;
   final Color currentThemeColor;
   final List<PropertyEntity> properties;
 
@@ -120,10 +122,7 @@ class _HomeRoute extends State<HomeRoute> {
                 ? null
                 : FloatingActionButton(
                     onPressed: () {
-                      // Navigator.push(
-                      //     context,
-                      //     MaterialPageRoute(
-                      //         builder: (context) => PropertyRoute()));
+                      widget.addProperty(context);
                     },
                     shape: const CircleBorder(),
                     tooltip: 'Add new address',

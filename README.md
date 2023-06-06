@@ -13,6 +13,7 @@ A new Flutter project.
 - Support different currency
 - One Dark theme
 - Better way to manage state
+- Refactor using closure to avoid arguments used multiple time
 - Animation:
   - Bottom sheet appearing
   - Removing item

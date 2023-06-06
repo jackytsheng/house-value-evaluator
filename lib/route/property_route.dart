@@ -25,25 +25,39 @@ class PropertyRoute extends StatelessWidget {
     required this.setType,
     required this.setPrice,
     required this.setScore,
+    required this.toggleExpand,
+    required this.addNote,
+    required this.setNoteHeader,
+    required this.setNoteBody,
+    required this.deleteNote,
   });
 
   final Function(String propertyId, String address) setAddress;
   final Function(String propertyId, PropertyType propertyType) setType;
   final Function(String propertyId, Price price) setPrice;
   final Function(String propertyId, String criteriaId, int score) setScore;
+  final Function(String criteriaId, String noteId, bool isExpanded,
+      Map<String, CriteriaItemEntity> criteriaMap) toggleExpand;
+  final Function(String criteriaId, String noteId,
+      Map<String, CriteriaItemEntity> criteriaMap) deleteNote;
+  final Function(String criteriaId, NoteItem newNote,
+      Map<String, CriteriaItemEntity> criteriaMap) addNote;
+  final Function(String criteriaId, int noteIndex, String expandedValue,
+      Map<String, CriteriaItemEntity> criteriaMap) setNoteBody;
+  final Function(String criteriaId, int noteIndex, String headerValue,
+      Map<String, CriteriaItemEntity> criteriaMap) setNoteHeader;
 
   @override
   Widget build(BuildContext context) {
     final args =
         ModalRoute.of(context)!.settings.arguments as PropertyRouteArguments;
 
+    final assessmentMap = args.propertyEntity.propertyAssessmentMap;
     final assessments =
         args.propertyEntity.propertyAssessmentMap.values.toList();
 
     double _getTotalScore() => assessments.fold(
-        0,
-        (acc, assessment) =>
-            acc + assessment.score * assessment.criteriaWeight);
+        0, (acc, assessment) => acc + assessment.score * assessment.weighting);
     final List<double> mockCost = [111, 2222];
     double _getTotalCost() => mockCost.fold(
         args.propertyEntity.price.amount, (pre, current) => pre + current);
@@ -216,7 +230,7 @@ class PropertyRoute extends StatelessWidget {
                   Row(
                     children: <Widget>[
                       Text(
-                          _getTotalScore().toInt() != 0
+                          _getTotalScore() > 0
                               ? "Unit Price: ${convertedToMoneyFormat(22223)} AUD / Score"
                               : "Unit Price Not Available For Zero Score",
                           style: TextStyle(
@@ -245,9 +259,28 @@ class PropertyRoute extends StatelessWidget {
                           setScore(args.propertyEntity.propertyId,
                               assessment.criteriaId, score);
                         },
+                        setNoteBody: (noteIndex, body) {
+                          setNoteBody(assessment.criteriaId, noteIndex, body,
+                              assessmentMap);
+                        },
+                        setNoteHeader: (noteIndex, header) {
+                          setNoteHeader(assessment.criteriaId, noteIndex,
+                              header, assessmentMap);
+                        },
+                        addNote: (note) {
+                          addNote(assessment.criteriaId, note, assessmentMap);
+                        },
+                        deleteNote: (noteId) {
+                          deleteNote(
+                              assessment.criteriaId, noteId, assessmentMap);
+                        },
+                        toggleExpand: (noteId, isExpanded) {
+                          toggleExpand(assessment.criteriaId, noteId,
+                              isExpanded, assessmentMap);
+                        },
                         item: CriteriaItemEntity(
                             assessment.criteriaId,
-                            assessment.comments,
+                            assessment.notes,
                             assessment.criteriaName,
                             assessment.score.toDouble())))
                     .toList())
