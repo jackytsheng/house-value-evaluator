@@ -2,9 +2,23 @@ import 'package:flutter/material.dart';
 import 'package:property_evaluator/components/cost_item.dart';
 import 'package:property_evaluator/components/themed_app_bar.dart';
 import 'package:property_evaluator/model/addition_cost.dart';
+import 'package:property_evaluator/utils/icon_picker.dart';
 
 class AdditionalCostRoute extends StatelessWidget {
-  const AdditionalCostRoute({super.key});
+  const AdditionalCostRoute({
+    super.key,
+    required this.costItems,
+    required this.setName,
+    required this.setNumber,
+    required this.deleteCost,
+    required this.addCostItem,
+  });
+
+  final Function(String costItemId, double number) setNumber;
+  final Function(String costItemId, String name) setName;
+  final Function(String costItemId) deleteCost;
+  final Function(CostType type) addCostItem;
+  final List<AdditionalCostEntity> costItems;
 
   @override
   Widget build(BuildContext context) {
@@ -14,34 +28,51 @@ class AdditionalCostRoute extends StatelessWidget {
             appBar: const ThemedAppBar(
               title: "Additional cost",
               helpMessage: """
-        
-1 TODO: swipe left to delete cost
+1. Swipe left to delete cost
 
-2. Percentage applied to the sold price
+2. Percentage applied to the total price
 
-3. Cost applied after percentage
+3. Other cost is subtracted at the end
+
+4. Cost does not accept decimal 
+
+5. These apply to all properties
         """,
             ),
-            body: const SingleChildScrollView(
-                child: Column(children: <Widget>[
-              CostItem(costItemType: CostType.amount),
-              CostItem(costItemType: CostType.percentage),
-            ])),
-            floatingActionButton: FloatingActionButton(
-              onPressed: () {},
-              shape: const CircleBorder(),
-              tooltip: 'Add new cost',
-              child: Icon(Icons.add_card_rounded,
-                  size: 30, color: Theme.of(context).colorScheme.onPrimary),
+            body: SingleChildScrollView(
+              child: Column(
+                  children: costItems
+                      .map((item) => CostItem(
+                            costItem: item,
+                            setName: (name) => setName(item.costItemId, name),
+                            deleteCost: () => deleteCost(item.costItemId),
+                            setNumber: (number) =>
+                                setNumber(item.costItemId, number),
+                          ))
+                      .toList()),
             ),
-            floatingActionButtonLocation:
-                FloatingActionButtonLocation.endDocked,
             bottomNavigationBar: BottomAppBar(
               height: 80,
               color: Theme.of(context).colorScheme.inversePrimary,
               clipBehavior: Clip.hardEdge,
               shape: const CircularNotchedRectangle(),
               notchMargin: 8,
+              child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  children: [
+                    ElevatedButton.icon(
+                        onPressed: () {
+                          addCostItem(CostType.percentage);
+                        },
+                        icon: Icon(costIconPicker(CostType.percentage)),
+                        label: const Text("Add Cost")),
+                    ElevatedButton.icon(
+                        onPressed: () {
+                          addCostItem(CostType.plain);
+                        },
+                        icon: Icon(costIconPicker(CostType.plain)),
+                        label: const Text("Add Cost")),
+                  ]),
             )));
   }
 }

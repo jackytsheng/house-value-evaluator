@@ -108,7 +108,7 @@ class PropertyCard extends StatelessWidget {
               child: Icon(
                 color: Theme.of(context).colorScheme.inversePrimary,
                 size: 30,
-                iconPicker(property.propertyType),
+                propertyIconPicker(property.propertyType),
               )),
         ]));
   }

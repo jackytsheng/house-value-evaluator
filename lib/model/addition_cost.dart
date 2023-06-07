@@ -1,13 +1,11 @@
-import 'package:uuid/uuid.dart';
-
-enum CostType { percentage, amount }
+enum CostType { percentage, plain }
 
 class AdditionalCostEntity {
-  String costItemId = const Uuid().v4();
+  String costItemId;
   String costName;
-  double weighting;
   CostType costType;
-  double cost;
+  double amount;
 
-  AdditionalCostEntity(this.weighting, this.costName, this.costType, this.cost);
+  AdditionalCostEntity(
+      this.costItemId, this.costName, this.costType, this.amount);
 }

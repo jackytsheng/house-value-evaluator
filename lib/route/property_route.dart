@@ -30,6 +30,8 @@ class PropertyRoute extends StatelessWidget {
     required this.setNoteHeader,
     required this.setNoteBody,
     required this.deleteNote,
+    required this.percentageCost,
+    required this.plainCost,
   });
 
   final Function(String propertyId, String address) setAddress;
@@ -46,6 +48,8 @@ class PropertyRoute extends StatelessWidget {
       Map<String, CriteriaItemEntity> criteriaMap) setNoteBody;
   final Function(String criteriaId, int noteIndex, String headerValue,
       Map<String, CriteriaItemEntity> criteriaMap) setNoteHeader;
+  final double plainCost;
+  final double percentageCost;
 
   @override
   Widget build(BuildContext context) {
@@ -56,11 +60,12 @@ class PropertyRoute extends StatelessWidget {
     final assessments =
         args.propertyEntity.propertyAssessmentMap.values.toList();
 
-    double _getTotalScore() => assessments.fold(
+    double totalScore = assessments.fold(
         0, (acc, assessment) => acc + assessment.score * assessment.weighting);
-    final List<double> mockCost = [111, 2222];
-    double _getTotalCost() => mockCost.fold(
-        args.propertyEntity.price.amount, (pre, current) => pre + current);
+    double totalCost =
+        args.propertyEntity.price.amount * (1 + (percentageCost / 100)) +
+            plainCost;
+
     return GestureDetector(
         onTap: () => FocusManager.instance.primaryFocus?.unfocus(),
         child: Scaffold(
@@ -125,7 +130,8 @@ class PropertyRoute extends StatelessWidget {
                   .toList(),
               children: PropertyType.values
                   .map((type) => SizedBox(
-                      width: 110, child: Icon(iconPicker(type), size: 40)))
+                      width: 110,
+                      child: Icon(propertyIconPicker(type), size: 40)))
                   .toList(),
             )),
             const SizedBox(height: 20),
@@ -164,13 +170,14 @@ class PropertyRoute extends StatelessWidget {
                   keyboardType: TextInputType.number,
                   maxLength: 13,
                   style: const TextStyle(fontFamily: "RobotoMono"),
-                  initialValue:
-                      args.propertyEntity.price.amount.toStringAsFixed(0),
+                  initialValue: args.propertyEntity.price.amount > 0
+                      ? args.propertyEntity.price.amount.toStringAsFixed(0)
+                      : "",
                   onChanged: (value) {
                     setPrice(
                         args.propertyEntity.propertyId,
                         Price(args.propertyEntity.price.state,
-                            double.parse(value)));
+                            value.isNotEmpty ? double.parse(value) : 0));
                   },
                   textAlign: TextAlign.end,
                   decoration: InputDecoration(
@@ -180,8 +187,8 @@ class PropertyRoute extends StatelessWidget {
                       suffix: const Padding(
                           padding: EdgeInsets.only(left: 20),
                           child: Text("AUD")),
-                      contentPadding:
-                          const EdgeInsets.symmetric(vertical: 15, horizontal: 30),
+                      contentPadding: const EdgeInsets.symmetric(
+                          vertical: 15, horizontal: 30),
                       focusedBorder: OutlineInputBorder(
                           borderSide: BorderSide(
                             color: Theme.of(context).colorScheme.inversePrimary,
@@ -197,7 +204,8 @@ class PropertyRoute extends StatelessWidget {
                 child: Column(children: [
                   Row(
                     children: <Widget>[
-                      Text("Tax: ${convertedToMoneyFormat(2223)} AUD",
+                      Text(
+                          "+ Percentage Cost: ${convertedToMoneyFormat(percentageCost * args.propertyEntity.price.amount / 100, decimal: 2)} AUD",
                           style: TextStyle(
                             fontSize: 12,
                             color: Theme.of(context).colorScheme.secondary,
@@ -208,7 +216,7 @@ class PropertyRoute extends StatelessWidget {
                   Row(
                     children: <Widget>[
                       Text(
-                          "Additional cost: ${convertedToMoneyFormat(22223)} AUD",
+                          "+ Plain Cost: ${convertedToMoneyFormat(plainCost)} AUD",
                           style: TextStyle(
                             fontSize: 12,
                             color: Theme.of(context).colorScheme.secondary,
@@ -219,7 +227,7 @@ class PropertyRoute extends StatelessWidget {
                   Row(
                     children: <Widget>[
                       Text(
-                          "Total cost: ${convertedToMoneyFormat(_getTotalCost())} AUD",
+                          "= Total Cost: ${convertedToMoneyFormat(totalCost)} AUD",
                           style: TextStyle(
                             fontSize: 12,
                             color: Theme.of(context).colorScheme.secondary,
@@ -230,8 +238,8 @@ class PropertyRoute extends StatelessWidget {
                   Row(
                     children: <Widget>[
                       Text(
-                          _getTotalScore() > 0
-                              ? "Unit Price: ${convertedToMoneyFormat(22223)} AUD / Score"
+                          totalScore > 0
+                              ? "Unit Price: ${convertedToMoneyFormat(totalCost / totalScore)} AUD / Score"
                               : "Unit Price Not Available For Zero Score",
                           style: TextStyle(
                             fontSize: 12,
@@ -248,8 +256,7 @@ class PropertyRoute extends StatelessWidget {
             ),
             assessments.isNotEmpty
                 ? RadialScore(
-                    totalScore: _getTotalScore(),
-                    propertyAssessments: assessments)
+                    totalScore: totalScore, propertyAssessments: assessments)
                 : const SizedBox(),
             Column(
                 children: assessments

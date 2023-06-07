@@ -10,6 +10,7 @@ Currently only develop for IOS
 - Real estate link to property
 - Support different currency
 - One Dark theme
+- Make cost support decimal place
 - Animation:
   - Bottom sheet appearing
   - Removing item

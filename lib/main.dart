@@ -3,8 +3,10 @@ import 'package:easy_debounce/easy_debounce.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:property_evaluator/constants/route.dart';
+import 'package:property_evaluator/model/addition_cost.dart';
 import 'package:property_evaluator/model/criteria.dart';
 import 'package:property_evaluator/model/property.dart';
+import 'package:property_evaluator/route/additional_cost_route.dart';
 import 'package:property_evaluator/route/criteria_route.dart';
 import 'package:property_evaluator/route/home_route.dart';
 import 'package:property_evaluator/route/property_route.dart';
@@ -26,13 +28,11 @@ class HomeEvaluatorApp extends StatefulWidget {
 }
 
 class _HomeEvaluatorApp extends State<HomeEvaluatorApp> {
-  // Criteria Item State
   Color selectedThemeColor = Colors.blue.shade200;
   Map<String, CriteriaItemEntity> criteriaItemsMap = {};
-  bool shouldShowWeightingValidationError = false;
-
-  // Property Route State
   Map<String, PropertyEntity> propertiesMap = {};
+  Map<String, AdditionalCostEntity> costItemsMap = {};
+  bool shouldShowWeightingValidationError = false;
 
   @override
   void initState() {
@@ -55,13 +55,19 @@ class _HomeEvaluatorApp extends State<HomeEvaluatorApp> {
       })
     };
 
+    String initialCostId = const Uuid().v4();
+    costItemsMap = {
+      initialCostId: AdditionalCostEntity(
+          initialCostId, "Stamp Duty", CostType.percentage, 5.5),
+    };
+
     super.initState();
   }
 
   void toggleNoteExpandStatusFromCriteria(String criteriaId, String noteId,
       bool isExpanded, Map<String, CriteriaItemEntity> criteriaMap) {
     setState(() {
-      for (var note in criteriaMap[criteriaId]?.notes) {
+      for (var note in criteriaMap[criteriaId]!.notes) {
         if (note.noteId == noteId) {
           note.isExpanded = !isExpanded;
           developer.log(
@@ -105,7 +111,7 @@ class _HomeEvaluatorApp extends State<HomeEvaluatorApp> {
   void addNoteToCriteria(String criteriaId, NoteItem newNote,
       Map<String, CriteriaItemEntity> criteriaMap) {
     setState(() {
-      for (var note in criteriaMap[criteriaId]?.notes) {
+      for (var note in criteriaMap[criteriaId]!.notes) {
         note.isExpanded = false;
       }
       criteriaMap[criteriaId]?.notes.add(newNote);
@@ -138,8 +144,8 @@ class _HomeEvaluatorApp extends State<HomeEvaluatorApp> {
     setState(() {
       criteriaItemsMap[criteriaId]?.criteriaName = criteriaName;
       _updateCriteriaFromAllHouse(criteriaItemsMap[criteriaId]!);
-      developer.log(
-          "setting criteria with Id: $criteriaId to name : $criteriaName");
+      developer
+          .log("setting criteria with Id: $criteriaId to name : $criteriaName");
     });
   }
 
@@ -217,8 +223,8 @@ class _HomeEvaluatorApp extends State<HomeEvaluatorApp> {
   void setPropertyAddress(String propertyId, String address) {
     setState(() {
       propertiesMap[propertyId]?.address = address;
-      developer.log(
-          "setting property with Id: $propertyId to address : $address");
+      developer
+          .log("setting property with Id: $propertyId to address : $address");
     });
   }
 
@@ -273,6 +279,48 @@ class _HomeEvaluatorApp extends State<HomeEvaluatorApp> {
             }));
   }
 
+  // Additional Cost Route
+
+  void setAdditionCostName(String costId, String name) {
+    setState(() {
+      costItemsMap[costId]?.costName = name;
+      developer.log(
+          "setting name of additional cost with Id: $costId to name : $name");
+    });
+  }
+
+  void setAdditionCostNumber(String costId, double number) {
+    setState(() {
+      costItemsMap[costId]?.amount = number;
+      developer.log(
+          "setting number of additional cost with Id: $costId to amount : ${number.toString()}");
+    });
+  }
+
+  void deleteAdditionCost(String costId) {
+    setState(() {
+      costItemsMap.remove(costId);
+      developer.log("removing additional cost with Id: $costId");
+    });
+  }
+
+  void addAdditionalCost(CostType type) {
+    setState(() {
+      String newCostId = const Uuid().v4();
+      costItemsMap[newCostId] = AdditionalCostEntity(newCostId, "", type, 0);
+      developer
+          .log("adding new additional cost with Id: $newCostId and type $type");
+    });
+  }
+
+  Map<CostType, double> _getAdditionalCostByType() {
+    var initialMap = {CostType.plain: 0.0, CostType.percentage: 0.0};
+    for (var item in costItemsMap.values) {
+      initialMap[item.costType] = initialMap[item.costType]! + item.amount;
+    }
+    return initialMap;
+  }
+
   // Main Route
   void changeThemeColor(Color color) {
     setState(() {
@@ -282,6 +330,7 @@ class _HomeEvaluatorApp extends State<HomeEvaluatorApp> {
 
   @override
   Widget build(BuildContext context) {
+    var additionalCostMap = _getAdditionalCostByType();
     return MaterialApp(
       title: 'House Evaluator',
       theme: ThemeData(
@@ -289,6 +338,13 @@ class _HomeEvaluatorApp extends State<HomeEvaluatorApp> {
         useMaterial3: true,
       ),
       routes: {
+        ADDITIONAL_COST_ROUTE: (context) => AdditionalCostRoute(
+              costItems: costItemsMap.values.toList(),
+              setName: setAdditionCostName,
+              setNumber: setAdditionCostNumber,
+              addCostItem: addAdditionalCost,
+              deleteCost: deleteAdditionCost,
+            ),
         PROPERTY_ROUTE: (context) => PropertyRoute(
             setAddress: setPropertyAddress,
             setPrice: setPropertyPrice,
@@ -298,7 +354,9 @@ class _HomeEvaluatorApp extends State<HomeEvaluatorApp> {
             deleteNote: deleteNoteFromCriteria,
             addNote: addNoteToCriteria,
             setNoteHeader: setNoteHeaderToCriteria,
-            setNoteBody: setNoteExpandedValueToCriteria),
+            setNoteBody: setNoteExpandedValueToCriteria,
+            percentageCost: additionalCostMap[CostType.percentage] ?? 0,
+            plainCost: additionalCostMap[CostType.plain] ?? 0),
         CRITERIA_ROUTE: (context) => CriteriaRoute(
               toggleExpand: (criteriaId, noteId, isExpanded) {
                 toggleNoteExpandStatusFromCriteria(

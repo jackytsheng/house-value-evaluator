@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:property_evaluator/components/help_icon_button.dart';
 import 'package:property_evaluator/components/property_card.dart';
 import 'package:property_evaluator/constants/route.dart';
-import 'package:property_evaluator/route/additional_cost_route.dart';
 import 'package:property_evaluator/route/compare_route.dart';
 import 'package:property_evaluator/model/property.dart';
 
@@ -47,7 +46,13 @@ class _HomeRoute extends State<HomeRoute> {
                         _editMode = !_editMode;
                       });
                     }),
-                const HelpIconButton(helpMessage: "to be included"),
+                const HelpIconButton(helpMessage: """
+1. Select cards to compare
+
+2. Select cards to delete
+
+3. Score color change base on number
+"""),
                 PopupMenuButton(
                   icon: Icon(Icons.palette_rounded,
                       color: Theme.of(context).colorScheme.onInverseSurface,
@@ -142,23 +147,24 @@ class _HomeRoute extends State<HomeRoute> {
                   data: IconThemeData(
                       color: Theme.of(context).colorScheme.onPrimary),
                   child: _editMode
-                      ? Row(children: [
-                          ElevatedButton.icon(
-                              onPressed: () {
-                                Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                        builder: (context) =>
-                                            const CompareRoute()));
-                              },
-                              icon: const Icon(Icons.bar_chart_rounded),
-                              label: const Text("Compare")),
-                          const Spacer(),
-                          ElevatedButton.icon(
-                              onPressed: () {},
-                              icon: const Icon(Icons.delete_rounded),
-                              label: const Text("Remove")),
-                        ])
+                      ? Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                          children: [
+                              ElevatedButton.icon(
+                                  onPressed: () {
+                                    Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                            builder: (context) =>
+                                                const CompareRoute()));
+                                  },
+                                  icon: const Icon(Icons.bar_chart_rounded),
+                                  label: const Text("Compare")),
+                              ElevatedButton.icon(
+                                  onPressed: () {},
+                                  icon: const Icon(Icons.delete_rounded),
+                                  label: const Text("Remove")),
+                            ])
                       : Row(children: <Widget>[
                           IconButton(
                             iconSize: 40,
@@ -168,7 +174,8 @@ class _HomeRoute extends State<HomeRoute> {
                               Navigator.push(
                                   context,
                                   MaterialPageRoute(
-                                      builder: (context) => const CompareRoute()));
+                                      builder: (context) =>
+                                          const CompareRoute()));
                             },
                           ),
                           IconButton(
@@ -185,11 +192,8 @@ class _HomeRoute extends State<HomeRoute> {
                             tooltip: 'Additional cost',
                             icon: const Icon(Icons.price_change_rounded),
                             onPressed: () {
-                              Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                      builder: (context) =>
-                                          const AdditionalCostRoute()));
+                              Navigator.pushNamed(
+                                  context, ADDITIONAL_COST_ROUTE);
                             },
                           )
                         ]),
