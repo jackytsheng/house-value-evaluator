@@ -1,9 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
-import 'package:property_evaluator/components/accordion_note.dart';
 import 'package:property_evaluator/model/addition_cost.dart';
-import 'package:numberpicker/numberpicker.dart';
-import 'package:uuid/uuid.dart';
 
 class CostItem extends StatefulWidget {
   const CostItem(
@@ -21,7 +18,7 @@ class _CostItem extends State<CostItem> {
   @override
   Widget build(BuildContext context) {
     return Container(
-        padding: EdgeInsets.all(20),
+        padding: const EdgeInsets.all(20),
         child: Column(children: [
           SizedBox(
               height: 40,
@@ -40,7 +37,7 @@ class _CostItem extends State<CostItem> {
                 fillColor: Theme.of(context).colorScheme.inversePrimary,
                 color: Theme.of(context).colorScheme.inversePrimary,
                 isSelected: _selectedCostType,
-                children: <Widget>[
+                children: const <Widget>[
                   SizedBox(
                       width: 155, child: Icon(Icons.percent_rounded, size: 30)),
                   SizedBox(
@@ -49,7 +46,7 @@ class _CostItem extends State<CostItem> {
                 ],
               ))),
           Container(
-              padding: EdgeInsets.symmetric(horizontal: 20),
+              padding: const EdgeInsets.symmetric(horizontal: 20),
               child: Slidable(
                   key: const ValueKey(0),
                   endActionPane: ActionPane(
@@ -65,7 +62,7 @@ class _CostItem extends State<CostItem> {
                         spacing: 4,
                         label: 'Delete',
                         borderRadius:
-                            BorderRadius.horizontal(right: Radius.circular(10)),
+                            const BorderRadius.horizontal(right: Radius.circular(10)),
                       )
                     ],
                   ),
@@ -75,7 +72,7 @@ class _CostItem extends State<CostItem> {
                       child: TextFormField(
                         maxLength: 15,
                         initialValue: widget.costItemName,
-                        decoration: InputDecoration(
+                        decoration: const InputDecoration(
                             counterText: "",
                             border: InputBorder.none,
                             labelText: "Cost",

@@ -15,11 +15,11 @@ void main() {
   SystemChrome.setPreferredOrientations(
       [DeviceOrientation.portraitUp, DeviceOrientation.portraitDown]);
 
-  runApp(HomeEvaluatorApp());
+  runApp(const HomeEvaluatorApp());
 }
 
 class HomeEvaluatorApp extends StatefulWidget {
-  HomeEvaluatorApp({super.key});
+  const HomeEvaluatorApp({super.key});
 
   @override
   State<HomeEvaluatorApp> createState() => _HomeEvaluatorApp();
@@ -36,13 +36,13 @@ class _HomeEvaluatorApp extends State<HomeEvaluatorApp> {
 
   @override
   void initState() {
-    String initialCriteriaId = Uuid().v4();
+    String initialCriteriaId = const Uuid().v4();
     criteriaItemsMap = {
       initialCriteriaId: CriteriaItemEntity(initialCriteriaId, [], "Score", 1)
     };
 
     // TODO: Delete this initial house;
-    String initialHouseId = Uuid().v4();
+    String initialHouseId = const Uuid().v4();
     propertiesMap = {
       initialHouseId: PropertyEntity(
           initialHouseId,
@@ -61,15 +61,15 @@ class _HomeEvaluatorApp extends State<HomeEvaluatorApp> {
   void toggleNoteExpandStatusFromCriteria(String criteriaId, String noteId,
       bool isExpanded, Map<String, CriteriaItemEntity> criteriaMap) {
     setState(() {
-      criteriaMap[criteriaId]?.notes.forEach((NoteItem note) {
+      for (var note in criteriaMap[criteriaId]?.notes) {
         if (note.noteId == noteId) {
           note.isExpanded = !isExpanded;
           developer.log(
-              'toggling criteria Id : ${criteriaId},note id: ${note.noteId}, is setting from ${isExpanded} to ${note.isExpanded}');
+              'toggling criteria Id : $criteriaId,note id: ${note.noteId}, is setting from $isExpanded to ${note.isExpanded}');
         } else {
           note.isExpanded = false;
         }
-      });
+      }
     });
   }
 
@@ -80,7 +80,7 @@ class _HomeEvaluatorApp extends State<HomeEvaluatorApp> {
           ?.notes
           .removeWhere((NoteItem note) => note.noteId == noteId);
       developer.log(
-          "removing note item with Id: ${noteId} from criteria Id : ${criteriaId}");
+          "removing note item with Id: $noteId from criteria Id : $criteriaId");
     });
   }
 
@@ -89,7 +89,7 @@ class _HomeEvaluatorApp extends State<HomeEvaluatorApp> {
     setState(() {
       criteriaMap[criteriaId]?.notes[noteIndex].headerValue = headerValue;
       developer.log(
-          "setting header for note index: ${noteIndex} from criteria Id : ${criteriaId}");
+          "setting header for note index: $noteIndex from criteria Id : $criteriaId");
     });
   }
 
@@ -98,36 +98,36 @@ class _HomeEvaluatorApp extends State<HomeEvaluatorApp> {
     setState(() {
       criteriaMap[criteriaId]?.notes[noteIndex].expandedValue = expandedValue;
       developer.log(
-          "setting expandedValue for note index: ${noteIndex} from criteria Id : ${criteriaId}");
+          "setting expandedValue for note index: $noteIndex from criteria Id : $criteriaId");
     });
   }
 
   void addNoteToCriteria(String criteriaId, NoteItem newNote,
       Map<String, CriteriaItemEntity> criteriaMap) {
     setState(() {
-      criteriaMap[criteriaId]?.notes.forEach((note) {
+      for (var note in criteriaMap[criteriaId]?.notes) {
         note.isExpanded = false;
-      });
+      }
       criteriaMap[criteriaId]?.notes.add(newNote);
       developer.log(
-          "adding new note with Id: ${newNote.noteId} to criteria Id : ${criteriaId}");
+          "adding new note with Id: ${newNote.noteId} to criteria Id : $criteriaId");
     });
   }
 
   void addCriteria() {
     setState(() {
-      String newCriteriaId = Uuid().v4();
+      String newCriteriaId = const Uuid().v4();
       criteriaItemsMap[newCriteriaId] =
           CriteriaItemEntity(newCriteriaId, [], "", 0);
       _addCriteriaToAllHouse(criteriaItemsMap[newCriteriaId]!);
-      developer.log("adding new criteria with Id: ${newCriteriaId}");
+      developer.log("adding new criteria with Id: $newCriteriaId");
     });
   }
 
   void deleteCriteria(String criteriaId) {
     setState(() {
       criteriaItemsMap.remove(criteriaId);
-      developer.log("removing criteria with Id: ${criteriaId}");
+      developer.log("removing criteria with Id: $criteriaId");
       _removeCriteriaFromAllHouse(criteriaId);
     });
 
@@ -139,19 +139,19 @@ class _HomeEvaluatorApp extends State<HomeEvaluatorApp> {
       criteriaItemsMap[criteriaId]?.criteriaName = criteriaName;
       _updateCriteriaFromAllHouse(criteriaItemsMap[criteriaId]!);
       developer.log(
-          "setting criteria with Id: ${criteriaId} to name : ${criteriaName}");
+          "setting criteria with Id: $criteriaId to name : $criteriaName");
     });
   }
 
   void setCriteriaWeighting(String criteriaId, int weightingValue) {
     EasyDebounce.debounce(
         'NumberPickerWeightingDebouncer',
-        Duration(milliseconds: 10),
+        const Duration(milliseconds: 10),
         () => setState(() {
               criteriaItemsMap[criteriaId]?.weighting = weightingValue / 100;
               _updateCriteriaFromAllHouse(criteriaItemsMap[criteriaId]!);
               developer.log(
-                  "setting criteria Id: ${criteriaId} weighting to ${weightingValue} %");
+                  "setting criteria Id: $criteriaId weighting to $weightingValue %");
             }));
     _validateWeightingSum();
   }
@@ -162,7 +162,7 @@ class _HomeEvaluatorApp extends State<HomeEvaluatorApp> {
     }
 
     developer.log(
-        "finish removing criteria with Id: ${criteriaId} from all the houses");
+        "finish removing criteria with Id: $criteriaId from all the houses");
   }
 
   void _updateCriteriaFromAllHouse(CriteriaItemEntity criteria) {
@@ -194,7 +194,7 @@ class _HomeEvaluatorApp extends State<HomeEvaluatorApp> {
   void _validateWeightingSum() {
     EasyDebounce.debounce(
         'WeightingValidator',
-        Duration(milliseconds: 500),
+        const Duration(milliseconds: 500),
         () => setState(() {
               double totalWeighting = criteriaItemsMap.values
                   .toList()
@@ -205,7 +205,7 @@ class _HomeEvaluatorApp extends State<HomeEvaluatorApp> {
               if (totalWeighting.toInt() != 100) {
                 shouldShowWeightingValidationError = true;
                 developer.log(
-                    "total weighting value is ${totalWeighting} %, doesn't equal 100 %");
+                    "total weighting value is $totalWeighting %, doesn't equal 100 %");
               } else {
                 developer.log("total weighting value equals 100 %");
                 shouldShowWeightingValidationError = false;
@@ -218,7 +218,7 @@ class _HomeEvaluatorApp extends State<HomeEvaluatorApp> {
     setState(() {
       propertiesMap[propertyId]?.address = address;
       developer.log(
-          "setting property with Id: ${propertyId} to address : ${address}");
+          "setting property with Id: $propertyId to address : $address");
     });
   }
 
@@ -226,7 +226,7 @@ class _HomeEvaluatorApp extends State<HomeEvaluatorApp> {
     setState(() {
       propertiesMap[propertyId]?.price = price;
       developer.log(
-          "setting property with Id: ${propertyId} to price amount : ${price.state} ${price.amount}");
+          "setting property with Id: $propertyId to price amount : ${price.state} ${price.amount}");
     });
   }
 
@@ -234,13 +234,13 @@ class _HomeEvaluatorApp extends State<HomeEvaluatorApp> {
     setState(() {
       propertiesMap[propertyId]?.propertyType = propertyType;
       developer.log(
-          "setting property with Id: ${propertyId} to be : ${propertyType.name}");
+          "setting property with Id: $propertyId to be : ${propertyType.name}");
     });
   }
 
   void addProperty(BuildContext context) {
     setState(() {
-      String newPropertyId = Uuid().v4();
+      String newPropertyId = const Uuid().v4();
       PropertyEntity newProperty = PropertyEntity(
           newPropertyId, "", Price(PriceState.sold, 0), PropertyType.house, {
         for (var item in criteriaItemsMap.values)
@@ -248,7 +248,7 @@ class _HomeEvaluatorApp extends State<HomeEvaluatorApp> {
               item.criteriaId, [], item.criteriaName, item.weighting, 0)
       });
       propertiesMap[newPropertyId] = newProperty;
-      developer.log("adding new property with Id: ${newPropertyId}");
+      developer.log("adding new property with Id: $newPropertyId");
 
       Navigator.pushNamed(
         context,
@@ -263,13 +263,13 @@ class _HomeEvaluatorApp extends State<HomeEvaluatorApp> {
       String propertyId, String criteriaId, int score) {
     EasyDebounce.debounce(
         'NumberPickerScoreDebouncer',
-        Duration(milliseconds: 10),
+        const Duration(milliseconds: 10),
         () => setState(() {
               propertiesMap[propertyId]
                   ?.propertyAssessmentMap[criteriaId]
                   ?.score = score;
               developer.log(
-                  "setting criteria Id: ${criteriaId} of property Id: ${propertyId} score to ${score}");
+                  "setting criteria Id: $criteriaId of property Id: $propertyId score to $score");
             }));
   }
 

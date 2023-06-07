@@ -7,7 +7,7 @@ class NoteItem {
     this.isExpanded = false,
   });
 
-  String noteId = Uuid().v4();
+  String noteId = const Uuid().v4();
   String? expandedValue;
   String? headerValue;
   bool isExpanded;

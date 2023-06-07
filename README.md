@@ -2,6 +2,8 @@
 
 My first flutter project, is about rating the property
 
+Currently only develop for IOS
+
 ## Features to add
 - Sorting logic, and secondary sort
 - import and export csv
@@ -18,3 +20,7 @@ My first flutter project, is about rating the property
 - Add tests to the entire project
 - Refactor using closure to avoid arguments used multiple time
 - Linting
+
+## Run linting
+`dart fix --dry-run`
+`dart fix --apply`

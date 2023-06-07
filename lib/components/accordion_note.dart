@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:property_evaluator/model/criteria.dart';
 
 class AccordionNote extends StatelessWidget {
-  AccordionNote({
+  const AccordionNote({
     super.key,
     required this.notes,
     required this.toggleExpand,
@@ -41,7 +41,7 @@ class AccordionNote extends StatelessWidget {
                   },
                   body: Column(children: <Widget>[
                     Container(
-                        margin: EdgeInsets.only(bottom: 15),
+                        margin: const EdgeInsets.only(bottom: 15),
                         child: ListTile(
                             title: Text(
                           item.expandedValue ?? "What's your thought ?",
@@ -49,8 +49,8 @@ class AccordionNote extends StatelessWidget {
                               color: Theme.of(context).colorScheme.secondary),
                         ))),
                     FilledButton.tonalIcon(
-                        label: Text("Edit"),
-                        icon: Icon(Icons.edit_rounded),
+                        label: const Text("Edit"),
+                        icon: const Icon(Icons.edit_rounded),
                         onPressed: () => showDialog(
                             context: context,
                             builder: (BuildContext context) => Dialog(
@@ -63,14 +63,14 @@ class AccordionNote extends StatelessWidget {
                                         children: <Widget>[
                                           Container(
                                               margin:
-                                                  EdgeInsets.only(bottom: 25),
+                                                  const EdgeInsets.only(bottom: 25),
                                               child: TextFormField(
                                                 initialValue: item.headerValue,
                                                 onChanged: (value) {
                                                   setNoteHeader(index, value);
                                                 },
                                                 maxLength: 20,
-                                                decoration: InputDecoration(
+                                                decoration: const InputDecoration(
                                                   label: Text("Title"),
                                                   hintText: "New Note",
                                                   border: OutlineInputBorder(
@@ -83,7 +83,7 @@ class AccordionNote extends StatelessWidget {
                                               )),
                                           Container(
                                               margin:
-                                                  EdgeInsets.only(bottom: 20),
+                                                  const EdgeInsets.only(bottom: 20),
                                               height: 150,
                                               child: TextFormField(
                                                 minLines: 10,
@@ -92,7 +92,7 @@ class AccordionNote extends StatelessWidget {
                                                   setNoteBody(index, value);
                                                 },
                                                 maxLength: 3000,
-                                                decoration: InputDecoration(
+                                                decoration: const InputDecoration(
                                                     label: Text("Note"),
                                                     alignLabelWithHint: true,
                                                     hintText:

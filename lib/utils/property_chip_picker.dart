@@ -14,7 +14,7 @@ Widget getChip(BuildContext context, PriceState priceState) {
   }
 
   return Container(
-      margin: EdgeInsets.only(right: 10),
+      margin: const EdgeInsets.only(right: 10),
       child: CircleAvatar(
           radius: 11,
           backgroundColor: color,

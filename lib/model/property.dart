@@ -38,9 +38,9 @@ class PropertyEntity {
 
   double getOverAllScore() {
     double score = 0.0;
-    propertyAssessmentMap.values.forEach((assessment) {
+    for (var assessment in propertyAssessmentMap.values) {
       score += assessment.weighting * assessment.score;
-    });
+    }
     return score;
   }
 }

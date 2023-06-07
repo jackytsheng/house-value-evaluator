@@ -10,7 +10,7 @@ class ChartData {
 }
 
 class RadialScore extends StatelessWidget {
-  RadialScore(
+  const RadialScore(
       {super.key, required this.totalScore, required this.propertyAssessments});
 
   final double totalScore;
@@ -39,7 +39,7 @@ class RadialScore extends StatelessWidget {
                   child: Center(
                       child: Text(
                     totalScore.toStringAsFixed(2),
-                    style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+                    style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
                   ))))
         ],
         legend: Legend(

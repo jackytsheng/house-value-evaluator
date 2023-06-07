@@ -1,9 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:property_evaluator/route/property_route.dart';
-import 'package:property_evaluator/model/property.dart';
 
 class FloatCard extends StatelessWidget {
-  FloatCard(
+  const FloatCard(
       {super.key,
       required this.child,
       this.margin,

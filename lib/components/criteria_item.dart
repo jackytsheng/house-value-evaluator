@@ -7,7 +7,7 @@ import 'package:numberpicker/numberpicker.dart';
 const double GAP_HEIGHT = 20;
 
 class CriteriaItem extends StatelessWidget {
-  CriteriaItem({
+  const CriteriaItem({
     super.key,
     required this.item,
     required this.setNumber,
@@ -35,7 +35,7 @@ class CriteriaItem extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-        padding: EdgeInsets.all(15),
+        padding: const EdgeInsets.all(15),
         child: Column(children: [
           Slidable(
               enabled: !fromPropertyRoute,
@@ -54,12 +54,12 @@ class CriteriaItem extends StatelessWidget {
                     spacing: 4,
                     label: 'Delete',
                     borderRadius:
-                        BorderRadius.horizontal(right: Radius.circular(10)),
+                        const BorderRadius.horizontal(right: Radius.circular(10)),
                   )
                 ],
               ),
               child: Container(
-                  padding: EdgeInsets.symmetric(horizontal: 20),
+                  padding: const EdgeInsets.symmetric(horizontal: 20),
                   child: Row(children: [
                     SizedBox(
                       width: 180,
@@ -73,7 +73,7 @@ class CriteriaItem extends StatelessWidget {
                         maxLength: 15,
                         initialValue: item.criteriaName,
                         onChanged: (value) => setName?.call(value),
-                        decoration: InputDecoration(
+                        decoration: const InputDecoration(
                             counterText: "",
                             border: InputBorder.none,
                             labelText: "Criteria",
@@ -98,7 +98,7 @@ class CriteriaItem extends StatelessWidget {
                                   color: Theme.of(context)
                                       .colorScheme
                                       .inversePrimary))),
-                      margin: EdgeInsets.only(right: 5),
+                      margin: const EdgeInsets.only(right: 5),
                       child: NumberPicker(
                           itemWidth: 40,
                           itemHeight: 40,
@@ -133,19 +133,19 @@ class CriteriaItem extends StatelessWidget {
                   ]))),
           const SizedBox(height: GAP_HEIGHT),
           Container(
-              padding: EdgeInsets.symmetric(horizontal: 15),
+              padding: const EdgeInsets.symmetric(horizontal: 15),
               child: AccordionNote(
                 toggleExpand: (noteId, isExpand) {
-                  toggleExpand?.call(noteId, isExpand);
+                  toggleExpand.call(noteId, isExpand);
                 },
                 deleteNote: (noteId) {
-                  deleteNote?.call(noteId);
+                  deleteNote.call(noteId);
                 },
                 setNoteHeader: (noteIndex, value) {
-                  setNoteHeader?.call(noteIndex, value);
+                  setNoteHeader.call(noteIndex, value);
                 },
                 setNoteBody: (noteIndex, value) {
-                  setNoteBody?.call(noteIndex, value);
+                  setNoteBody.call(noteIndex, value);
                 },
                 notes: item.notes,
               )),
@@ -154,8 +154,8 @@ class CriteriaItem extends StatelessWidget {
               onPressed: () {
                 addNote.call(NoteItem());
               },
-              icon: Icon(Icons.add_rounded),
-              label: Text("Add a new note")),
+              icon: const Icon(Icons.add_rounded),
+              label: const Text("Add a new note")),
           const SizedBox(height: GAP_HEIGHT),
           const Divider(
             indent: 40,

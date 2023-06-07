@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 class HelpIconButton extends StatelessWidget {
-  HelpIconButton({super.key, required this.helpMessage});
+  const HelpIconButton({super.key, required this.helpMessage});
 
   final String helpMessage;
 
@@ -22,7 +22,7 @@ class HelpIconButton extends StatelessWidget {
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: <Widget>[
                       Padding(
-                          padding: EdgeInsets.all(15),
+                          padding: const EdgeInsets.all(15),
                           child: Text(helpMessage)),
                       ElevatedButton(
                         style: ElevatedButton.styleFrom(elevation: 0),

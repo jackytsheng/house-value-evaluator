@@ -32,10 +32,10 @@ class PropertyCard extends StatelessWidget {
                 })
             : null,
         trailing: null,
-        contentPadding: EdgeInsets.all(0),
+        contentPadding: const EdgeInsets.all(0),
         title: Stack(children: <Widget>[
           FloatCard(
-              margin: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+              margin: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
               onTapAction: () {
                 Navigator.pushNamed(
                   context,
@@ -70,7 +70,7 @@ class PropertyCard extends StatelessWidget {
                             child: Center(
                                 child: Text(
                               overAllScore.toStringAsFixed(2),
-                              style: TextStyle(
+                              style: const TextStyle(
                                   fontSize: 12, fontWeight: FontWeight.bold),
                             )),
                           ),
@@ -82,7 +82,7 @@ class PropertyCard extends StatelessWidget {
                                   getChip(context, property.price.state),
                                   Text(
                                     "${convertedToMoneyFormat(property.price.amount)} AUD",
-                                    style: TextStyle(
+                                    style: const TextStyle(
                                       fontFamily: "RobotoMono",
                                     ),
                                   ),

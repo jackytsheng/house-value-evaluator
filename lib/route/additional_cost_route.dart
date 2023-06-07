@@ -22,7 +22,7 @@ class AdditionalCostRoute extends StatelessWidget {
 3. Cost applied after percentage
         """,
             ),
-            body: SingleChildScrollView(
+            body: const SingleChildScrollView(
                 child: Column(children: <Widget>[
               CostItem(costItemType: CostType.amount),
               CostItem(costItemType: CostType.percentage),

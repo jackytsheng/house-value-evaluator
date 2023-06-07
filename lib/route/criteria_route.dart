@@ -101,12 +101,12 @@ class CriteriaRoute extends StatelessWidget {
                     decoration: BoxDecoration(
                       color: Theme.of(context).colorScheme.primary,
                       borderRadius:
-                          BorderRadius.vertical(top: Radius.circular(20)),
+                          const BorderRadius.vertical(top: Radius.circular(20)),
                     ),
                     width: double.infinity,
                     child: Center(
                         child: Text(
-                      criteriaItems.length == 0
+                      criteriaItems.isEmpty
                           ? "Create at least one criteria !"
                           : "Value does not add up to 100% !",
                       style: TextStyle(

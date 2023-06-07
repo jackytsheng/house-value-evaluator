@@ -19,7 +19,7 @@ class PropertyRouteArguments {
 }
 
 class PropertyRoute extends StatelessWidget {
-  PropertyRoute({
+  const PropertyRoute({
     super.key,
     required this.setAddress,
     required this.setType,
@@ -94,7 +94,7 @@ class PropertyRoute extends StatelessWidget {
                   onChanged: (address) =>
                       setAddress(args.propertyEntity.propertyId, address),
                   decoration: InputDecoration(
-                      label: Text("Address"),
+                      label: const Text("Address"),
                       alignLabelWithHint: true,
                       hintText: "Enter an address",
                       focusColor: Theme.of(context).colorScheme.inversePrimary,
@@ -105,7 +105,7 @@ class PropertyRoute extends StatelessWidget {
                           borderRadius: BorderRadius.circular(24)),
                       enabledBorder: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(24),
-                        borderSide: BorderSide(color: Colors.black12),
+                        borderSide: const BorderSide(color: Colors.black12),
                       )),
                 )),
             const SizedBox(height: 10),
@@ -151,7 +151,7 @@ class PropertyRoute extends StatelessWidget {
                       child: Text(
                         state.name.toUpperCase(),
                         textAlign: TextAlign.center,
-                        style: TextStyle(
+                        style: const TextStyle(
                             fontSize: 18, fontWeight: FontWeight.bold),
                       )))
                   .toList(),
@@ -163,7 +163,7 @@ class PropertyRoute extends StatelessWidget {
                   cursorColor: Theme.of(context).colorScheme.inversePrimary,
                   keyboardType: TextInputType.number,
                   maxLength: 13,
-                  style: TextStyle(fontFamily: "RobotoMono"),
+                  style: const TextStyle(fontFamily: "RobotoMono"),
                   initialValue:
                       args.propertyEntity.price.amount.toStringAsFixed(0),
                   onChanged: (value) {
@@ -175,13 +175,13 @@ class PropertyRoute extends StatelessWidget {
                   textAlign: TextAlign.end,
                   decoration: InputDecoration(
                       focusColor: Theme.of(context).colorScheme.inversePrimary,
-                      label: Text("Price"),
-                      prefix: Text("\$"),
-                      suffix: Padding(
+                      label: const Text("Price"),
+                      prefix: const Text("\$"),
+                      suffix: const Padding(
                           padding: EdgeInsets.only(left: 20),
                           child: Text("AUD")),
                       contentPadding:
-                          EdgeInsets.symmetric(vertical: 15, horizontal: 30),
+                          const EdgeInsets.symmetric(vertical: 15, horizontal: 30),
                       focusedBorder: OutlineInputBorder(
                           borderSide: BorderSide(
                             color: Theme.of(context).colorScheme.inversePrimary,
@@ -189,7 +189,7 @@ class PropertyRoute extends StatelessWidget {
                           borderRadius: BorderRadius.circular(24)),
                       enabledBorder: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(24),
-                        borderSide: BorderSide(color: Colors.black12),
+                        borderSide: const BorderSide(color: Colors.black12),
                       )),
                 )),
             SizedBox(
@@ -246,7 +246,7 @@ class PropertyRoute extends StatelessWidget {
               indent: 40,
               endIndent: 40,
             ),
-            assessments.length != 0
+            assessments.isNotEmpty
                 ? RadialScore(
                     totalScore: _getTotalScore(),
                     propertyAssessments: assessments)
@@ -285,13 +285,13 @@ class PropertyRoute extends StatelessWidget {
                             assessment.score.toDouble())))
                     .toList())
           ])),
-          bottomSheet: assessments.length == 0
+          bottomSheet: assessments.isEmpty
               ? Container(
                   height: 100,
                   decoration: BoxDecoration(
                     color: Theme.of(context).colorScheme.primary,
                     borderRadius:
-                        BorderRadius.vertical(top: Radius.circular(20)),
+                        const BorderRadius.vertical(top: Radius.circular(20)),
                   ),
                   width: double.infinity,
                   child: Center(

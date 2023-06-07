@@ -7,7 +7,7 @@ import 'package:property_evaluator/route/compare_route.dart';
 import 'package:property_evaluator/model/property.dart';
 
 class HomeRoute extends StatefulWidget {
-  HomeRoute({
+  const HomeRoute({
     super.key,
     required this.changeThemeColor,
     required this.currentThemeColor,
@@ -47,7 +47,7 @@ class _HomeRoute extends State<HomeRoute> {
                         _editMode = !_editMode;
                       });
                     }),
-                HelpIconButton(helpMessage: "to be included"),
+                const HelpIconButton(helpMessage: "to be included"),
                 PopupMenuButton(
                   icon: Icon(Icons.palette_rounded,
                       color: Theme.of(context).colorScheme.onInverseSurface,
@@ -59,7 +59,7 @@ class _HomeRoute extends State<HomeRoute> {
                       PopupMenuItem<Color>(
                         value: Colors.pink.shade200,
                         child: Row(children: <Widget>[
-                          Text("Cherry"),
+                          const Text("Cherry"),
                           const Spacer(),
                           Icon(Icons.fiber_manual_record_rounded,
                               color: Colors.pink.shade100),
@@ -68,7 +68,7 @@ class _HomeRoute extends State<HomeRoute> {
                       PopupMenuItem<Color>(
                         value: Colors.deepPurple.shade400,
                         child: Row(children: <Widget>[
-                          Text("Lavender"),
+                          const Text("Lavender"),
                           const Spacer(),
                           Icon(Icons.fiber_manual_record_rounded,
                               color: Colors.deepPurple.shade100),
@@ -77,7 +77,7 @@ class _HomeRoute extends State<HomeRoute> {
                       PopupMenuItem<Color>(
                         value: Colors.blue.shade400,
                         child: Row(children: <Widget>[
-                          Text("Arctic"),
+                          const Text("Arctic"),
                           const Spacer(),
                           Icon(Icons.fiber_manual_record_rounded,
                               color: Colors.blue.shade100),
@@ -86,7 +86,7 @@ class _HomeRoute extends State<HomeRoute> {
                       PopupMenuItem<Color>(
                         value: Colors.green.shade400,
                         child: Row(children: <Widget>[
-                          Text("Avocado"),
+                          const Text("Avocado"),
                           const Spacer(),
                           Icon(Icons.fiber_manual_record_rounded,
                               color: Colors.green.shade200),
@@ -152,12 +152,12 @@ class _HomeRoute extends State<HomeRoute> {
                                             const CompareRoute()));
                               },
                               icon: const Icon(Icons.bar_chart_rounded),
-                              label: Text("Compare")),
+                              label: const Text("Compare")),
                           const Spacer(),
                           ElevatedButton.icon(
                               onPressed: () {},
                               icon: const Icon(Icons.delete_rounded),
-                              label: Text("Remove")),
+                              label: const Text("Remove")),
                         ])
                       : Row(children: <Widget>[
                           IconButton(
@@ -168,7 +168,7 @@ class _HomeRoute extends State<HomeRoute> {
                               Navigator.push(
                                   context,
                                   MaterialPageRoute(
-                                      builder: (context) => CompareRoute()));
+                                      builder: (context) => const CompareRoute()));
                             },
                           ),
                           IconButton(
