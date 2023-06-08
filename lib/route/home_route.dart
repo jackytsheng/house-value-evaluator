@@ -3,7 +3,6 @@ import 'package:property_evaluator/components/close_delete_dialog.dart';
 import 'package:property_evaluator/components/help_icon_button.dart';
 import 'package:property_evaluator/components/property_card.dart';
 import 'package:property_evaluator/constants/route.dart';
-import 'package:property_evaluator/route/compare_route.dart';
 import 'package:property_evaluator/model/property.dart';
 
 class HomeRoute extends StatelessWidget {

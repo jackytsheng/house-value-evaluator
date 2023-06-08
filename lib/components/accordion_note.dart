@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:property_evaluator/components/close_delete_dialog.dart';
 import 'package:property_evaluator/model/criteria.dart';
 
 class AccordionNote extends StatelessWidget {
@@ -54,75 +55,44 @@ class AccordionNote extends StatelessWidget {
                         onPressed: () => showDialog(
                             context: context,
                             builder: (BuildContext context) => Dialog(
-                                child: Padding(
-                                    padding: const EdgeInsets.all(20),
-                                    child: Column(
-                                        mainAxisSize: MainAxisSize.min,
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.center,
-                                        children: <Widget>[
-                                          Container(
-                                              margin:
-                                                  const EdgeInsets.only(bottom: 25),
-                                              child: TextFormField(
-                                                initialValue: item.headerValue,
-                                                onChanged: (value) {
-                                                  setNoteHeader(index, value);
-                                                },
-                                                maxLength: 20,
-                                                decoration: const InputDecoration(
-                                                  label: Text("Title"),
-                                                  hintText: "New Note",
-                                                  border: OutlineInputBorder(
-                                                    borderRadius:
-                                                        BorderRadius.all(
-                                                            Radius.circular(
-                                                                16)),
-                                                  ),
-                                                ),
-                                              )),
-                                          Container(
-                                              margin:
-                                                  const EdgeInsets.only(bottom: 20),
-                                              height: 150,
-                                              child: TextFormField(
-                                                minLines: 10,
-                                                maxLines: null,
-                                                onChanged: (value) {
-                                                  setNoteBody(index, value);
-                                                },
-                                                maxLength: 3000,
-                                                decoration: const InputDecoration(
-                                                    label: Text("Note"),
-                                                    alignLabelWithHint: true,
-                                                    hintText:
-                                                        "What's your thought ?",
-                                                    border: OutlineInputBorder(
-                                                      borderRadius:
-                                                          BorderRadius.all(
-                                                              Radius.circular(
-                                                                  16)),
-                                                    )),
-                                              )),
-                                          Row(
-                                              mainAxisAlignment:
-                                                  MainAxisAlignment.spaceEvenly,
-                                              children: [
-                                                FilledButton(
-                                                  onPressed: () {
-                                                    deleteNote(item.noteId);
-                                                    Navigator.pop(context);
-                                                  },
-                                                  child: const Text('Delete'),
-                                                ),
-                                                FilledButton.tonal(
-                                                  onPressed: () {
-                                                    Navigator.pop(context);
-                                                  },
-                                                  child: const Text('Close'),
-                                                ),
-                                              ]),
-                                        ]))))),
+                                    child: CloseDeleteDialog(children: <Widget>[
+                                  Container(
+                                      margin: const EdgeInsets.only(bottom: 25),
+                                      child: TextFormField(
+                                        initialValue: item.headerValue,
+                                        onChanged: (value) {
+                                          setNoteHeader(index, value);
+                                        },
+                                        maxLength: 20,
+                                        decoration: const InputDecoration(
+                                          label: Text("Title"),
+                                          hintText: "New Note",
+                                          border: OutlineInputBorder(
+                                            borderRadius: BorderRadius.all(
+                                                Radius.circular(16)),
+                                          ),
+                                        ),
+                                      )),
+                                  Container(
+                                      margin: const EdgeInsets.only(bottom: 20),
+                                      height: 150,
+                                      child: TextFormField(
+                                        minLines: 10,
+                                        maxLines: null,
+                                        onChanged: (value) {
+                                          setNoteBody(index, value);
+                                        },
+                                        maxLength: 3000,
+                                        decoration: const InputDecoration(
+                                            label: Text("Note"),
+                                            alignLabelWithHint: true,
+                                            hintText: "What's your thought ?",
+                                            border: OutlineInputBorder(
+                                              borderRadius: BorderRadius.all(
+                                                  Radius.circular(16)),
+                                            )),
+                                      ))
+                                ], onDelete: () => deleteNote(item.noteId))))),
                     const SizedBox(height: 20)
                   ]),
                   isExpanded: item.isExpanded,
