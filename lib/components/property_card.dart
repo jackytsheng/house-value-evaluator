@@ -11,12 +11,26 @@ import 'package:property_evaluator/utils/property_chip_picker.dart';
 class PropertyCard extends StatelessWidget {
   const PropertyCard({
     super.key,
+    required this.isEditMode,
+    required this.isSelected,
     required this.property,
-    this.isEditMode = false,
+    required this.onSelect,
+    required this.onDeselect,
   });
 
   final PropertyEntity property;
   final bool isEditMode;
+  final bool isSelected;
+  final Function() onSelect;
+  final Function() onDeselect;
+
+  void _toggleSelect() {
+    if (isSelected) {
+      onDeselect();
+    } else {
+      onSelect();
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -25,10 +39,11 @@ class PropertyCard extends StatelessWidget {
         horizontalTitleGap: 0,
         leading: isEditMode
             ? Radio<String>(
-                value: "first",
-                groupValue: "first",
+                value: property.propertyId,
+                toggleable: true,
+                groupValue: isSelected ? property.propertyId : "",
                 onChanged: (value) {
-                  print(value);
+                  _toggleSelect();
                 })
             : null,
         trailing: null,
@@ -37,12 +52,16 @@ class PropertyCard extends StatelessWidget {
           FloatCard(
               margin: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
               onTapAction: () {
-                Navigator.pushNamed(
-                  context,
-                  PROPERTY_ROUTE,
-                  arguments: PropertyRouteArguments(
-                      PropertyAction.editProperty, property),
-                );
+                if (isEditMode) {
+                  _toggleSelect();
+                } else {
+                  Navigator.pushNamed(
+                    context,
+                    PROPERTY_ROUTE,
+                    arguments: PropertyRouteArguments(
+                        PropertyAction.editProperty, property),
+                  );
+                }
               },
               child: Container(
                   height: 150,

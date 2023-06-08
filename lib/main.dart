@@ -7,6 +7,7 @@ import 'package:property_evaluator/model/addition_cost.dart';
 import 'package:property_evaluator/model/criteria.dart';
 import 'package:property_evaluator/model/property.dart';
 import 'package:property_evaluator/route/additional_cost_route.dart';
+import 'package:property_evaluator/route/compare_route.dart';
 import 'package:property_evaluator/route/criteria_route.dart';
 import 'package:property_evaluator/route/home_route.dart';
 import 'package:property_evaluator/route/property_route.dart';
@@ -33,6 +34,8 @@ class _HomeEvaluatorApp extends State<HomeEvaluatorApp> {
   Map<String, PropertyEntity> propertiesMap = {};
   Map<String, AdditionalCostEntity> costItemsMap = {};
   bool shouldShowWeightingValidationError = false;
+  bool isInPropertyEditMode = false;
+  List<String> selectedPropertyIds = [];
 
   @override
   void initState() {
@@ -328,11 +331,42 @@ class _HomeEvaluatorApp extends State<HomeEvaluatorApp> {
     });
   }
 
+  void setPropertyEditMode() {
+    setState(() {
+      isInPropertyEditMode = !isInPropertyEditMode;
+    });
+  }
+
+  void addPropertyIdToSelectedList(String propertyId) {
+    setState(() {
+      selectedPropertyIds.add(propertyId);
+      developer.log("selecting propertyId $propertyId to selected list");
+    });
+  }
+
+  void removePropertyIdFromSelectedList(String propertyId) {
+    setState(() {
+      selectedPropertyIds.remove(propertyId);
+      developer.log("removing propertyId $propertyId from selected list");
+    });
+  }
+
+  void deleteAllSelectedPropertyInSelectedList() {
+    setState(() {
+      propertiesMap
+          .removeWhere((key, value) => selectedPropertyIds.contains(key));
+      selectedPropertyIds = [];
+      isInPropertyEditMode = false;
+      developer.log("removing all selected property Ids");
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     var additionalCostMap = _getAdditionalCostByType();
     return MaterialApp(
-      title: 'House Evaluator',
+      debugShowCheckedModeBanner: false,
+      title: 'Property Evaluator',
       theme: ThemeData(
         colorScheme: ColorScheme.fromSeed(seedColor: selectedThemeColor),
         useMaterial3: true,
@@ -384,13 +418,21 @@ class _HomeEvaluatorApp extends State<HomeEvaluatorApp> {
               shouldShowWeightingValidationError:
                   shouldShowWeightingValidationError,
             ),
+        COMPARE_ROUTE: (context) => CompareRoute(
+            selectedPropertyIds: selectedPropertyIds,
+            propertiesMap: propertiesMap)
       },
       home: HomeRoute(
-        changeThemeColor: changeThemeColor,
-        currentThemeColor: selectedThemeColor,
-        properties: propertiesMap.values.toList(),
-        addProperty: addProperty,
-      ),
+          changeThemeColor: changeThemeColor,
+          currentThemeColor: selectedThemeColor,
+          properties: propertiesMap.values.toList(),
+          addProperty: addProperty,
+          isEditMode: isInPropertyEditMode,
+          setEditMode: setPropertyEditMode,
+          selectedPropertyIds: selectedPropertyIds,
+          selectProperty: addPropertyIdToSelectedList,
+          deselectProperty: removePropertyIdFromSelectedList,
+          deleteAllSelected: deleteAllSelectedPropertyInSelectedList),
     );
   }
 }

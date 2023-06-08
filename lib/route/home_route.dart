@@ -1,30 +1,36 @@
 import 'package:flutter/material.dart';
+import 'package:property_evaluator/components/close_delete_dialog.dart';
 import 'package:property_evaluator/components/help_icon_button.dart';
 import 'package:property_evaluator/components/property_card.dart';
 import 'package:property_evaluator/constants/route.dart';
 import 'package:property_evaluator/route/compare_route.dart';
 import 'package:property_evaluator/model/property.dart';
 
-class HomeRoute extends StatefulWidget {
+class HomeRoute extends StatelessWidget {
   const HomeRoute({
     super.key,
     required this.changeThemeColor,
     required this.currentThemeColor,
     required this.properties,
     required this.addProperty,
+    required this.setEditMode,
+    required this.isEditMode,
+    required this.selectedPropertyIds,
+    required this.selectProperty,
+    required this.deselectProperty,
+    required this.deleteAllSelected,
   });
 
   final Function(Color color) changeThemeColor;
   final Function(BuildContext context) addProperty;
+  final Function() setEditMode;
+  final Function(String propertyId) selectProperty;
+  final Function(String propertyId) deselectProperty;
+  final Function() deleteAllSelected;
   final Color currentThemeColor;
+  final bool isEditMode;
+  final List<String> selectedPropertyIds;
   final List<PropertyEntity> properties;
-
-  @override
-  State<StatefulWidget> createState() => _HomeRoute();
-}
-
-class _HomeRoute extends State<HomeRoute> {
-  bool _editMode = false;
 
   @override
   Widget build(BuildContext context) {
@@ -35,23 +41,14 @@ class _HomeRoute extends State<HomeRoute> {
               toolbarHeight: 50,
               backgroundColor: Theme.of(context).colorScheme.inversePrimary,
               actions: <Widget>[
-                IconButton(
-                    iconSize: 40,
-                    tooltip: 'Select cards',
-                    icon: Icon(Icons.dns_rounded,
-                        color: Theme.of(context).colorScheme.onInverseSurface,
-                        size: 30),
-                    onPressed: () {
-                      setState(() {
-                        _editMode = !_editMode;
-                      });
-                    }),
                 const HelpIconButton(helpMessage: """
 1. Select cards to compare
 
 2. Select cards to delete
 
 3. Score color change base on number
+
+4. Selected cards auto show in compare
 """),
                 PopupMenuButton(
                   icon: Icon(Icons.palette_rounded,
@@ -99,10 +96,17 @@ class _HomeRoute extends State<HomeRoute> {
                       ),
                     ];
                   },
-                  initialValue: widget.currentThemeColor,
+                  initialValue: currentThemeColor,
                   // Callback that sets the selected popup menu item.
-                  onSelected: widget.changeThemeColor,
+                  onSelected: changeThemeColor,
                 ),
+                IconButton(
+                    iconSize: 40,
+                    tooltip: 'Select cards',
+                    icon: Icon(Icons.more_vert_rounded,
+                        color: Theme.of(context).colorScheme.onInverseSurface,
+                        size: 30),
+                    onPressed: setEditMode)
               ],
               scrolledUnderElevation: 0,
               title: Text("Property Evaluator",
@@ -114,20 +118,24 @@ class _HomeRoute extends State<HomeRoute> {
               child: Padding(
                 padding: const EdgeInsets.only(top: 20),
                 child: Column(
-                    children: widget.properties
+                    children: properties
                         .map<PropertyCard>((property) => PropertyCard(
-                              isEditMode: _editMode,
-                              property: property,
-                            ))
+                            isEditMode: isEditMode,
+                            isSelected: selectedPropertyIds
+                                .contains(property.propertyId),
+                            property: property,
+                            onSelect: () => selectProperty(property.propertyId),
+                            onDeselect: () =>
+                                deselectProperty(property.propertyId)))
                         .toList()),
               ),
             ),
             // This trailing comma makes auto-formatting nicer for build methods.
-            floatingActionButton: _editMode
+            floatingActionButton: isEditMode
                 ? null
                 : FloatingActionButton(
                     onPressed: () {
-                      widget.addProperty(context);
+                      addProperty(context);
                     },
                     shape: const CircleBorder(),
                     tooltip: 'Add new address',
@@ -146,22 +154,35 @@ class _HomeRoute extends State<HomeRoute> {
                 child: IconTheme(
                   data: IconThemeData(
                       color: Theme.of(context).colorScheme.onPrimary),
-                  child: _editMode
+                  child: isEditMode
                       ? Row(
                           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                           children: [
                               ElevatedButton.icon(
                                   onPressed: () {
-                                    Navigator.push(
-                                        context,
-                                        MaterialPageRoute(
-                                            builder: (context) =>
-                                                const CompareRoute()));
+                                    Navigator.pushNamed(context, COMPARE_ROUTE);
                                   },
                                   icon: const Icon(Icons.bar_chart_rounded),
                                   label: const Text("Compare")),
                               ElevatedButton.icon(
-                                  onPressed: () {},
+                                  onPressed: () {
+                                    showDialog(
+                                        context: context,
+                                        builder: (BuildContext context) =>
+                                            Dialog(
+                                                child: CloseDeleteDialog(
+                                                    onDelete: deleteAllSelected,
+                                                    children: [
+                                                  Text(
+                                                    "Doing so will remove all notes related as well. Are you sure you want to delete selected properties?",
+                                                    style: TextStyle(
+                                                        color: Theme.of(context)
+                                                            .colorScheme
+                                                            .error),
+                                                  ),
+                                                  const SizedBox(height: 10)
+                                                ])));
+                                  },
                                   icon: const Icon(Icons.delete_rounded),
                                   label: const Text("Remove")),
                             ])
@@ -171,11 +192,7 @@ class _HomeRoute extends State<HomeRoute> {
                             tooltip: 'Comparison',
                             icon: const Icon(Icons.bar_chart_rounded),
                             onPressed: () {
-                              Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                      builder: (context) =>
-                                          const CompareRoute()));
+                              Navigator.pushNamed(context, COMPARE_ROUTE);
                             },
                           ),
                           IconButton(

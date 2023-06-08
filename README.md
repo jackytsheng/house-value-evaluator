@@ -9,7 +9,6 @@ Currently only develop for IOS
 - import and export csv
 - Real estate link to property
 - Support different currency
-- One Dark theme
 - Make cost support decimal place
 - Animation:
   - Bottom sheet appearing
@@ -21,6 +20,7 @@ Currently only develop for IOS
 - Add tests to the entire project
 - Refactor using closure to avoid arguments used multiple time
 - Linting
+- Fix Theming using flex_color_scheme
 
 ## Run linting
 `dart fix --dry-run`

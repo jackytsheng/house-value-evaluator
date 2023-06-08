@@ -1,20 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:property_evaluator/components/themed_app_bar.dart';
+import 'package:property_evaluator/model/property.dart';
 import 'package:syncfusion_flutter_charts/charts.dart';
-// import 'package:syncfusion_flutter_charts/charts.dart';
-// class House {
-//   final String name;
-//   final double traffic;
-//   final double condition;
 
-//   House({required this.name, required this.traffic, required this.condition});
-// }
-// List<House> houses = [
-//   House(name: 'House 1', traffic: 5, condition: 10),
-//   House(name: 'House 2', traffic: 10, condition: 9),
-// ];
 class CompareRoute extends StatelessWidget {
-  const CompareRoute({super.key});
+  const CompareRoute({
+    super.key,
+    required this.propertiesMap,
+    required this.selectedPropertyIds,
+  });
+
+  final Map<String, PropertyEntity> propertiesMap;
+  final List<String> selectedPropertyIds;
 
   @override
   Widget build(BuildContext context) {
