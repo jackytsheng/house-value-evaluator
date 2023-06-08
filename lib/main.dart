@@ -331,7 +331,7 @@ class _HomeEvaluatorApp extends State<HomeEvaluatorApp> {
     });
   }
 
-  void setPropertyEditMode() {
+  void togglePropertyEditMode() {
     setState(() {
       isInPropertyEditMode = !isInPropertyEditMode;
     });
@@ -419,6 +419,7 @@ class _HomeEvaluatorApp extends State<HomeEvaluatorApp> {
                   shouldShowWeightingValidationError,
             ),
         COMPARE_ROUTE: (context) => CompareRoute(
+            criteriaItemsMap: criteriaItemsMap,
             selectedPropertyIds: selectedPropertyIds,
             propertiesMap: propertiesMap)
       },
@@ -428,7 +429,7 @@ class _HomeEvaluatorApp extends State<HomeEvaluatorApp> {
           properties: propertiesMap.values.toList(),
           addProperty: addProperty,
           isEditMode: isInPropertyEditMode,
-          setEditMode: setPropertyEditMode,
+          toggleEditMode: togglePropertyEditMode,
           selectedPropertyIds: selectedPropertyIds,
           selectProperty: addPropertyIdToSelectedList,
           deselectProperty: removePropertyIdFromSelectedList,

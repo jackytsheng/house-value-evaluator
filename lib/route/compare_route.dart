@@ -1,26 +1,23 @@
 import 'package:flutter/material.dart';
 import 'package:property_evaluator/components/themed_app_bar.dart';
+import 'package:property_evaluator/model/criteria.dart';
 import 'package:property_evaluator/model/property.dart';
 import 'package:syncfusion_flutter_charts/charts.dart';
 
 class CompareRoute extends StatelessWidget {
-  const CompareRoute({
-    super.key,
-    required this.propertiesMap,
-    required this.selectedPropertyIds,
-  });
+  const CompareRoute(
+      {super.key,
+      required this.propertiesMap,
+      required this.selectedPropertyIds,
+      required this.criteriaItemsMap});
 
   final Map<String, PropertyEntity> propertiesMap;
+  final Map<String, CriteriaItemEntity> criteriaItemsMap;
   final List<String> selectedPropertyIds;
 
   @override
   Widget build(BuildContext context) {
-    final List<ChartData> chartData = [
-      ChartData('School', 1.2, 3, 7.2, 2, 2, 2, 2, 2, 2, 2, 2),
-      ChartData('Traffic', 1, 2, 5, 2, 2, 2, 2, 2, 2, 2, 2),
-      ChartData('Condition', 1, 2, 5, 2, 2, 2, 2, 2, 2, 2, 2),
-      ChartData('Score', 1, 2, 3, 2, 2, 2, 2, 2, 2, 2, 2),
-    ];
+    final List<String> chartData = criteriaItemsMap.keys.toList();
     return Scaffold(
         appBar: const ThemedAppBar(
           title: "Compare property",
@@ -58,71 +55,16 @@ class CompareRoute extends StatelessWidget {
                         markerSettings: const TrackballMarkerSettings(
                             borderWidth: 5,
                             markerVisibility: TrackballVisibilityMode.visible)),
-                    series: <CartesianSeries>[
-                      ColumnSeries<ChartData, String>(
-                          dataSource: chartData,
-                          name: "1704 33 blackwood",
-                          xValueMapper: (ChartData data, _) => data.x,
-                          yValueMapper: (ChartData data, _) => data.y),
-                      ColumnSeries<ChartData, String>(
-                          dataSource: chartData,
-                          name: "86 Great Ryrie",
-                          xValueMapper: (ChartData data, _) => data.x,
-                          yValueMapper: (ChartData data, _) => data.y1),
-                      ColumnSeries<ChartData, String>(
-                          dataSource: chartData,
-                          name: "206 Blackmont",
-                          xValueMapper: (ChartData data, _) => data.x,
-                          yValueMapper: (ChartData data, _) => data.y2),
-                      // ColumnSeries<ChartData, String>(
-                      //     dataSource: chartData,
-                      //     xValueMapper: (ChartData data, _) => data.x,
-                      //     yValueMapper: (ChartData data, _) => data.y2),
-                      // ColumnSeries<ChartData, String>(
-                      //     dataSource: chartData,
-                      //     xValueMapper: (ChartData data, _) => data.x,
-                      //     yValueMapper: (ChartData data, _) => data.y1),
-                      // ColumnSeries<ChartData, String>(
-                      //     dataSource: chartData,
-                      //     xValueMapper: (ChartData data, _) => data.x,
-                      //     yValueMapper: (ChartData data, _) => data.y2),
-                      // ColumnSeries<ChartData, String>(
-                      //     dataSource: chartData,
-                      //     xValueMapper: (ChartData data, _) => data.x,
-                      //     yValueMapper: (ChartData data, _) => data.y2),
-                      // ColumnSeries<ChartData, String>(
-                      //     dataSource: chartData,
-                      //     xValueMapper: (ChartData data, _) => data.x,
-                      //     yValueMapper: (ChartData data, _) => data.y1),
-                      // ColumnSeries<ChartData, String>(
-                      //     dataSource: chartData,
-                      //     xValueMapper: (ChartData data, _) => data.x,
-                      //     yValueMapper: (ChartData data, _) => data.y1),
-                      // ColumnSeries<ChartData, String>(
-                      //     dataSource: chartData,
-                      //     xValueMapper: (ChartData data, _) => data.x,
-                      //     yValueMapper: (ChartData data, _) => data.y2),
-                      // ColumnSeries<ChartData, String>(
-                      //     dataSource: chartData,
-                      //     xValueMapper: (ChartData data, _) => data.x,
-                      //     yValueMapper: (ChartData data, _) => data.y2)
-                    ]))));
+                    series: selectedPropertyIds.map((propertyId) {
+                      var property = propertiesMap[propertyId]!;
+                      return ColumnSeries<String, String>(
+                        dataSource: chartData,
+                        name: property.address,
+                        xValueMapper: (String criteriaId, __) =>
+                            criteriaItemsMap[criteriaId]?.criteriaName,
+                        yValueMapper: (String criteriaId, __) =>
+                            property.propertyAssessmentMap[criteriaId]?.score,
+                      );
+                    }).toList()))));
   }
-}
-
-class ChartData {
-  ChartData(this.x, this.y, this.y1, this.y2, this.y3, this.y4, this.y5,
-      this.y6, this.y7, this.y8, this.y9, this.y10);
-  final String x;
-  final double? y;
-  final double? y1;
-  final double? y2;
-  final double? y3;
-  final double? y4;
-  final double? y5;
-  final double? y6;
-  final double? y7;
-  final double? y8;
-  final double? y9;
-  final double? y10;
 }

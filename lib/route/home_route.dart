@@ -12,7 +12,7 @@ class HomeRoute extends StatelessWidget {
     required this.currentThemeColor,
     required this.properties,
     required this.addProperty,
-    required this.setEditMode,
+    required this.toggleEditMode,
     required this.isEditMode,
     required this.selectedPropertyIds,
     required this.selectProperty,
@@ -22,7 +22,7 @@ class HomeRoute extends StatelessWidget {
 
   final Function(Color color) changeThemeColor;
   final Function(BuildContext context) addProperty;
-  final Function() setEditMode;
+  final Function() toggleEditMode;
   final Function(String propertyId) selectProperty;
   final Function(String propertyId) deselectProperty;
   final Function() deleteAllSelected;
@@ -105,7 +105,7 @@ class HomeRoute extends StatelessWidget {
                     icon: Icon(Icons.more_vert_rounded,
                         color: Theme.of(context).colorScheme.onInverseSurface,
                         size: 30),
-                    onPressed: setEditMode)
+                    onPressed: toggleEditMode)
               ],
               scrolledUnderElevation: 0,
               title: Text("Property Evaluator",
@@ -160,6 +160,7 @@ class HomeRoute extends StatelessWidget {
                               ElevatedButton.icon(
                                   onPressed: () {
                                     Navigator.pushNamed(context, COMPARE_ROUTE);
+                                    toggleEditMode();
                                   },
                                   icon: const Icon(Icons.bar_chart_rounded),
                                   label: const Text("Compare")),

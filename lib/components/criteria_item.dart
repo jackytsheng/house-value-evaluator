@@ -53,8 +53,8 @@ class CriteriaItem extends StatelessWidget {
                     icon: Icons.delete,
                     spacing: 4,
                     label: 'Delete',
-                    borderRadius:
-                        const BorderRadius.horizontal(right: Radius.circular(10)),
+                    borderRadius: const BorderRadius.horizontal(
+                        right: Radius.circular(10)),
                   )
                 ],
               ),
