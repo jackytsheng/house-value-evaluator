@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
+import 'package:property_evaluator/components/close_delete_dialog.dart';
 import 'package:property_evaluator/model/addition_cost.dart';
 import 'package:property_evaluator/utils/decimal_input_formatter.dart';
 
@@ -28,10 +29,25 @@ class CostItem extends StatelessWidget {
                   key: ValueKey(costItem.costItemId),
                   endActionPane: ActionPane(
                     motion: const ScrollMotion(),
-                    dismissible: DismissiblePane(onDismissed: deleteCost),
                     children: [
                       SlidableAction(
-                        onPressed: null,
+                        onPressed: (context) {
+                          showDialog(
+                              context: context,
+                              builder: (BuildContext context) => Dialog(
+                                      child: CloseDeleteDialog(
+                                          onDelete: deleteCost,
+                                          children: [
+                                        Text(
+                                          "Are you sure you want delete this cost?",
+                                          style: TextStyle(
+                                              color: Theme.of(context)
+                                                  .colorScheme
+                                                  .error),
+                                        ),
+                                        const SizedBox(height: 10)
+                                      ])));
+                        },
                         backgroundColor: Theme.of(context).colorScheme.primary,
                         foregroundColor:
                             Theme.of(context).colorScheme.onPrimary,

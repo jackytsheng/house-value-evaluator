@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:property_evaluator/components/accordion_note.dart';
+import 'package:property_evaluator/components/close_delete_dialog.dart';
 import 'package:property_evaluator/model/criteria.dart';
 import 'package:numberpicker/numberpicker.dart';
 
@@ -42,12 +43,27 @@ class CriteriaItem extends StatelessWidget {
               key: ValueKey(item.criteriaId),
               endActionPane: ActionPane(
                 motion: const ScrollMotion(),
-                dismissible: DismissiblePane(onDismissed: () {
-                  deleteCriteria?.call();
-                }),
                 children: [
                   SlidableAction(
-                    onPressed: null,
+                    onPressed: (context) {
+                      showDialog(
+                          context: context,
+                          builder: (BuildContext context) => Dialog(
+                                  child: CloseDeleteDialog(
+                                      onDelete: () {
+                                        deleteCriteria?.call();
+                                      },
+                                      children: [
+                                    Text(
+                                      "Doing so will remove all notes, properties that have scored and added note against this criteria as well. Are you sure you want to delete this criteria?",
+                                      style: TextStyle(
+                                          color: Theme.of(context)
+                                              .colorScheme
+                                              .error),
+                                    ),
+                                    const SizedBox(height: 10)
+                                  ])));
+                    },
                     backgroundColor: Theme.of(context).colorScheme.primary,
                     foregroundColor: Theme.of(context).colorScheme.onPrimary,
                     icon: Icons.delete,
