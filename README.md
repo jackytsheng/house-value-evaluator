@@ -10,6 +10,8 @@ Currently only develop for IOS
 - Real estate link to property
 - Support different currency
 - Make cost support decimal place
+- Polish info message and warning message
+- save theme info to shared_preference
 - Animation:
   - Bottom sheet appearing
   - Removing item

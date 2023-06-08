@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:property_evaluator/components/cost_item.dart';
 import 'package:property_evaluator/components/criteria_item.dart';
 import 'package:property_evaluator/components/radial_score.dart';
 import 'package:property_evaluator/components/themed_app_bar.dart';
+import 'package:property_evaluator/model/addition_cost.dart';
 import 'package:property_evaluator/model/criteria.dart';
 import 'package:property_evaluator/model/property.dart';
 import 'package:property_evaluator/utils/currency_formatter.dart';
@@ -19,20 +21,18 @@ class PropertyRouteArguments {
 }
 
 class PropertyRoute extends StatelessWidget {
-  const PropertyRoute({
-    super.key,
-    required this.setAddress,
-    required this.setType,
-    required this.setPrice,
-    required this.setScore,
-    required this.toggleExpand,
-    required this.addNote,
-    required this.setNoteHeader,
-    required this.setNoteBody,
-    required this.deleteNote,
-    required this.percentageCost,
-    required this.plainCost,
-  });
+  const PropertyRoute(
+      {super.key,
+      required this.setAddress,
+      required this.setType,
+      required this.setPrice,
+      required this.setScore,
+      required this.toggleExpand,
+      required this.addNote,
+      required this.setNoteHeader,
+      required this.setNoteBody,
+      required this.deleteNote,
+      required this.costItemsMap});
 
   final Function(String propertyId, String address) setAddress;
   final Function(String propertyId, PropertyType propertyType) setType;
@@ -48,8 +48,7 @@ class PropertyRoute extends StatelessWidget {
       Map<String, CriteriaItemEntity> criteriaMap) setNoteBody;
   final Function(String criteriaId, int noteIndex, String headerValue,
       Map<String, CriteriaItemEntity> criteriaMap) setNoteHeader;
-  final double plainCost;
-  final double percentageCost;
+  final Map<String, AdditionalCostEntity> costItemsMap;
 
   @override
   Widget build(BuildContext context) {
@@ -62,9 +61,30 @@ class PropertyRoute extends StatelessWidget {
 
     double totalScore = assessments.fold(
         0, (acc, assessment) => acc + assessment.score * assessment.weighting);
-    double totalCost =
-        args.propertyEntity.price.amount * (1 + (percentageCost / 100)) +
-            plainCost;
+
+    Map<CostType, List<AdditionalCostEntity>> getAdditionalCostByType() {
+      var costMap = {
+        CostType.plain: <AdditionalCostEntity>[],
+        CostType.percentage: <AdditionalCostEntity>[]
+      };
+      for (var item in costItemsMap.values) {
+        costMap[item.costType]?.add(item);
+      }
+      return costMap;
+    }
+
+    var costMap = getAdditionalCostByType();
+
+    double totalPercentageCost = (1 +
+            (costMap[CostType.percentage]!.fold(
+                    0.0,
+                    (previousValue, costItem) =>
+                        costItem.amount + previousValue) /
+                100)) *
+        args.propertyEntity.price.amount;
+    double totalPlainCost = costMap[CostType.plain]!.fold(
+        0.0, (previousValue, costItem) => costItem.amount + previousValue);
+    double totalCost = totalPlainCost + totalPercentageCost;
 
     return GestureDetector(
         onTap: () => FocusManager.instance.primaryFocus?.unfocus(),
@@ -83,6 +103,10 @@ class PropertyRoute extends StatelessWidget {
 4. Click a track to view score
 
 5. Total Score = sum(Weight * Score)
+
+6. % cost applied to sold/est price
+
+7. Plain cost added after %
             """,
           ),
           body: SingleChildScrollView(
@@ -199,56 +223,45 @@ class PropertyRoute extends StatelessWidget {
                         borderSide: const BorderSide(color: Colors.black12),
                       )),
                 )),
+            const SizedBox(height: 10),
             SizedBox(
                 width: WIDGET_INNER_WIDTH,
-                child: Column(children: [
-                  Row(
-                    children: <Widget>[
-                      Text(
-                          "+ Percentage Cost: ${convertedToMoneyFormat(percentageCost * args.propertyEntity.price.amount / 100, decimal: 2)} AUD",
+                child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      ...costMap[CostType.percentage]!.map((costItem) => Text(
+                          "+ ${costItem.costName} : ${convertedToMoneyFormat(costItem.amount * args.propertyEntity.price.amount / 100, decimal: 2)} AUD",
                           style: TextStyle(
                             fontSize: 12,
                             color: Theme.of(context).colorScheme.secondary,
                             fontFamily: "RobotoMono",
-                          ))
-                    ],
-                  ),
-                  Row(
-                    children: <Widget>[
-                      Text(
-                          "+ Plain Cost: ${convertedToMoneyFormat(plainCost)} AUD",
+                          ))),
+                      ...costMap[CostType.plain]!.map((costItem) => Text(
+                          "+ ${costItem.costName}: ${convertedToMoneyFormat(costItem.amount)} AUD",
                           style: TextStyle(
                             fontSize: 12,
                             color: Theme.of(context).colorScheme.secondary,
                             fontFamily: "RobotoMono",
-                          ))
-                    ],
-                  ),
-                  Row(
-                    children: <Widget>[
-                      Text(
-                          "= Total Cost: ${convertedToMoneyFormat(totalCost)} AUD",
-                          style: TextStyle(
-                            fontSize: 12,
-                            color: Theme.of(context).colorScheme.secondary,
-                            fontFamily: "RobotoMono",
-                          ))
-                    ],
-                  ),
-                  Row(
-                    children: <Widget>[
+                          ))),
+                      totalCost > 0
+                          ? Text(
+                              "= Total Cost : ${convertedToMoneyFormat(totalCost)} AUD",
+                              style: TextStyle(
+                                fontSize: 12,
+                                color: Theme.of(context).colorScheme.secondary,
+                                fontFamily: "RobotoMono",
+                              ))
+                          : const SizedBox(),
                       Text(
                           totalScore > 0
-                              ? "Unit Price: ${convertedToMoneyFormat(totalCost / totalScore)} AUD / Score"
+                              ? "Total Cost Unit Price : ${convertedToMoneyFormat(totalCost / totalScore)} AUD/pt"
                               : "Unit Price Not Available For Zero Score",
                           style: TextStyle(
                             fontSize: 12,
                             color: Theme.of(context).colorScheme.secondary,
                             fontFamily: "RobotoMono",
                           ))
-                    ],
-                  )
-                ])),
+                    ])),
             const SizedBox(height: COLUMN_GAP),
             const Divider(
               indent: 40,

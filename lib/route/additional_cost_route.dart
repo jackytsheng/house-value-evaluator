@@ -30,13 +30,11 @@ class AdditionalCostRoute extends StatelessWidget {
               helpMessage: """
 1. Swipe left to delete cost
 
-2. Percentage applied to the total price
+2. % cost applied to sold/est price
 
-3. Other cost is subtracted at the end
+3. Plain cost added after %
 
-4. Cost does not accept decimal 
-
-5. These apply to all properties
+4. Cost apply to all properties
         """,
             ),
             body: SingleChildScrollView(

@@ -316,14 +316,6 @@ class _HomeEvaluatorApp extends State<HomeEvaluatorApp> {
     });
   }
 
-  Map<CostType, double> _getAdditionalCostByType() {
-    var initialMap = {CostType.plain: 0.0, CostType.percentage: 0.0};
-    for (var item in costItemsMap.values) {
-      initialMap[item.costType] = initialMap[item.costType]! + item.amount;
-    }
-    return initialMap;
-  }
-
   // Main Route
   void changeThemeColor(Color color) {
     setState(() {
@@ -363,7 +355,6 @@ class _HomeEvaluatorApp extends State<HomeEvaluatorApp> {
 
   @override
   Widget build(BuildContext context) {
-    var additionalCostMap = _getAdditionalCostByType();
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       title: 'Property Evaluator',
@@ -389,8 +380,7 @@ class _HomeEvaluatorApp extends State<HomeEvaluatorApp> {
             addNote: addNoteToCriteria,
             setNoteHeader: setNoteHeaderToCriteria,
             setNoteBody: setNoteExpandedValueToCriteria,
-            percentageCost: additionalCostMap[CostType.percentage] ?? 0,
-            plainCost: additionalCostMap[CostType.plain] ?? 0),
+            costItemsMap: costItemsMap),
         CRITERIA_ROUTE: (context) => CriteriaRoute(
               toggleExpand: (criteriaId, noteId, isExpanded) {
                 toggleNoteExpandStatusFromCriteria(
