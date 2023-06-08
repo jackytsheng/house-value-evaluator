@@ -1,4 +1,5 @@
 import 'dart:developer' as developer;
+import 'dart:math';
 import 'package:easy_debounce/easy_debounce.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -39,31 +40,64 @@ class _HomeEvaluatorApp extends State<HomeEvaluatorApp> {
 
   @override
   void initState() {
-    String initialCriteriaId = const Uuid().v4();
+    String conditionCriteriaId = const Uuid().v4();
+    String trafficCriteriaId = const Uuid().v4();
+    String facilityCriteriaId = const Uuid().v4();
+    String convenienceCriteriaId = const Uuid().v4();
     criteriaItemsMap = {
-      initialCriteriaId: CriteriaItemEntity(initialCriteriaId, [], "Score", 1)
+      conditionCriteriaId: CriteriaItemEntity(
+          conditionCriteriaId,
+          [
+            NoteItem(
+                headerValue: "Description",
+                expandedValue: "Assessment on interior design")
+          ],
+          "Condition",
+          0.25),
+      trafficCriteriaId:
+          CriteriaItemEntity(trafficCriteriaId, [], "Traffic", 0.25),
+      facilityCriteriaId:
+          CriteriaItemEntity(facilityCriteriaId, [], "Facility", 0.25),
+      convenienceCriteriaId:
+          CriteriaItemEntity(convenienceCriteriaId, [], "Convenience", 0.25)
     };
 
-    // TODO: Delete this initial house;
+    var ran = Random(123456789);
     String initialHouseId = const Uuid().v4();
     propertiesMap = {
       initialHouseId: PropertyEntity(
           initialHouseId,
-          "36 Campbell Street, Glen Waverley",
-          Price(PriceState.estimated, 1850000),
+          "36 Example Street, Brighton Bay",
+          Price(PriceState.estimated, 8850000),
           PropertyType.house, {
         for (var item in criteriaItemsMap.values)
-          item.criteriaId: PropertyAssessment(
-              item.criteriaId, [], item.criteriaName, item.weighting, 0)
+          item.criteriaId: PropertyAssessment(item.criteriaId, [],
+              item.criteriaName, item.weighting, ran.nextInt(10))
       })
     };
 
-    String initialCostId = const Uuid().v4();
+    String initialTownhouseId = const Uuid().v4();
+    propertiesMap[initialTownhouseId] = PropertyEntity(
+        initialTownhouseId,
+        "1/12 Example Road, Toorak",
+        Price(PriceState.sold, 1850000),
+        PropertyType.townHouse, {
+      for (var item in criteriaItemsMap.values)
+        item.criteriaId: PropertyAssessment(item.criteriaId, [],
+            item.criteriaName, item.weighting, ran.nextInt(10))
+    });
+
+    selectedPropertyIds = [initialHouseId, initialTownhouseId];
+
+    String stampDutyId = const Uuid().v4();
     costItemsMap = {
-      initialCostId: AdditionalCostEntity(
-          initialCostId, "Stamp Duty", CostType.percentage, 5.5),
+      stampDutyId: AdditionalCostEntity(
+          stampDutyId, "Stamp Duty", CostType.percentage, 5.5),
     };
 
+    String renovationCostId = const Uuid().v4();
+    costItemsMap[renovationCostId] =
+        AdditionalCostEntity(stampDutyId, "Renovation", CostType.plain, 20000);
     super.initState();
   }
 

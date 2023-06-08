@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:property_evaluator/components/cost_item.dart';
 import 'package:property_evaluator/components/criteria_item.dart';
 import 'package:property_evaluator/components/radial_score.dart';
 import 'package:property_evaluator/components/themed_app_bar.dart';
