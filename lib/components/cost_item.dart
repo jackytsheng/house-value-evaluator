@@ -88,6 +88,7 @@ class CostItem extends StatelessWidget {
                               onChanged: (value) =>
                                   setNumber(double.parse(value)),
                               inputFormatters: [DecimalTextInputFormatter()],
+                              enableInteractiveSelection: false,
                               keyboardType: TextInputType.number,
                               decoration: const InputDecoration(
                                   counterText: "",
@@ -107,6 +108,7 @@ class CostItem extends StatelessWidget {
                                     : setNumber(double.parse(value))
                               },
                               keyboardType: TextInputType.number,
+                              enableInteractiveSelection: false,
                               decoration: const InputDecoration(
                                 counterText: "",
                                 border: InputBorder.none,

@@ -191,6 +191,7 @@ class PropertyRoute extends StatelessWidget {
                 child: TextFormField(
                   cursorColor: Theme.of(context).colorScheme.inversePrimary,
                   keyboardType: TextInputType.number,
+                  enableInteractiveSelection: false,
                   maxLength: 13,
                   style: const TextStyle(fontFamily: "RobotoMono"),
                   initialValue: args.propertyEntity.price.amount > 0

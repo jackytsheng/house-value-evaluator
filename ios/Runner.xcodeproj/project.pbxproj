@@ -97,7 +97,6 @@
 				C60BB77E4F8CF2AA5108B03B /* Pods-RunnerTests.release.xcconfig */,
 				CBDF162974B475F1D4AA57FC /* Pods-RunnerTests.profile.xcconfig */,
 			);
-			name = Pods;
 			path = Pods;
 			sourceTree = "<group>";
 		};
@@ -473,12 +472,12 @@
 				DEVELOPMENT_TEAM = PLCCMJ9W9K;
 				ENABLE_BITCODE = NO;
 				INFOPLIST_FILE = Runner/Info.plist;
-				INFOPLIST_KEY_CFBundleDisplayName = "House Evaluator";
+				INFOPLIST_KEY_CFBundleDisplayName = "Property Evaluator";
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.jiajinzheng.houseEvaluator;
+				PRODUCT_BUNDLE_IDENTIFIER = com.jiajinzheng.propertyEvaluator;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_OBJC_BRIDGING_HEADER = "Runner/Runner-Bridging-Header.h";
 				SWIFT_VERSION = 5.0;
@@ -495,7 +494,7 @@
 				CURRENT_PROJECT_VERSION = 1;
 				GENERATE_INFOPLIST_FILE = YES;
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = com.jiajinzheng.houseEvaluator.RunnerTests;
+				PRODUCT_BUNDLE_IDENTIFIER = com.jiajinzheng.propertyEvaluator.RunnerTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
@@ -513,7 +512,7 @@
 				CURRENT_PROJECT_VERSION = 1;
 				GENERATE_INFOPLIST_FILE = YES;
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = com.jiajinzheng.houseEvaluator.RunnerTests;
+				PRODUCT_BUNDLE_IDENTIFIER = com.jiajinzheng.propertyEvaluator.RunnerTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 5.0;
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Runner.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/Runner";
@@ -529,7 +528,7 @@
 				CURRENT_PROJECT_VERSION = 1;
 				GENERATE_INFOPLIST_FILE = YES;
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = com.jiajinzheng.houseEvaluator.RunnerTests;
+				PRODUCT_BUNDLE_IDENTIFIER = com.jiajinzheng.propertyEvaluator.RunnerTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 5.0;
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Runner.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/Runner";
@@ -656,12 +655,12 @@
 				DEVELOPMENT_TEAM = PLCCMJ9W9K;
 				ENABLE_BITCODE = NO;
 				INFOPLIST_FILE = Runner/Info.plist;
-				INFOPLIST_KEY_CFBundleDisplayName = "House Evaluator";
+				INFOPLIST_KEY_CFBundleDisplayName = "Property Evaluator";
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.jiajinzheng.houseEvaluator;
+				PRODUCT_BUNDLE_IDENTIFIER = com.jiajinzheng.propertyEvaluator;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_OBJC_BRIDGING_HEADER = "Runner/Runner-Bridging-Header.h";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
@@ -680,12 +679,12 @@
 				DEVELOPMENT_TEAM = PLCCMJ9W9K;
 				ENABLE_BITCODE = NO;
 				INFOPLIST_FILE = Runner/Info.plist;
-				INFOPLIST_KEY_CFBundleDisplayName = "House Evaluator";
+				INFOPLIST_KEY_CFBundleDisplayName = "Property Evaluator";
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.jiajinzheng.houseEvaluator;
+				PRODUCT_BUNDLE_IDENTIFIER = com.jiajinzheng.propertyEvaluator;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_OBJC_BRIDGING_HEADER = "Runner/Runner-Bridging-Header.h";
 				SWIFT_VERSION = 5.0;
