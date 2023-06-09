@@ -188,15 +188,12 @@ class _HomeEvaluatorApp extends State<HomeEvaluatorApp> {
   }
 
   void setCriteriaWeighting(String criteriaId, int weightingValue) {
-    EasyDebounce.debounce(
-        'NumberPickerWeightingDebouncer',
-        const Duration(milliseconds: 10),
-        () => setState(() {
-              criteriaItemsMap[criteriaId]?.weighting = weightingValue / 100;
-              _updateCriteriaFromAllHouse(criteriaItemsMap[criteriaId]!);
-              developer.log(
-                  "setting criteria Id: $criteriaId weighting to $weightingValue %");
-            }));
+    setState(() {
+      criteriaItemsMap[criteriaId]?.weighting = weightingValue / 100;
+      _updateCriteriaFromAllHouse(criteriaItemsMap[criteriaId]!);
+      developer.log(
+          "setting criteria Id: $criteriaId weighting to $weightingValue %");
+    });
     _validateWeightingSum();
   }
 
@@ -305,20 +302,15 @@ class _HomeEvaluatorApp extends State<HomeEvaluatorApp> {
 
   void setPropertyAssessmentScore(
       String propertyId, String criteriaId, int score) {
-    EasyDebounce.debounce(
-        'NumberPickerScoreDebouncer',
-        const Duration(milliseconds: 10),
-        () => setState(() {
-              propertiesMap[propertyId]
-                  ?.propertyAssessmentMap[criteriaId]
-                  ?.score = score;
-              developer.log(
-                  "setting criteria Id: $criteriaId of property Id: $propertyId score to $score");
-            }));
+    setState(() {
+      propertiesMap[propertyId]?.propertyAssessmentMap[criteriaId]?.score =
+          score;
+      developer.log(
+          "setting criteria Id: $criteriaId of property Id: $propertyId score to $score");
+    });
   }
 
   // Additional Cost Route
-
   void setAdditionCostName(String costId, String name) {
     setState(() {
       costItemsMap[costId]?.costName = name;
