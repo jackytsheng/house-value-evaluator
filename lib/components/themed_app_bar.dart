@@ -14,14 +14,14 @@ class ThemedAppBar extends StatelessWidget implements PreferredSizeWidget {
   @override
   Widget build(BuildContext context) {
     return AppBar(
-      backgroundColor: Theme.of(context).colorScheme.inversePrimary,
+      scrolledUnderElevation: 10,
+      elevation: 10,
       actions: [HelpIconButton(helpMessage: helpMessage)],
       leading: Builder(
         builder: (BuildContext context) {
           return IconButton(
             icon: const Icon(Icons.arrow_back_rounded),
             iconSize: 30,
-            color: Theme.of(context).colorScheme.onPrimary,
             onPressed: () {
               Navigator.pop(context);
             },
@@ -31,9 +31,8 @@ class ThemedAppBar extends StatelessWidget implements PreferredSizeWidget {
       ),
       title: Text(
         title,
-        style: TextStyle(
+        style: const TextStyle(
           fontWeight: FontWeight.bold,
-          color: Theme.of(context).colorScheme.onPrimary,
         ),
       ),
       centerTitle: true,

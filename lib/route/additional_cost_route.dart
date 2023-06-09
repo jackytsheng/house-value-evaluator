@@ -51,7 +51,6 @@ class AdditionalCostRoute extends StatelessWidget {
             ),
             bottomNavigationBar: BottomAppBar(
               height: 80,
-              color: Theme.of(context).colorScheme.inversePrimary,
               clipBehavior: Clip.hardEdge,
               shape: const CircularNotchedRectangle(),
               notchMargin: 8,

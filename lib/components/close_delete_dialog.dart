@@ -21,7 +21,11 @@ class CloseDeleteDialog extends StatelessWidget {
                     onDelete();
                     Navigator.pop(context);
                   },
-                  child: const Text('Delete'),
+                  child: Text(
+                    'Delete',
+                    style: TextStyle(
+                        color: Theme.of(context).colorScheme.onPrimary),
+                  ),
                 ),
                 FilledButton.tonal(
                   onPressed: () {

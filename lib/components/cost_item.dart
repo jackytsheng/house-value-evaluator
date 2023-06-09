@@ -35,9 +35,12 @@ class CostItem extends StatelessWidget {
                           showDialog(
                               context: context,
                               builder: (BuildContext context) => Dialog(
-                                      child: CloseDeleteDialog(
-                                          onDelete: deleteCost,
-                                          children: [
+                                  backgroundColor: Theme.of(context)
+                                      .colorScheme
+                                      .errorContainer,
+                                  child: CloseDeleteDialog(
+                                      onDelete: deleteCost,
+                                      children: [
                                         Text(
                                           "Are you sure you want delete this cost?",
                                           style: TextStyle(

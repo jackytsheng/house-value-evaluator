@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:property_evaluator/components/themed_app_bar.dart';
-import 'package:property_evaluator/constants/route.dart';
 import 'package:property_evaluator/model/criteria.dart';
 import 'package:property_evaluator/model/property.dart';
 import 'package:syncfusion_flutter_charts/charts.dart';

@@ -49,11 +49,13 @@ class CriteriaItem extends StatelessWidget {
                       showDialog(
                           context: context,
                           builder: (BuildContext context) => Dialog(
-                                  child: CloseDeleteDialog(
-                                      onDelete: () {
-                                        deleteCriteria?.call();
-                                      },
-                                      children: [
+                              backgroundColor:
+                                  Theme.of(context).colorScheme.errorContainer,
+                              child: CloseDeleteDialog(
+                                  onDelete: () {
+                                    deleteCriteria?.call();
+                                  },
+                                  children: [
                                     Text(
                                       "Doing so will remove all notes, properties that have scored and added note against this criteria as well. Are you sure you want to delete this criteria?",
                                       style: TextStyle(

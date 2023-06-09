@@ -90,8 +90,7 @@ class CriteriaRoute extends StatelessWidget {
               onPressed: addCriteria,
               shape: const CircleBorder(),
               tooltip: 'Add new criteria',
-              child: Icon(Icons.post_add_rounded,
-                  size: 30, color: Theme.of(context).colorScheme.onPrimary),
+              child: const Icon(Icons.post_add_rounded, size: 30),
             ),
             floatingActionButtonLocation:
                 FloatingActionButtonLocation.endDocked,
@@ -116,11 +115,10 @@ class CriteriaRoute extends StatelessWidget {
                       ),
                     )))
                 : null,
-            bottomNavigationBar: BottomAppBar(
+            bottomNavigationBar: const BottomAppBar(
               height: 80,
-              color: Theme.of(context).colorScheme.inversePrimary,
               clipBehavior: Clip.hardEdge,
-              shape: const CircularNotchedRectangle(),
+              shape: CircularNotchedRectangle(),
               notchMargin: 8,
             )));
   }

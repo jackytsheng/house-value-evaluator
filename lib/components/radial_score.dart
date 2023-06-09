@@ -28,18 +28,19 @@ class RadialScore extends StatelessWidget {
               widget: ColorScaleWidget(
                   value: totalScore,
                   minValue: 0,
-                  minColor: Theme.of(context).colorScheme.onPrimary,
-                  lightTextColor: Theme.of(context).colorScheme.onSecondary,
+                  minColor: Theme.of(context).colorScheme.secondaryContainer,
+                  lightTextColor: Theme.of(context).colorScheme.onPrimary,
                   maxValue: 10,
-                  darkTextColor: Theme.of(context).colorScheme.inverseSurface,
-                  maxColor: Theme.of(context).colorScheme.inversePrimary,
-                  width: 68,
-                  height: 68,
+                  darkTextColor: Theme.of(context).colorScheme.onSecondary,
+                  maxColor: Theme.of(context).colorScheme.primary,
+                  width: 60,
+                  height: 60,
                   borderRadius: 100,
                   child: Center(
                       child: Text(
                     totalScore.toStringAsFixed(2),
-                    style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+                    style: const TextStyle(
+                        fontSize: 20, fontWeight: FontWeight.bold),
                   ))))
         ],
         legend: Legend(

@@ -1,6 +1,7 @@
 import 'dart:developer' as developer;
 import 'dart:math';
 import 'package:easy_debounce/easy_debounce.dart';
+import 'package:flex_color_scheme/flex_color_scheme.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:property_evaluator/constants/route.dart';
@@ -30,7 +31,7 @@ class HomeEvaluatorApp extends StatefulWidget {
 }
 
 class _HomeEvaluatorApp extends State<HomeEvaluatorApp> {
-  Color selectedThemeColor = Colors.blue.shade200;
+  ThemeMode currentThemeMode = ThemeMode.light;
   Map<String, CriteriaItemEntity> criteriaItemsMap = {};
   Map<String, PropertyEntity> propertiesMap = {};
   Map<String, AdditionalCostEntity> costItemsMap = {};
@@ -351,9 +352,11 @@ class _HomeEvaluatorApp extends State<HomeEvaluatorApp> {
   }
 
   // Main Route
-  void changeThemeColor(Color color) {
+  void toggleThemeMode() {
     setState(() {
-      selectedThemeColor = color;
+      currentThemeMode = currentThemeMode == ThemeMode.light
+          ? ThemeMode.dark
+          : ThemeMode.light;
     });
   }
 
@@ -392,10 +395,23 @@ class _HomeEvaluatorApp extends State<HomeEvaluatorApp> {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       title: 'Property Evaluator',
-      theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(seedColor: selectedThemeColor),
+      theme: FlexThemeData.light(
+        scheme: FlexScheme.blue,
+        surfaceMode: FlexSurfaceMode.highSurfaceLowScaffold,
+        blendLevel: 5,
+        keyColors: const FlexKeyColors(),
+        visualDensity: FlexColorScheme.comfortablePlatformDensity,
         useMaterial3: true,
       ),
+      darkTheme: FlexThemeData.dark(
+        scheme: FlexScheme.blue,
+        surfaceMode: FlexSurfaceMode.highScaffoldLevelSurface,
+        blendLevel: 12,
+        keyColors: const FlexKeyColors(),
+        visualDensity: FlexColorScheme.comfortablePlatformDensity,
+        useMaterial3: true,
+      ),
+      themeMode: currentThemeMode,
       routes: {
         ADDITIONAL_COST_ROUTE: (context) => AdditionalCostRoute(
               costItems: costItemsMap.values.toList(),
@@ -448,8 +464,8 @@ class _HomeEvaluatorApp extends State<HomeEvaluatorApp> {
             propertiesMap: propertiesMap)
       },
       home: HomeRoute(
-          changeThemeColor: changeThemeColor,
-          currentThemeColor: selectedThemeColor,
+          toggleThemeMode: toggleThemeMode,
+          currentThemeMode: currentThemeMode,
           properties: propertiesMap.values.toList(),
           addProperty: addProperty,
           isEditMode: isInPropertyEditMode,

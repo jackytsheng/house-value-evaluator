@@ -50,7 +50,7 @@ class PropertyCard extends StatelessWidget {
         contentPadding: const EdgeInsets.all(0),
         title: Stack(children: <Widget>[
           FloatCard(
-              margin: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+              margin: const EdgeInsets.symmetric(horizontal: 20, vertical: 5),
               onTapAction: () {
                 if (isEditMode) {
                   _toggleSelect();
@@ -78,14 +78,15 @@ class PropertyCard extends StatelessWidget {
                           ColorScaleWidget(
                             value: overAllScore,
                             minValue: 0,
-                            minColor: Theme.of(context).colorScheme.onPrimary,
+                            minColor: Theme.of(context)
+                                .colorScheme
+                                .secondaryContainer,
                             lightTextColor:
-                                Theme.of(context).colorScheme.onSecondary,
+                                Theme.of(context).colorScheme.onPrimary,
                             maxValue: 10,
                             darkTextColor:
-                                Theme.of(context).colorScheme.inverseSurface,
-                            maxColor:
-                                Theme.of(context).colorScheme.inversePrimary,
+                                Theme.of(context).colorScheme.onSecondary,
+                            maxColor: Theme.of(context).colorScheme.primary,
                             child: Center(
                                 child: Text(
                               overAllScore.toStringAsFixed(2),

@@ -8,8 +8,7 @@ class HelpIconButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return IconButton(
-        icon: Icon(Icons.info_rounded,
-            color: Theme.of(context).colorScheme.onInverseSurface, size: 30),
+        icon: const Icon(Icons.info_rounded, size: 30),
         tooltip: 'Show help message',
         enableFeedback: true,
         onPressed: () => showDialog<String>(
