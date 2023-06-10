@@ -4,6 +4,15 @@ My first flutter project, is about rating the property
 
 Currently only develop for IOS
 
+## Install
+Connect iphone and then
+`flutter run --release`
+
+## logo generation 
+put image under `assets/icon.png` then run
+`flutter pub run flutter_launcher_icons`
+or specify the path
+`flutter pub run flutter_launcher_icons -f <your config file name here>`
 ## Features to add
 - Sorting logic, and secondary sort
 - import and export csv
