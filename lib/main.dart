@@ -1,10 +1,12 @@
 import 'dart:developer' as developer;
+import 'dart:io';
 import 'dart:math';
 import 'package:easy_debounce/easy_debounce.dart';
 import 'package:flex_color_scheme/flex_color_scheme.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:property_evaluator/constants/route.dart';
+import 'package:property_evaluator/local_json_storage.dart';
 import 'package:property_evaluator/model/addition_cost.dart';
 import 'package:property_evaluator/model/criteria.dart';
 import 'package:property_evaluator/model/property.dart';
@@ -15,91 +17,92 @@ import 'package:property_evaluator/route/home_route.dart';
 import 'package:property_evaluator/route/property_route.dart';
 import 'package:uuid/uuid.dart';
 
-void main() {
+Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   SystemChrome.setPreferredOrientations(
       [DeviceOrientation.portraitUp, DeviceOrientation.portraitDown]);
 
-  runApp(const HomeEvaluatorApp());
+  runApp(PropertyEvaluatorApp(storage: LocalJsonStorage()));
 }
 
-class HomeEvaluatorApp extends StatefulWidget {
-  const HomeEvaluatorApp({super.key});
+class PropertyEvaluatorApp extends StatefulWidget {
+  const PropertyEvaluatorApp({super.key, required this.storage});
+
+  final LocalJsonStorage storage;
 
   @override
-  State<HomeEvaluatorApp> createState() => _HomeEvaluatorApp();
+  State<PropertyEvaluatorApp> createState() => _PropertyEvaluatorApp();
 }
 
-class _HomeEvaluatorApp extends State<HomeEvaluatorApp> {
-  ThemeMode currentThemeMode = ThemeMode.light;
+class _PropertyEvaluatorApp extends State<PropertyEvaluatorApp> {
+  // Stored State
   Map<String, CriteriaItemEntity> criteriaItemsMap = {};
   Map<String, PropertyEntity> propertiesMap = {};
   Map<String, AdditionalCostEntity> costItemsMap = {};
+
+  // App State
+  ThemeMode currentThemeMode = ThemeMode.light;
   bool shouldShowWeightingValidationError = false;
   bool isInPropertyEditMode = false;
+
+  // Run time State
   List<String> selectedPropertyIds = [];
 
   @override
   void initState() {
-    String conditionCriteriaId = const Uuid().v4();
-    String trafficCriteriaId = const Uuid().v4();
-    String facilityCriteriaId = const Uuid().v4();
-    String convenienceCriteriaId = const Uuid().v4();
-    criteriaItemsMap = {
-      conditionCriteriaId: CriteriaItemEntity(
-          conditionCriteriaId,
-          [
-            NoteItem(
-                headerValue: "Description",
-                expandedValue: "Assessment on interior design")
-          ],
-          "Condition",
-          0.25),
-      trafficCriteriaId:
-          CriteriaItemEntity(trafficCriteriaId, [], "Traffic", 0.25),
-      facilityCriteriaId:
-          CriteriaItemEntity(facilityCriteriaId, [], "Facility", 0.25),
-      convenienceCriteriaId:
-          CriteriaItemEntity(convenienceCriteriaId, [], "Convenience", 0.25)
-    };
+    widget.storage.listAllItemsInDirectory();
 
-    var ran = Random(123456789);
-    String initialHouseId = const Uuid().v4();
-    propertiesMap = {
-      initialHouseId: PropertyEntity(
-          initialHouseId,
-          "36 Example Street, Brighton Bay",
-          Price(PriceState.estimated, 8850000),
-          PropertyType.house, {
-        for (var item in criteriaItemsMap.values)
-          item.criteriaId: PropertyAssessment(item.criteriaId, [],
-              item.criteriaName, item.weighting, ran.nextInt(10))
-      })
-    };
-
-    String initialTownhouseId = const Uuid().v4();
-    propertiesMap[initialTownhouseId] = PropertyEntity(
-        initialTownhouseId,
-        "1/12 Example Road, Toorak",
-        Price(PriceState.sold, 1850000),
-        PropertyType.townHouse, {
-      for (var item in criteriaItemsMap.values)
-        item.criteriaId: PropertyAssessment(item.criteriaId, [],
-            item.criteriaName, item.weighting, ran.nextInt(10))
+    // read state from file on loading
+    widget.storage.readCostListFromJson().then((costList) {
+      setState(() {
+        _prepareCostItemsMap(costList);
+      });
     });
 
-    selectedPropertyIds = [initialHouseId, initialTownhouseId];
+    widget.storage.readCriteriaListFromJson().then((criteriaList) {
+      setState(() {
+        _prepareCriteriaItemsMap(criteriaList);
+      });
+    });
 
-    String stampDutyId = const Uuid().v4();
-    costItemsMap = {
-      stampDutyId: AdditionalCostEntity(
-          stampDutyId, "Stamp Duty", CostType.percentage, 5.5),
-    };
+    widget.storage.readPropertiesListFromJson().then((properties) {
+      setState(() {
+        _preparePropertiesMap(properties);
 
-    String renovationCostId = const Uuid().v4();
-    costItemsMap[renovationCostId] =
-        AdditionalCostEntity(stampDutyId, "Renovation", CostType.plain, 20000);
+        // filter all selected first then map its id to list
+        selectedPropertyIds = properties
+            .where((property) => property.isSelected)
+            .map((property) => property.propertyId)
+            .toList();
+      });
+    });
+
+    widget.storage.readAppStateFromJson().then((state) {
+      setState(() {
+        currentThemeMode = state.preferredMode;
+        shouldShowWeightingValidationError = state.showCriteriaValidationError;
+        isInPropertyEditMode = state.isEditMode;
+      });
+    });
+
+    // TODO: write to it
     super.initState();
+  }
+
+  void _prepareCriteriaItemsMap(List<CriteriaItemEntity> criteriaList) {
+    criteriaItemsMap = {
+      for (var criteria in criteriaList) criteria.criteriaId: criteria
+    };
+  }
+
+  void _preparePropertiesMap(List<PropertyEntity> properties) {
+    propertiesMap = {
+      for (var property in properties) property.propertyId: property
+    };
+  }
+
+  void _prepareCostItemsMap(List<AdditionalCostEntity> costList) {
+    costItemsMap = {for (var cost in costList) cost.costItemId: cost};
   }
 
   void toggleNoteExpandStatusFromCriteria(String criteriaId, String noteId,
@@ -279,15 +282,20 @@ class _HomeEvaluatorApp extends State<HomeEvaluatorApp> {
     });
   }
 
-  void addProperty(BuildContext context) {
+  void addProperty(BuildContext context) async {
     setState(() {
       String newPropertyId = const Uuid().v4();
       PropertyEntity newProperty = PropertyEntity(
-          newPropertyId, "", Price(PriceState.sold, 0), PropertyType.house, {
-        for (var item in criteriaItemsMap.values)
-          item.criteriaId: PropertyAssessment(
-              item.criteriaId, [], item.criteriaName, item.weighting, 0)
-      });
+          newPropertyId,
+          "",
+          Price(PriceState.sold, 0),
+          PropertyType.house,
+          {
+            for (var item in criteriaItemsMap.values)
+              item.criteriaId: PropertyAssessment(
+                  item.criteriaId, [], item.criteriaName, item.weighting, 0)
+          },
+          false);
       propertiesMap[newPropertyId] = newProperty;
       developer.log("adding new property with Id: $newPropertyId");
 
