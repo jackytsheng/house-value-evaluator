@@ -122,19 +122,18 @@ class HomeRoute extends StatelessWidget {
                                 showDialog(
                                     context: context,
                                     builder: (BuildContext context) => Dialog(
-                                        backgroundColor: Theme.of(context)
-                                            .colorScheme
-                                            .errorContainer,
-                                        child: CloseDeleteDialog(
-                                            onDelete: deleteAllSelected,
-                                            children: [
+                                            child: CloseDeleteDialog(
+                                                onDelete: deleteAllSelected,
+                                                children: [
+                                              Text("Warning !",
+                                                  style: Theme.of(context)
+                                                      .textTheme
+                                                      .titleMedium),
                                               Text(
-                                                "Doing so will remove all notes related as well. Are you sure you want to delete selected properties?",
-                                                style: TextStyle(
-                                                    color: Theme.of(context)
-                                                        .colorScheme
-                                                        .error),
-                                              ),
+                                                  "Doing so will remove all notes related to these properties ! Are you sure you really want to delete ?",
+                                                  style: Theme.of(context)
+                                                      .textTheme
+                                                      .bodySmall),
                                               const SizedBox(height: 10)
                                             ])));
                               },

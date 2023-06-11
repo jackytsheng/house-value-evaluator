@@ -321,18 +321,18 @@ class PropertyRoute extends StatelessWidget {
           ])),
           bottomSheet: assessments.isEmpty
               ? Container(
-                  height: 100,
+                  height: 120,
                   decoration: BoxDecoration(
-                    color: Theme.of(context).colorScheme.primary,
+                    color: Theme.of(context).colorScheme.error,
                     borderRadius:
                         const BorderRadius.vertical(top: Radius.circular(20)),
                   ),
                   width: double.infinity,
                   child: Center(
                       child: Text(
-                    "Create at least one criteria !",
+                    "Create at least one criteria first !",
                     style: TextStyle(
-                      color: Theme.of(context).colorScheme.onPrimary,
+                      color: Theme.of(context).colorScheme.onError,
                       fontSize: 14,
                       fontWeight: FontWeight.bold,
                     ),

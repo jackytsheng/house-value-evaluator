@@ -50,20 +50,20 @@ class CriteriaItem extends StatelessWidget {
                       showDialog(
                           context: context,
                           builder: (BuildContext context) => Dialog(
-                              backgroundColor:
-                                  Theme.of(context).colorScheme.errorContainer,
-                              child: CloseDeleteDialog(
-                                  onDelete: () {
-                                    deleteCriteria?.call();
-                                  },
-                                  children: [
+                                  child: CloseDeleteDialog(
+                                      onDelete: () {
+                                        deleteCriteria?.call();
+                                      },
+                                      children: [
+                                    Text("Warning !",
+                                        style: Theme.of(context)
+                                            .textTheme
+                                            .titleMedium),
                                     Text(
-                                      "Doing so will remove all notes, properties that have scored and added note against this criteria as well. Are you sure you want to delete this criteria?",
-                                      style: TextStyle(
-                                          color: Theme.of(context)
-                                              .colorScheme
-                                              .error),
-                                    ),
+                                        "Doing so will remove all notes, properties that have scored and added note against this criteria as well. Are you sure you want to delete this criteria?",
+                                        style: Theme.of(context)
+                                            .textTheme
+                                            .bodySmall),
                                     const SizedBox(height: 10)
                                   ])));
                     },

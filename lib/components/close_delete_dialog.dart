@@ -17,14 +17,18 @@ class CloseDeleteDialog extends StatelessWidget {
               ...children,
               Row(mainAxisAlignment: MainAxisAlignment.spaceEvenly, children: [
                 FilledButton(
+                  style: ButtonStyle(
+                    backgroundColor: MaterialStateProperty.all<Color>(
+                        Theme.of(context).colorScheme.error),
+                  ),
                   onPressed: () {
                     onDelete();
                     Navigator.pop(context);
                   },
                   child: Text(
                     'Delete',
-                    style: TextStyle(
-                        color: Theme.of(context).colorScheme.onPrimary),
+                    style:
+                        TextStyle(color: Theme.of(context).colorScheme.onError),
                   ),
                 ),
                 FilledButton.tonal(

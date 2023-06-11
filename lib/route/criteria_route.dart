@@ -99,7 +99,7 @@ class CriteriaRoute extends StatelessWidget {
                 ? Container(
                     height: 70,
                     decoration: BoxDecoration(
-                      color: Theme.of(context).colorScheme.primary,
+                      color: Theme.of(context).colorScheme.error,
                       borderRadius:
                           const BorderRadius.vertical(top: Radius.circular(20)),
                     ),
@@ -107,10 +107,10 @@ class CriteriaRoute extends StatelessWidget {
                     child: Center(
                         child: Text(
                       criteriaItems.isEmpty
-                          ? "Create at least one criteria !"
+                          ? "Create at least one criteria first !"
                           : "Value does not add up to 100% !",
                       style: TextStyle(
-                        color: Theme.of(context).colorScheme.onPrimary,
+                        color: Theme.of(context).colorScheme.onError,
                         fontSize: 14,
                         fontWeight: FontWeight.bold,
                       ),
