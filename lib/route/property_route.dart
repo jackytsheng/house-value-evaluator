@@ -99,9 +99,6 @@ class PropertyRoute extends StatelessWidget {
                   ? "Add a new property"
                   : "Edit a property",
               childrenMessages: [
-                Text("Instruction",
-                    style: Theme.of(context).textTheme.titleMedium),
-                const SizedBox(height: 10),
                 Text("1. Hold and swipe left to show the delete icon",
                     style: Theme.of(context).textTheme.bodySmall),
                 const SizedBox(height: 10),
@@ -118,9 +115,6 @@ class PropertyRoute extends StatelessWidget {
                     style: Theme.of(context).textTheme.bodySmall),
                 const SizedBox(height: 10),
                 Text("6. Total Score = sum(Criteria Weight * Individual Score)",
-                    style: Theme.of(context).textTheme.bodySmall),
-                const SizedBox(height: 10),
-                Text("7. Total Score = sum(Criteria Weight * Individual Score)",
                     style: Theme.of(context).textTheme.bodySmall),
               ]),
           body: SingleChildScrollView(
