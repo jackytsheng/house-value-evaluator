@@ -18,7 +18,6 @@ or specify the path
 - Real estate link to property
 - Support different currency
 - Polish info message and warning message
-- export json and share it
 - Animation:
   - Bottom sheet appearing
   - Removing item
@@ -28,10 +27,14 @@ or specify the path
 - Better way to manage state
 - Add tests to the entire project
 - Refactor using closure to avoid arguments used multiple time
-- Linting
-- Fix Theming using flex_color_scheme
 
 ## Run linting
 `dart fix --dry-run`
 `dart fix --apply`
 
+## Generate icon
+`flutter pub run flutter_launcher_icon`
+
+## TODO
+- darker icon color
+- Initial state after reading to it write to it

@@ -118,7 +118,10 @@ class LocalJsonStorage {
           costType: CostType.plain,
           amount: 20000);
 
-      return [stampDuty, renovateCost];
+      final initialCostList = [stampDuty, renovateCost];
+      await writeCostListToJson(initialCostList);
+
+      return initialCostList;
     }
   }
 
@@ -150,23 +153,13 @@ class LocalJsonStorage {
       return AppState.fromJson(json);
     } catch (e) {
       // Error handling
-      developer
-          .log('error occurred: $e, setting app state to be the default value');
+      developer.log(
+          'error occurred: $e, setting app state to be the default value. And saving it to file');
 
-      return AppState();
-    }
-  }
+      final initialAppState = AppState();
+      await writeAppStateToJson(initialAppState);
 
-  Future<void> deleteTmpFiles() async {
-    try {
-      final path = await _localPath;
-
-      final file = File('$path/test.txt');
-      // Read the file
-      file.delete();
-    } catch (e) {
-      // Error handling
-      developer.log('error occurred: $e');
+      return initialAppState;
     }
   }
 
@@ -196,7 +189,7 @@ class LocalJsonStorage {
     } catch (e) {
       // Error handling
       developer.log(
-          'error occurred: $e, setting properties to be the default value');
+          'error occurred: $e, setting properties to be the default value. And saving it to file');
 
       var ran = Random(123456789);
       var initialHouse = PropertyEntity(
@@ -229,7 +222,10 @@ class LocalJsonStorage {
           },
           isSelected: true);
 
-      return [initialHouse, initialTownHouse];
+      final initialProperties = [initialHouse, initialTownHouse];
+      await writePropertiesListToJson(initialProperties);
+
+      return initialProperties;
     }
   }
 
@@ -263,9 +259,11 @@ class LocalJsonStorage {
     } catch (e) {
       // Error handling
       developer.log(
-          'error occurred: $e, setting criteria item to be the default value');
+          'error occurred: $e, setting criteria item to be the default value. And saving it to file');
+      final initialCriteriaList = _getInitialCriteriaList;
+      await writeCriteriaListToJson(initialCriteriaList);
 
-      return _getInitialCriteriaList;
+      return initialCriteriaList;
     }
   }
 
