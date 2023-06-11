@@ -1,7 +1,6 @@
 import 'dart:convert';
 import 'dart:developer' as developer;
 import 'dart:math';
-import 'package:flutter/material.dart';
 import 'package:path_provider/path_provider.dart';
 import 'dart:async';
 import 'dart:io';

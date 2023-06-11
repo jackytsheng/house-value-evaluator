@@ -21,7 +21,7 @@ class HelpIconButton extends StatelessWidget {
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: <Widget>[
                       Padding(
-                          padding: EdgeInsets.all(15),
+                          padding: const EdgeInsets.all(15),
                           child: Column(
                             children: childrenMessages,
                           )),
