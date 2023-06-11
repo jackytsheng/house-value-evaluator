@@ -16,12 +16,14 @@ class HomeRoute extends StatelessWidget {
     required this.isEditMode,
     required this.selectedPropertyIds,
     required this.togglePropertySelect,
+    required this.export,
     required this.deleteAllSelected,
   });
 
   final Function() toggleThemeMode;
   final Function(BuildContext context) addProperty;
   final Function() toggleEditMode;
+  final Function() export;
   final Function(String propertyId) togglePropertySelect;
   final Function() deleteAllSelected;
   final ThemeMode currentThemeMode;
@@ -164,6 +166,12 @@ class HomeRoute extends StatelessWidget {
                         onPressed: () {
                           Navigator.pushNamed(context, ADDITIONAL_COST_ROUTE);
                         },
+                      ),
+                      IconButton(
+                        iconSize: 40,
+                        tooltip: 'Export stored files',
+                        icon: const Icon(Icons.download_for_offline_rounded),
+                        onPressed: export,
                       )
                     ]),
             )));

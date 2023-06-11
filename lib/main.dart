@@ -495,6 +495,13 @@ class _PropertyEvaluatorApp extends State<PropertyEvaluatorApp> {
     });
   }
 
+  void exportFile() {
+    //could add another save before exporting
+    widget.storage
+        .exportJson()
+        .then((value) => developer.log("successfully export files"));
+  }
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -576,7 +583,8 @@ class _PropertyEvaluatorApp extends State<PropertyEvaluatorApp> {
           toggleEditMode: togglePropertyEditMode,
           selectedPropertyIds: selectedPropertyIds,
           togglePropertySelect: togglePropertySelected,
-          deleteAllSelected: deleteAllSelectedPropertyInSelectedList),
+          deleteAllSelected: deleteAllSelectedPropertyInSelectedList,
+          export: exportFile),
     );
   }
 }

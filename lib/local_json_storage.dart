@@ -10,6 +10,7 @@ import 'package:property_evaluator/model/criteria.dart';
 import 'package:property_evaluator/model/note.dart';
 import 'package:property_evaluator/model/property.dart';
 import 'package:property_evaluator/model/app_state.dart';
+import 'package:share/share.dart';
 import 'package:uuid/uuid.dart';
 
 class LocalJsonStorage {
@@ -282,6 +283,25 @@ class LocalJsonStorage {
     } catch (e) {
       // Error handling
       developer.log('error occurred during writing criteria json: $e');
+    }
+  }
+
+  Future<void> exportJson() async {
+    try {
+      developer.log('exporting json files !');
+      final directory = await _directory;
+      final fileList = Directory(directory.path).listSync();
+
+      List<String> filePaths = [];
+
+      for (var file in fileList) {
+        if (file is File) {
+          filePaths.add(file.path);
+        }
+      }
+      await Share.shareFiles(filePaths);
+    } catch (e) {
+      developer.log('error occurs when trying to export file: $e');
     }
   }
 }
