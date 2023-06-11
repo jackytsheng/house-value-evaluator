@@ -5,10 +5,10 @@ class ThemedAppBar extends StatelessWidget implements PreferredSizeWidget {
   @override
   final Size preferredSize;
   final String title;
-  final String helpMessage;
+  final List<Widget> childrenMessages;
 
   const ThemedAppBar(
-      {super.key, required this.title, required this.helpMessage})
+      {super.key, required this.title, required this.childrenMessages})
       : preferredSize = const Size.fromHeight(50.0);
 
   @override
@@ -16,7 +16,7 @@ class ThemedAppBar extends StatelessWidget implements PreferredSizeWidget {
     return AppBar(
       scrolledUnderElevation: 10,
       elevation: 10,
-      actions: [HelpIconButton(helpMessage: helpMessage)],
+      actions: [HelpIconButton(childrenMessages: childrenMessages)],
       leading: Builder(
         builder: (BuildContext context) {
           return IconButton(

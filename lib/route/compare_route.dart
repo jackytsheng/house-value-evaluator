@@ -19,18 +19,21 @@ class CompareRoute extends StatelessWidget {
   Widget build(BuildContext context) {
     final List<String> chartData = criteriaItemsMap.keys.toList();
     return Scaffold(
-        appBar: const ThemedAppBar(
-          title: "Compare property",
-          helpMessage: """
-1. Legend list can be scrolled
-        
-2. Click legend to toggle visibility
-
-3. Click a single bar to view score
-
-4. Hold down to view all score
-        """,
-        ),
+        appBar: ThemedAppBar(title: "Compare property", childrenMessages: [
+          Text("Instruction", style: Theme.of(context).textTheme.titleMedium),
+          const SizedBox(height: 10),
+          Text("1. Click legend label to toggle visibility of data",
+              style: Theme.of(context).textTheme.bodySmall),
+          const SizedBox(height: 10),
+          Text("2. Legend labels can be scrolled horizontally",
+              style: Theme.of(context).textTheme.bodySmall),
+          const SizedBox(height: 10),
+          Text("3. Single bar can be clicked to view score",
+              style: Theme.of(context).textTheme.bodySmall),
+          const SizedBox(height: 10),
+          Text("4. Hold down the chart to view the comparsion",
+              style: Theme.of(context).textTheme.bodySmall),
+        ]),
         body: Center(
             child: Padding(
                 padding: const EdgeInsets.only(left: 20, top: 15, bottom: 20),

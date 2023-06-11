@@ -95,25 +95,34 @@ class PropertyRoute extends StatelessWidget {
         onTap: () => FocusManager.instance.primaryFocus?.unfocus(),
         child: Scaffold(
           appBar: ThemedAppBar(
-            title: args.propertyAction == PropertyAction.newProperty
-                ? "Add a new property"
-                : "Edit a property",
-            helpMessage: """
-1. Legend list can be scrolled
-
-2. Click legend to toggle visibility
-
-3. Number can be swipe up or down
-
-4. Click a track to view score
-
-5. Total Score = sum(Weight * Score)
-
-6. % cost applied to sold/est price
-
-7. Plain cost added after %
-            """,
-          ),
+              title: args.propertyAction == PropertyAction.newProperty
+                  ? "Add a new property"
+                  : "Edit a property",
+              childrenMessages: [
+                Text("Instruction",
+                    style: Theme.of(context).textTheme.titleMedium),
+                const SizedBox(height: 10),
+                Text("1. Hold and swipe left to show the delete icon",
+                    style: Theme.of(context).textTheme.bodySmall),
+                const SizedBox(height: 10),
+                Text("2. Number picker can be swiped up and down",
+                    style: Theme.of(context).textTheme.bodySmall),
+                const SizedBox(height: 10),
+                Text("3. Click legend label to toggle visibility of data",
+                    style: Theme.of(context).textTheme.bodySmall),
+                const SizedBox(height: 10),
+                Text("4. Legend labels can be scrolled horizontally",
+                    style: Theme.of(context).textTheme.bodySmall),
+                const SizedBox(height: 10),
+                Text("5. Each track can be clicked to show score",
+                    style: Theme.of(context).textTheme.bodySmall),
+                const SizedBox(height: 10),
+                Text("6. Total Score = sum(Criteria Weight * Individual Score)",
+                    style: Theme.of(context).textTheme.bodySmall),
+                const SizedBox(height: 10),
+                Text("7. Total Score = sum(Criteria Weight * Individual Score)",
+                    style: Theme.of(context).textTheme.bodySmall),
+              ]),
           body: SingleChildScrollView(
               child: Column(children: [
             const SizedBox(height: COLUMN_GAP),

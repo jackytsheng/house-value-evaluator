@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 
 class HelpIconButton extends StatelessWidget {
-  const HelpIconButton({super.key, required this.helpMessage});
+  const HelpIconButton({super.key, required this.childrenMessages});
 
-  final String helpMessage;
+  final List<Widget> childrenMessages;
 
   @override
   Widget build(BuildContext context) {
@@ -21,8 +21,10 @@ class HelpIconButton extends StatelessWidget {
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: <Widget>[
                       Padding(
-                          padding: const EdgeInsets.all(15),
-                          child: Text(helpMessage)),
+                          padding: EdgeInsets.all(15),
+                          child: Column(
+                            children: childrenMessages,
+                          )),
                       ElevatedButton(
                         style: ElevatedButton.styleFrom(elevation: 0),
                         onPressed: () {

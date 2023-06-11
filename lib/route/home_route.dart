@@ -39,15 +39,18 @@ class HomeRoute extends StatelessWidget {
             appBar: AppBar(
               toolbarHeight: 50,
               actions: <Widget>[
-                const HelpIconButton(helpMessage: """
-1. Select cards to compare
-
-2. Select cards to delete
-
-3. Score color change base on number
-
-4. Selected cards auto show in compare
-"""),
+                HelpIconButton(childrenMessages: [
+                  Text("Instruction",
+                      style: Theme.of(context).textTheme.titleMedium),
+                  const SizedBox(height: 10),
+                  Text(
+                      "1. Select three dots to compare or to delete properties",
+                      style: Theme.of(context).textTheme.bodySmall),
+                  const SizedBox(height: 10),
+                  Text(
+                      "2. The higher the score the denser the background color",
+                      style: Theme.of(context).textTheme.bodySmall),
+                ]),
                 IconButton(
                     iconSize: 40,
                     tooltip: currentThemeMode == ThemeMode.light

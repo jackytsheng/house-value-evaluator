@@ -25,18 +25,23 @@ class AdditionalCostRoute extends StatelessWidget {
     return GestureDetector(
         onTap: () => FocusManager.instance.primaryFocus?.unfocus(),
         child: Scaffold(
-            appBar: const ThemedAppBar(
-              title: "Additional cost",
-              helpMessage: """
-1. Swipe left to delete cost
-
-2. % cost applied to sold/est price
-
-3. Plain cost added after %
-
-4. Cost apply to all properties
-        """,
-            ),
+            appBar: ThemedAppBar(title: "Additional cost", childrenMessages: [
+              Text("Instruction",
+                  style: Theme.of(context).textTheme.titleMedium),
+              const SizedBox(height: 10),
+              Text("1. Hold and swipe left to show the delete icon",
+                  style: Theme.of(context).textTheme.bodySmall),
+              const SizedBox(height: 10),
+              Text(
+                  "2. Percentage cost will apply directly on the sold/estimate price",
+                  style: Theme.of(context).textTheme.bodySmall),
+              const SizedBox(height: 10),
+              Text("3. Plain cost will apply after percentage cost",
+                  style: Theme.of(context).textTheme.bodySmall),
+              const SizedBox(height: 10),
+              Text("4. These cost will apply to all properties",
+                  style: Theme.of(context).textTheme.bodySmall),
+            ]),
             body: SingleChildScrollView(
               child: Column(
                   children: costItems

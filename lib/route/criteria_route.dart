@@ -40,20 +40,16 @@ class CriteriaRoute extends StatelessWidget {
     return GestureDetector(
         onTap: () => FocusManager.instance.primaryFocus?.unfocus(),
         child: Scaffold(
-            appBar: const ThemedAppBar(
-              title: "Criteria",
-              helpMessage: """
-1. Swipe left to delete a single criteria
-        
-2. ⚠️ Delete criteria remove all notes ⚠️
-
-3. Number can be swipe up or down
-        
-4. Criteria can have 15 characters max
-
-5. Criteria name can be changed
-        """,
-            ),
+            appBar: ThemedAppBar(title: "Criteria", childrenMessages: [
+              Text("Instruction",
+                  style: Theme.of(context).textTheme.titleMedium),
+              Text("1. Hold and swipe left to show the delete icon",
+                  style: Theme.of(context).textTheme.bodySmall),
+              Text("2. Number picker can be swiped up and down",
+                  style: Theme.of(context).textTheme.bodySmall),
+              Text("3. Criteria name can have maximum of 15 characters",
+                  style: Theme.of(context).textTheme.bodySmall)
+            ]),
             body: SingleChildScrollView(
                 child: Column(
                     children: criteriaItems
