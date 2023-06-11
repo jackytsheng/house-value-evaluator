@@ -35,6 +35,7 @@ or specify the path
 ## Generate icon
 `flutter pub run flutter_launcher_icon`
 
-## TODO
-- darker icon color
-- Initial state after reading to it write to it
+## Setup App on IOS locally
+1. Turn on developer mode, Settings > Privacy & Security > Developer Mode. Then Restart
+2. on Iphone, Settings > General > VPN & Device Management > Trust
+   
