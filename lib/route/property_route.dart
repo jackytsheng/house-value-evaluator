@@ -108,7 +108,7 @@ class PropertyRoute extends StatelessWidget {
                 Text("3. Click legend label to toggle visibility of data",
                     style: Theme.of(context).textTheme.bodySmall),
                 const SizedBox(height: 10),
-                Text("4. Legend labels can be scrolled horizontally",
+                Text("4. Legend labels can be scrolled vertically",
                     style: Theme.of(context).textTheme.bodySmall),
                 const SizedBox(height: 10),
                 Text("5. Each track can be clicked to show score",

@@ -40,9 +40,6 @@ class HomeRoute extends StatelessWidget {
               toolbarHeight: 50,
               actions: <Widget>[
                 HelpIconButton(childrenMessages: [
-                  Text("Instruction",
-                      style: Theme.of(context).textTheme.titleMedium),
-                  const SizedBox(height: 10),
                   Text(
                       "1. Select three dots to compare or to delete properties",
                       style: Theme.of(context).textTheme.bodySmall),

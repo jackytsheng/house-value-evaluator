@@ -41,8 +41,6 @@ class CriteriaRoute extends StatelessWidget {
         onTap: () => FocusManager.instance.primaryFocus?.unfocus(),
         child: Scaffold(
             appBar: ThemedAppBar(title: "Criteria", childrenMessages: [
-              Text("Instruction",
-                  style: Theme.of(context).textTheme.titleMedium),
               Text("1. Hold and swipe left to show the delete icon",
                   style: Theme.of(context).textTheme.bodySmall),
               Text("2. Number picker can be swiped up and down",

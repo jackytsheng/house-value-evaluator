@@ -20,9 +20,12 @@ class HelpIconButton extends StatelessWidget {
                     mainAxisSize: MainAxisSize.min,
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: <Widget>[
+                      Text("Instruction",
+                          style: Theme.of(context).textTheme.titleMedium),
                       Padding(
                           padding: const EdgeInsets.all(15),
                           child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
                             children: childrenMessages,
                           )),
                       ElevatedButton(

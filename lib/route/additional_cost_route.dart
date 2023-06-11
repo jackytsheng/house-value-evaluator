@@ -26,9 +26,6 @@ class AdditionalCostRoute extends StatelessWidget {
         onTap: () => FocusManager.instance.primaryFocus?.unfocus(),
         child: Scaffold(
             appBar: ThemedAppBar(title: "Additional cost", childrenMessages: [
-              Text("Instruction",
-                  style: Theme.of(context).textTheme.titleMedium),
-              const SizedBox(height: 10),
               Text("1. Hold and swipe left to show the delete icon",
                   style: Theme.of(context).textTheme.bodySmall),
               const SizedBox(height: 10),

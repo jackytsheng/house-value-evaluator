@@ -20,8 +20,6 @@ class CompareRoute extends StatelessWidget {
     final List<String> chartData = criteriaItemsMap.keys.toList();
     return Scaffold(
         appBar: ThemedAppBar(title: "Compare property", childrenMessages: [
-          Text("Instruction", style: Theme.of(context).textTheme.titleMedium),
-          const SizedBox(height: 10),
           Text("1. Click legend label to toggle visibility of data",
               style: Theme.of(context).textTheme.bodySmall),
           const SizedBox(height: 10),
