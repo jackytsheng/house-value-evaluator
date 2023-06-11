@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:property_evaluator/components/close_delete_dialog.dart';
-import 'package:property_evaluator/model/criteria.dart';
+import 'package:property_evaluator/model/note.dart';
 
 class AccordionNote extends StatelessWidget {
   const AccordionNote({

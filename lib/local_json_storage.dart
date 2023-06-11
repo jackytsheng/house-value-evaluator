@@ -7,26 +7,31 @@ import 'dart:async';
 import 'dart:io';
 import 'package:property_evaluator/model/addition_cost.dart';
 import 'package:property_evaluator/model/criteria.dart';
+import 'package:property_evaluator/model/note.dart';
 import 'package:property_evaluator/model/property.dart';
 import 'package:property_evaluator/model/app_state.dart';
 import 'package:uuid/uuid.dart';
 
 class LocalJsonStorage {
   var conditionCriteria = CriteriaItemEntity(
-      const Uuid().v4(),
-      [
+      criteriaId: const Uuid().v4(),
+      notes: [
         NoteItem(
             headerValue: "Description",
             expandedValue: "Assessment on interior design")
       ],
-      "Condition",
-      0.25);
-  var trafficCriteria =
-      CriteriaItemEntity(const Uuid().v4(), [], "Transport", 0.25);
-  var facilityCriteria =
-      CriteriaItemEntity(const Uuid().v4(), [], "Facility", 0.25);
-  var convenienceCriteria =
-      CriteriaItemEntity(const Uuid().v4(), [], "Convenience", 0.25);
+      criteriaName: "Condition",
+      weighting: 0.25);
+  var trafficCriteria = CriteriaItemEntity(
+      criteriaId: const Uuid().v4(),
+      criteriaName: "Transport",
+      weighting: 0.25);
+  var facilityCriteria = CriteriaItemEntity(
+      criteriaId: const Uuid().v4(), criteriaName: "Facility", weighting: 0.25);
+  var convenienceCriteria = CriteriaItemEntity(
+      criteriaId: const Uuid().v4(),
+      criteriaName: "Convenience",
+      weighting: 0.25);
 
   List<CriteriaItemEntity> get _getInitialCriteriaList {
     return [
@@ -103,9 +108,15 @@ class LocalJsonStorage {
           'error occurred: $e, setting additional cost to be the default value');
 
       var stampDuty = AdditionalCostEntity(
-          const Uuid().v4(), "Stamp Duty", CostType.percentage, 5.5);
+          costItemId: const Uuid().v4(),
+          costName: "Stamp Duty",
+          costType: CostType.percentage,
+          amount: 5.5);
       var renovateCost = AdditionalCostEntity(
-          const Uuid().v4(), "Renovation", CostType.plain, 20000);
+          costItemId: const Uuid().v4(),
+          costName: "Renovation",
+          costType: CostType.plain,
+          amount: 20000);
 
       return [stampDuty, renovateCost];
     }
@@ -179,28 +190,34 @@ class LocalJsonStorage {
 
       var ran = Random(123456789);
       var initialHouse = PropertyEntity(
-          const Uuid().v4(),
-          "36 Example Street, Brighton Bay",
-          Price(PriceState.estimated, 8850000),
-          PropertyType.house,
-          {
+          propertyId: const Uuid().v4(),
+          address: "36 Example Street, Brighton Bay",
+          price: Price(state: PriceState.estimated, amount: 8850000),
+          propertyType: PropertyType.house,
+          propertyAssessmentMap: {
             for (var item in _getInitialCriteriaList)
-              item.criteriaId: PropertyAssessment(item.criteriaId, [],
-                  item.criteriaName, item.weighting, ran.nextInt(10)),
+              item.criteriaId: PropertyAssessment(
+                  criteriaId: item.criteriaId,
+                  criteriaName: item.criteriaName,
+                  weighting: item.weighting,
+                  score: ran.nextInt(10)),
           },
-          true);
+          isSelected: true);
 
       var initialTownHouse = PropertyEntity(
-          const Uuid().v4(),
-          "1/12 Example Road, Toorak",
-          Price(PriceState.sold, 1850000),
-          PropertyType.townHouse,
-          {
+          propertyId: const Uuid().v4(),
+          address: "1/12 Example Road, Toorak",
+          price: Price(state: PriceState.sold, amount: 1850000),
+          propertyType: PropertyType.townHouse,
+          propertyAssessmentMap: {
             for (var item in _getInitialCriteriaList)
-              item.criteriaId: PropertyAssessment(item.criteriaId, [],
-                  item.criteriaName, item.weighting, ran.nextInt(10))
+              item.criteriaId: PropertyAssessment(
+                  criteriaId: item.criteriaId,
+                  criteriaName: item.criteriaName,
+                  weighting: item.weighting,
+                  score: ran.nextInt(10))
           },
-          true);
+          isSelected: true);
 
       return [initialHouse, initialTownHouse];
     }

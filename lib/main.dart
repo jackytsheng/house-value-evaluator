@@ -1,6 +1,4 @@
 import 'dart:developer' as developer;
-import 'dart:io';
-import 'dart:math';
 import 'package:easy_debounce/easy_debounce.dart';
 import 'package:flex_color_scheme/flex_color_scheme.dart';
 import 'package:flutter/material.dart';
@@ -9,6 +7,7 @@ import 'package:property_evaluator/constants/route.dart';
 import 'package:property_evaluator/local_json_storage.dart';
 import 'package:property_evaluator/model/addition_cost.dart';
 import 'package:property_evaluator/model/criteria.dart';
+import 'package:property_evaluator/model/note.dart';
 import 'package:property_evaluator/model/property.dart';
 import 'package:property_evaluator/route/additional_cost_route.dart';
 import 'package:property_evaluator/route/compare_route.dart';
@@ -165,7 +164,7 @@ class _PropertyEvaluatorApp extends State<PropertyEvaluatorApp> {
     setState(() {
       String newCriteriaId = const Uuid().v4();
       criteriaItemsMap[newCriteriaId] =
-          CriteriaItemEntity(newCriteriaId, [], "", 0);
+          CriteriaItemEntity(criteriaId: newCriteriaId);
       _addCriteriaToAllHouse(criteriaItemsMap[newCriteriaId]!);
       developer.log("adding new criteria with Id: $newCriteriaId");
     });
@@ -224,11 +223,9 @@ class _PropertyEvaluatorApp extends State<PropertyEvaluatorApp> {
   void _addCriteriaToAllHouse(CriteriaItemEntity criteria) {
     for (var house in propertiesMap.values) {
       house.propertyAssessmentMap[criteria.criteriaId] = PropertyAssessment(
-          criteria.criteriaId,
-          [],
-          criteria.criteriaName,
-          criteria.weighting,
-          0);
+          criteriaId: criteria.criteriaId,
+          criteriaName: criteria.criteriaName,
+          weighting: criteria.weighting);
     }
 
     developer.log(
@@ -284,18 +281,17 @@ class _PropertyEvaluatorApp extends State<PropertyEvaluatorApp> {
 
   void addProperty(BuildContext context) async {
     setState(() {
-      String newPropertyId = const Uuid().v4();
+      final newPropertyId = const Uuid().v4();
       PropertyEntity newProperty = PropertyEntity(
-          newPropertyId,
-          "",
-          Price(PriceState.sold, 0),
-          PropertyType.house,
-          {
+          propertyId: newPropertyId,
+          price: Price(state: PriceState.sold, amount: 0),
+          propertyAssessmentMap: {
             for (var item in criteriaItemsMap.values)
               item.criteriaId: PropertyAssessment(
-                  item.criteriaId, [], item.criteriaName, item.weighting, 0)
-          },
-          false);
+                  criteriaId: item.criteriaId,
+                  criteriaName: item.criteriaName,
+                  weighting: item.weighting)
+          });
       propertiesMap[newPropertyId] = newProperty;
       developer.log("adding new property with Id: $newPropertyId");
 
@@ -345,7 +341,8 @@ class _PropertyEvaluatorApp extends State<PropertyEvaluatorApp> {
   void addAdditionalCost(CostType type) {
     setState(() {
       String newCostId = const Uuid().v4();
-      costItemsMap[newCostId] = AdditionalCostEntity(newCostId, "", type, 0);
+      costItemsMap[newCostId] =
+          AdditionalCostEntity(costItemId: newCostId, costType: type);
       developer
           .log("adding new additional cost with Id: $newCostId and type $type");
     });

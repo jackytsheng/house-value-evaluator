@@ -4,6 +4,7 @@ import 'package:property_evaluator/components/accordion_note.dart';
 import 'package:property_evaluator/components/close_delete_dialog.dart';
 import 'package:property_evaluator/model/criteria.dart';
 import 'package:numberpicker/numberpicker.dart';
+import 'package:property_evaluator/model/note.dart';
 
 const double GAP_HEIGHT = 20;
 

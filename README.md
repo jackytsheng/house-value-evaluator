@@ -15,12 +15,10 @@ or specify the path
 `flutter pub run flutter_launcher_icons -f <your config file name here>`
 ## Features to add
 - Sorting logic, and secondary sort
-- import and export csv
 - Real estate link to property
 - Support different currency
-- Make cost support decimal place
 - Polish info message and warning message
-- save theme info to shared_preference
+- export json and share it
 - Animation:
   - Bottom sheet appearing
   - Removing item

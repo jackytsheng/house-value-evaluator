@@ -5,6 +5,7 @@ import 'package:property_evaluator/components/radial_score.dart';
 import 'package:property_evaluator/components/themed_app_bar.dart';
 import 'package:property_evaluator/model/addition_cost.dart';
 import 'package:property_evaluator/model/criteria.dart';
+import 'package:property_evaluator/model/note.dart';
 import 'package:property_evaluator/model/property.dart';
 import 'package:property_evaluator/utils/currency_formatter.dart';
 import 'package:property_evaluator/utils/icon_picker.dart';
@@ -164,8 +165,9 @@ class PropertyRoute extends StatelessWidget {
               onPressed: (int index) {
                 setPrice(
                     args.propertyEntity.propertyId,
-                    Price(PriceState.values[index],
-                        args.propertyEntity.price.amount));
+                    Price(
+                        state: PriceState.values[index],
+                        amount: args.propertyEntity.price.amount));
               },
               borderRadius: const BorderRadius.all(Radius.circular(20)),
               selectedColor: Theme.of(context).colorScheme.onInverseSurface,
@@ -200,8 +202,10 @@ class PropertyRoute extends StatelessWidget {
                   onChanged: (value) {
                     setPrice(
                         args.propertyEntity.propertyId,
-                        Price(args.propertyEntity.price.state,
-                            value.isNotEmpty ? double.parse(value) : 0));
+                        Price(
+                            state: args.propertyEntity.price.state,
+                            amount:
+                                value.isNotEmpty ? double.parse(value) : 0));
                   },
                   textAlign: TextAlign.end,
                   decoration: InputDecoration(
@@ -299,10 +303,10 @@ class PropertyRoute extends StatelessWidget {
                               isExpanded, assessmentMap);
                         },
                         item: CriteriaItemEntity(
-                            assessment.criteriaId,
-                            assessment.notes,
-                            assessment.criteriaName,
-                            assessment.score.toDouble())))
+                            criteriaId: assessment.criteriaId,
+                            notes: assessment.notes,
+                            criteriaName: assessment.criteriaName,
+                            weighting: assessment.score.toDouble())))
                     .toList())
           ])),
           bottomSheet: assessments.isEmpty

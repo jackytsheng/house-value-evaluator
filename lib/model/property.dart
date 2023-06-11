@@ -1,4 +1,5 @@
 import 'package:property_evaluator/model/criteria.dart';
+import 'package:property_evaluator/model/note.dart';
 
 enum PropertyType { townHouse, house, apartment }
 
@@ -34,7 +35,7 @@ class Price {
   PriceState state;
   double amount;
 
-  Price(this.state, this.amount);
+  Price({required this.state, required this.amount});
 
   Map<String, dynamic> toJson() {
     return {
@@ -45,8 +46,8 @@ class Price {
 
   factory Price.fromJson(Map<String, dynamic> json) {
     return Price(
-      priceStateFromString(json['state']),
-      json['amount'],
+      state: priceStateFromString(json['state']),
+      amount: json['amount'],
     );
   }
 }
@@ -54,15 +55,14 @@ class Price {
 class PropertyAssessment extends CriteriaItemEntity {
   int score;
 
-  PropertyAssessment(String criteriaId, List<NoteItem> notes,
-      String criteriaName, double criteriaWeight, this.score)
-      : super(
-          criteriaId,
-          notes,
-          criteriaName,
-          criteriaWeight,
-        );
+  PropertyAssessment(
+      {required super.criteriaId,
+      super.notes = const [],
+      required super.criteriaName,
+      required super.weighting,
+      this.score = 0});
 
+  @override
   Map<String, dynamic> toJson() {
     return {
       'criteriaId': criteriaId,
@@ -75,13 +75,13 @@ class PropertyAssessment extends CriteriaItemEntity {
 
   factory PropertyAssessment.fromJson(Map<String, dynamic> json) {
     return PropertyAssessment(
-      json['criteriaId'],
-      (json['notes'] as List<dynamic>)
+      criteriaId: json['criteriaId'],
+      notes: (json['notes'] as List<dynamic>)
           .map((noteJson) => NoteItem.fromJson(noteJson))
           .toList(),
-      json['criteriaName'],
-      json['weighting'],
-      json['score'],
+      criteriaName: json['criteriaName'],
+      weighting: json['weighting'],
+      score: json['score'],
     );
   }
 }
@@ -94,8 +94,13 @@ class PropertyEntity {
   bool isSelected;
   Map<String, PropertyAssessment> propertyAssessmentMap;
 
-  PropertyEntity(this.propertyId, this.address, this.price, this.propertyType,
-      this.propertyAssessmentMap, this.isSelected);
+  PropertyEntity(
+      {required this.propertyId,
+      this.address = "",
+      required this.price,
+      this.propertyType = PropertyType.house,
+      required this.propertyAssessmentMap,
+      this.isSelected = false});
 
   double getOverAllScore() {
     double score = 0.0;
@@ -119,13 +124,14 @@ class PropertyEntity {
 
   factory PropertyEntity.fromJson(Map<String, dynamic> json) {
     return PropertyEntity(
-        json['propertyId'],
-        json['address'],
-        Price.fromJson(json['price']),
-        propertyTypeFromString(json['propertyType']),
-        (json['propertyAssessmentMap'] as Map<String, dynamic>).map(
+        propertyId: json['propertyId'],
+        address: json['address'],
+        price: Price.fromJson(json['price']),
+        propertyType: propertyTypeFromString(json['propertyType']),
+        propertyAssessmentMap:
+            (json['propertyAssessmentMap'] as Map<String, dynamic>).map(
           (key, value) => MapEntry(key, PropertyAssessment.fromJson(value)),
         ),
-        json['isSelected']);
+        isSelected: json['isSelected']);
   }
 }

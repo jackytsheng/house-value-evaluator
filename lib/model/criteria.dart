@@ -1,37 +1,4 @@
-import 'package:uuid/uuid.dart';
-
-class NoteItem {
-  NoteItem({
-    this.expandedValue,
-    this.headerValue,
-    this.isExpanded = false,
-  });
-
-  String noteId = const Uuid().v4();
-  String? expandedValue;
-  String? headerValue;
-  bool isExpanded;
-
-  Map<String, dynamic> toJson() {
-    return {
-      'noteId': noteId,
-      'expandedValue': expandedValue,
-      'headerValue': headerValue,
-      'isExpanded': isExpanded,
-    };
-  }
-
-  factory NoteItem.fromJson(Map<String, dynamic> json) {
-    var note = NoteItem(
-      expandedValue: json['expandedValue'],
-      headerValue: json['headerValue'],
-      isExpanded: json['isExpanded'],
-    );
-
-    note.noteId = json['noteId'];
-    return note;
-  }
-}
+import 'package:property_evaluator/model/note.dart';
 
 class CriteriaItemEntity {
   final String criteriaId;
@@ -40,7 +7,10 @@ class CriteriaItemEntity {
   double weighting;
 
   CriteriaItemEntity(
-      this.criteriaId, this.notes, this.criteriaName, this.weighting);
+      {required this.criteriaId,
+      this.notes = const [],
+      this.criteriaName = "",
+      this.weighting = 0});
 
   Map<String, dynamic> toJson() {
     return {
@@ -53,12 +23,12 @@ class CriteriaItemEntity {
 
   factory CriteriaItemEntity.fromJson(Map<String, dynamic> json) {
     return CriteriaItemEntity(
-      json['criteriaId'],
-      (json['notes'] as List<dynamic>)
+      criteriaId: json['criteriaId'],
+      notes: (json['notes'] as List<dynamic>)
           .map((noteJson) => NoteItem.fromJson(noteJson))
           .toList(),
-      json['criteriaName'],
-      json['weighting'],
+      criteriaName: json['criteriaName'],
+      weighting: json['weighting'],
     );
   }
 }

@@ -29,7 +29,10 @@ class AdditionalCostEntity {
   double amount;
 
   AdditionalCostEntity(
-      this.costItemId, this.costName, this.costType, this.amount);
+      {required this.costItemId,
+      required this.costType,
+      this.costName = "",
+      this.amount = 0});
 
   Map<String, dynamic> toJson() {
     return {
@@ -42,10 +45,10 @@ class AdditionalCostEntity {
 
   factory AdditionalCostEntity.fromJson(Map<String, dynamic> json) {
     return AdditionalCostEntity(
-      json['costItemId'],
-      json['costName'],
-      costTypeFromString(json['costType']),
-      json['amount'],
+      costItemId: json['costItemId'],
+      costName: json['costName'],
+      costType: costTypeFromString(json['costType']),
+      amount: json['amount'],
     );
   }
 }
