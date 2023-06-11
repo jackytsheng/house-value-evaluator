@@ -13,6 +13,7 @@ String themeModeToString(ThemeMode themeMode) {
 
 ThemeMode stringToThemeMode(String themeModeString) {
   switch (themeModeString) {
+    // system won't be set in the entire app, as light is the default
     case 'system':
       return ThemeMode.system;
     case 'light':
@@ -20,19 +21,19 @@ ThemeMode stringToThemeMode(String themeModeString) {
     case 'dark':
       return ThemeMode.dark;
     default:
-      return ThemeMode.system;
+      return ThemeMode.light;
   }
 }
 
 class AppState {
-  final ThemeMode preferredMode;
-  final bool isEditMode;
-  final bool showCriteriaValidationError;
+  ThemeMode preferredMode;
+  bool isEditMode;
+  bool showCriteriaValidationError;
 
   AppState({
-    required this.preferredMode,
-    required this.isEditMode,
-    required this.showCriteriaValidationError,
+    this.preferredMode = ThemeMode.light,
+    this.isEditMode = false,
+    this.showCriteriaValidationError = false,
   });
 
   Map<String, dynamic> toJson() {

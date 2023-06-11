@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:property_evaluator/components/criteria_item.dart';
 import 'package:property_evaluator/components/themed_app_bar.dart';
 import 'package:property_evaluator/model/criteria.dart';
+import 'package:property_evaluator/model/note.dart';
 
 class CriteriaRoute extends StatelessWidget {
   const CriteriaRoute({

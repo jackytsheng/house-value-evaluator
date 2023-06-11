@@ -6,6 +6,7 @@ import 'package:flutter/services.dart';
 import 'package:property_evaluator/constants/route.dart';
 import 'package:property_evaluator/local_json_storage.dart';
 import 'package:property_evaluator/model/addition_cost.dart';
+import 'package:property_evaluator/model/app_state.dart';
 import 'package:property_evaluator/model/criteria.dart';
 import 'package:property_evaluator/model/note.dart';
 import 'package:property_evaluator/model/property.dart';
@@ -40,9 +41,7 @@ class _PropertyEvaluatorApp extends State<PropertyEvaluatorApp> {
   Map<String, AdditionalCostEntity> costItemsMap = {};
 
   // App State
-  ThemeMode currentThemeMode = ThemeMode.light;
-  bool shouldShowWeightingValidationError = false;
-  bool isInPropertyEditMode = false;
+  AppState appState = AppState();
 
   // Run time State
   List<String> selectedPropertyIds = [];
@@ -51,7 +50,7 @@ class _PropertyEvaluatorApp extends State<PropertyEvaluatorApp> {
   void initState() {
     widget.storage.listAllItemsInDirectory();
 
-    // read state from file on loading
+    // Read state from file on loading
     widget.storage.readCostListFromJson().then((costList) {
       setState(() {
         _prepareCostItemsMap(costList);
@@ -69,24 +68,71 @@ class _PropertyEvaluatorApp extends State<PropertyEvaluatorApp> {
         _preparePropertiesMap(properties);
 
         // filter all selected first then map its id to list
-        selectedPropertyIds = properties
-            .where((property) => property.isSelected)
-            .map((property) => property.propertyId)
-            .toList();
+        selectedPropertyIds = _generateSelectedList(properties);
       });
     });
 
     widget.storage.readAppStateFromJson().then((state) {
       setState(() {
-        currentThemeMode = state.preferredMode;
-        shouldShowWeightingValidationError = state.showCriteriaValidationError;
-        isInPropertyEditMode = state.isEditMode;
+        appState = state;
       });
     });
 
-    // TODO: write to it
     super.initState();
   }
+
+  void _savePropertyToFileDebounced() {
+    EasyDebounce.debounce(
+        'PropertyJsonWriter', const Duration(milliseconds: 1000), () {
+      developer.log("saving ${propertiesMap.values.length} properties in file");
+      widget.storage
+          .writePropertiesListToJson(propertiesMap.values.toList())
+          .then((value) {
+        developer.log("successfully saving properties");
+      });
+    });
+  }
+
+  void _saveCriteriaToFileDebounced() {
+    EasyDebounce.debounce(
+        'CriteriaJsonWriter', const Duration(milliseconds: 1000), () {
+      developer
+          .log("saving ${criteriaItemsMap.values.length} criteria in file");
+      widget.storage
+          .writeCriteriaListToJson(criteriaItemsMap.values.toList())
+          .then((value) {
+        developer.log("successfully saving criteria");
+      });
+    });
+  }
+
+  void _saveCostToFileDebounced() {
+    EasyDebounce.debounce('CostJsonWriter', const Duration(milliseconds: 1000),
+        () {
+      developer.log("saving ${costItemsMap.values.length} cost in file");
+      widget.storage
+          .writeCostListToJson(costItemsMap.values.toList())
+          .then((value) {
+        developer.log("successfully saving cost");
+      });
+    });
+  }
+
+  void _saveAppStateFileDebounced() {
+    EasyDebounce.debounce(
+        'AppStateJsonWriter', const Duration(milliseconds: 1000), () {
+      developer.log("saving app state in file");
+      widget.storage.writeAppStateToJson(appState).then((value) {
+        developer.log("successfully saving app state");
+      });
+    });
+  }
+
+  List<String> _generateSelectedList(List<PropertyEntity> properties) =>
+      properties
+          .where((property) => property.isSelected)
+          .map((property) => property.propertyId)
+          .toList();
 
   void _prepareCriteriaItemsMap(List<CriteriaItemEntity> criteriaList) {
     criteriaItemsMap = {
@@ -116,6 +162,8 @@ class _PropertyEvaluatorApp extends State<PropertyEvaluatorApp> {
           note.isExpanded = false;
         }
       }
+
+      _saveCriteriaToFileDebounced();
     });
   }
 
@@ -127,6 +175,8 @@ class _PropertyEvaluatorApp extends State<PropertyEvaluatorApp> {
           .removeWhere((NoteItem note) => note.noteId == noteId);
       developer.log(
           "removing note item with Id: $noteId from criteria Id : $criteriaId");
+
+      _saveCriteriaToFileDebounced();
     });
   }
 
@@ -136,6 +186,8 @@ class _PropertyEvaluatorApp extends State<PropertyEvaluatorApp> {
       criteriaMap[criteriaId]?.notes[noteIndex].headerValue = headerValue;
       developer.log(
           "setting header for note index: $noteIndex from criteria Id : $criteriaId");
+
+      _saveCriteriaToFileDebounced();
     });
   }
 
@@ -145,6 +197,8 @@ class _PropertyEvaluatorApp extends State<PropertyEvaluatorApp> {
       criteriaMap[criteriaId]?.notes[noteIndex].expandedValue = expandedValue;
       developer.log(
           "setting expandedValue for note index: $noteIndex from criteria Id : $criteriaId");
+
+      _saveCriteriaToFileDebounced();
     });
   }
 
@@ -157,6 +211,8 @@ class _PropertyEvaluatorApp extends State<PropertyEvaluatorApp> {
       criteriaMap[criteriaId]?.notes.add(newNote);
       developer.log(
           "adding new note with Id: ${newNote.noteId} to criteria Id : $criteriaId");
+
+      _saveCriteriaToFileDebounced();
     });
   }
 
@@ -167,6 +223,10 @@ class _PropertyEvaluatorApp extends State<PropertyEvaluatorApp> {
           CriteriaItemEntity(criteriaId: newCriteriaId);
       _addCriteriaToAllHouse(criteriaItemsMap[newCriteriaId]!);
       developer.log("adding new criteria with Id: $newCriteriaId");
+
+      _validateWeightingSum();
+      _saveCriteriaToFileDebounced();
+      _savePropertyToFileDebounced();
     });
   }
 
@@ -175,9 +235,11 @@ class _PropertyEvaluatorApp extends State<PropertyEvaluatorApp> {
       criteriaItemsMap.remove(criteriaId);
       developer.log("removing criteria with Id: $criteriaId");
       _removeCriteriaFromAllHouse(criteriaId);
-    });
 
-    _validateWeightingSum();
+      _validateWeightingSum();
+      _saveCriteriaToFileDebounced();
+      _savePropertyToFileDebounced();
+    });
   }
 
   void setCriteriaName(String criteriaId, String criteriaName) {
@@ -186,6 +248,9 @@ class _PropertyEvaluatorApp extends State<PropertyEvaluatorApp> {
       _updateCriteriaFromAllHouse(criteriaItemsMap[criteriaId]!);
       developer
           .log("setting criteria with Id: $criteriaId to name : $criteriaName");
+
+      _saveCriteriaToFileDebounced();
+      _savePropertyToFileDebounced();
     });
   }
 
@@ -195,8 +260,11 @@ class _PropertyEvaluatorApp extends State<PropertyEvaluatorApp> {
       _updateCriteriaFromAllHouse(criteriaItemsMap[criteriaId]!);
       developer.log(
           "setting criteria Id: $criteriaId weighting to $weightingValue %");
+
+      _validateWeightingSum();
+      _saveCriteriaToFileDebounced();
+      _savePropertyToFileDebounced();
     });
-    _validateWeightingSum();
   }
 
   void _removeCriteriaFromAllHouse(String criteriaId) {
@@ -234,24 +302,21 @@ class _PropertyEvaluatorApp extends State<PropertyEvaluatorApp> {
 
   void _validateWeightingSum() {
     EasyDebounce.debounce(
-        'WeightingValidator',
-        const Duration(milliseconds: 500),
-        () => setState(() {
-              double totalWeighting = criteriaItemsMap.values
-                  .toList()
-                  .fold<double>(
-                      0,
-                      (totalWeighting, item) =>
-                          totalWeighting + item.weighting * 100);
-              if (totalWeighting.toInt() != 100) {
-                shouldShowWeightingValidationError = true;
-                developer.log(
-                    "total weighting value is $totalWeighting %, doesn't equal 100 %");
-              } else {
-                developer.log("total weighting value equals 100 %");
-                shouldShowWeightingValidationError = false;
-              }
-            }));
+        'WeightingValidator', const Duration(milliseconds: 500), () {
+      double totalWeighting = criteriaItemsMap.values.toList().fold<double>(
+          0, (totalWeighting, item) => totalWeighting + item.weighting * 100);
+      if (totalWeighting.toInt() != 100) {
+        appState.showCriteriaValidationError = true;
+
+        developer.log(
+            "total weighting value is $totalWeighting %, doesn't equal 100 %");
+      } else {
+        developer.log("total weighting value equals 100 %");
+        appState.showCriteriaValidationError = false;
+      }
+
+      _saveAppStateFileDebounced();
+    });
   }
 
 // --- Property Route Handlers ---
@@ -260,6 +325,8 @@ class _PropertyEvaluatorApp extends State<PropertyEvaluatorApp> {
       propertiesMap[propertyId]?.address = address;
       developer
           .log("setting property with Id: $propertyId to address : $address");
+
+      _savePropertyToFileDebounced();
     });
   }
 
@@ -268,6 +335,8 @@ class _PropertyEvaluatorApp extends State<PropertyEvaluatorApp> {
       propertiesMap[propertyId]?.price = price;
       developer.log(
           "setting property with Id: $propertyId to price amount : ${price.state} ${price.amount}");
+
+      _savePropertyToFileDebounced();
     });
   }
 
@@ -276,6 +345,8 @@ class _PropertyEvaluatorApp extends State<PropertyEvaluatorApp> {
       propertiesMap[propertyId]?.propertyType = propertyType;
       developer.log(
           "setting property with Id: $propertyId to be : ${propertyType.name}");
+
+      _savePropertyToFileDebounced();
     });
   }
 
@@ -301,6 +372,8 @@ class _PropertyEvaluatorApp extends State<PropertyEvaluatorApp> {
         arguments:
             PropertyRouteArguments(PropertyAction.newProperty, newProperty),
       );
+
+      _savePropertyToFileDebounced();
     });
   }
 
@@ -311,6 +384,8 @@ class _PropertyEvaluatorApp extends State<PropertyEvaluatorApp> {
           score;
       developer.log(
           "setting criteria Id: $criteriaId of property Id: $propertyId score to $score");
+
+      _savePropertyToFileDebounced();
     });
   }
 
@@ -320,6 +395,8 @@ class _PropertyEvaluatorApp extends State<PropertyEvaluatorApp> {
       costItemsMap[costId]?.costName = name;
       developer.log(
           "setting name of additional cost with Id: $costId to name : $name");
+
+      _saveCostToFileDebounced();
     });
   }
 
@@ -328,6 +405,8 @@ class _PropertyEvaluatorApp extends State<PropertyEvaluatorApp> {
       costItemsMap[costId]?.amount = number;
       developer.log(
           "setting number of additional cost with Id: $costId to amount : ${number.toString()}");
+
+      _saveCostToFileDebounced();
     });
   }
 
@@ -335,6 +414,8 @@ class _PropertyEvaluatorApp extends State<PropertyEvaluatorApp> {
     setState(() {
       costItemsMap.remove(costId);
       developer.log("removing additional cost with Id: $costId");
+
+      _saveCostToFileDebounced();
     });
   }
 
@@ -345,35 +426,38 @@ class _PropertyEvaluatorApp extends State<PropertyEvaluatorApp> {
           AdditionalCostEntity(costItemId: newCostId, costType: type);
       developer
           .log("adding new additional cost with Id: $newCostId and type $type");
+
+      _saveCostToFileDebounced();
     });
   }
 
   // Main Route
   void toggleThemeMode() {
     setState(() {
-      currentThemeMode = currentThemeMode == ThemeMode.light
+      appState.preferredMode == ThemeMode.light
           ? ThemeMode.dark
           : ThemeMode.light;
+
+      _saveAppStateFileDebounced();
     });
   }
 
   void togglePropertyEditMode() {
     setState(() {
-      isInPropertyEditMode = !isInPropertyEditMode;
+      appState.isEditMode = !appState.isEditMode;
+
+      _saveAppStateFileDebounced();
     });
   }
 
-  void addPropertyIdToSelectedList(String propertyId) {
+  void togglePropertySelected(String propertyId) {
     setState(() {
-      selectedPropertyIds.add(propertyId);
-      developer.log("selecting propertyId $propertyId to selected list");
-    });
-  }
-
-  void removePropertyIdFromSelectedList(String propertyId) {
-    setState(() {
-      selectedPropertyIds.remove(propertyId);
-      developer.log("removing propertyId $propertyId from selected list");
+      propertiesMap[propertyId]!.isSelected =
+          !propertiesMap[propertyId]!.isSelected;
+      selectedPropertyIds =
+          _generateSelectedList(propertiesMap.values.toList());
+      developer.log("toggling propertyId $propertyId to select state");
+      _savePropertyToFileDebounced();
     });
   }
 
@@ -381,9 +465,13 @@ class _PropertyEvaluatorApp extends State<PropertyEvaluatorApp> {
     setState(() {
       propertiesMap
           .removeWhere((key, value) => selectedPropertyIds.contains(key));
+
       selectedPropertyIds = [];
-      isInPropertyEditMode = false;
+      appState.isEditMode = false;
+
       developer.log("removing all selected property Ids");
+      _saveAppStateFileDebounced();
+      _savePropertyToFileDebounced();
     });
   }
 
@@ -408,7 +496,7 @@ class _PropertyEvaluatorApp extends State<PropertyEvaluatorApp> {
         visualDensity: FlexColorScheme.comfortablePlatformDensity,
         useMaterial3: true,
       ),
-      themeMode: currentThemeMode,
+      themeMode: appState.preferredMode,
       routes: {
         ADDITIONAL_COST_ROUTE: (context) => AdditionalCostRoute(
               costItems: costItemsMap.values.toList(),
@@ -453,7 +541,7 @@ class _PropertyEvaluatorApp extends State<PropertyEvaluatorApp> {
               setWeighting: setCriteriaWeighting,
               criteriaItems: criteriaItemsMap.values.toList(),
               shouldShowWeightingValidationError:
-                  shouldShowWeightingValidationError,
+                  appState.showCriteriaValidationError,
             ),
         COMPARE_ROUTE: (context) => CompareRoute(
             criteriaItemsMap: criteriaItemsMap,
@@ -462,14 +550,13 @@ class _PropertyEvaluatorApp extends State<PropertyEvaluatorApp> {
       },
       home: HomeRoute(
           toggleThemeMode: toggleThemeMode,
-          currentThemeMode: currentThemeMode,
+          currentThemeMode: appState.preferredMode,
           properties: propertiesMap.values.toList(),
           addProperty: addProperty,
-          isEditMode: isInPropertyEditMode,
+          isEditMode: appState.isEditMode,
           toggleEditMode: togglePropertyEditMode,
           selectedPropertyIds: selectedPropertyIds,
-          selectProperty: addPropertyIdToSelectedList,
-          deselectProperty: removePropertyIdFromSelectedList,
+          togglePropertySelect: togglePropertySelected,
           deleteAllSelected: deleteAllSelectedPropertyInSelectedList),
     );
   }

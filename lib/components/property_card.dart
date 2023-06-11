@@ -14,23 +14,13 @@ class PropertyCard extends StatelessWidget {
     required this.isEditMode,
     required this.isSelected,
     required this.property,
-    required this.onSelect,
-    required this.onDeselect,
+    required this.onToggle,
   });
 
   final PropertyEntity property;
   final bool isEditMode;
   final bool isSelected;
-  final Function() onSelect;
-  final Function() onDeselect;
-
-  void _toggleSelect() {
-    if (isSelected) {
-      onDeselect();
-    } else {
-      onSelect();
-    }
-  }
+  final Function() onToggle;
 
   @override
   Widget build(BuildContext context) {
@@ -43,7 +33,7 @@ class PropertyCard extends StatelessWidget {
                 toggleable: true,
                 groupValue: isSelected ? property.propertyId : "",
                 onChanged: (value) {
-                  _toggleSelect();
+                  onToggle();
                 })
             : null,
         trailing: null,
@@ -53,7 +43,7 @@ class PropertyCard extends StatelessWidget {
               margin: const EdgeInsets.symmetric(horizontal: 20, vertical: 5),
               onTapAction: () {
                 if (isEditMode) {
-                  _toggleSelect();
+                  onToggle();
                 } else {
                   Navigator.pushNamed(
                     context,

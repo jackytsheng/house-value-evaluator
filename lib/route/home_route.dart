@@ -15,16 +15,14 @@ class HomeRoute extends StatelessWidget {
     required this.toggleEditMode,
     required this.isEditMode,
     required this.selectedPropertyIds,
-    required this.selectProperty,
-    required this.deselectProperty,
+    required this.togglePropertySelect,
     required this.deleteAllSelected,
   });
 
   final Function() toggleThemeMode;
   final Function(BuildContext context) addProperty;
   final Function() toggleEditMode;
-  final Function(String propertyId) selectProperty;
-  final Function(String propertyId) deselectProperty;
+  final Function(String propertyId) togglePropertySelect;
   final Function() deleteAllSelected;
   final ThemeMode currentThemeMode;
   final bool isEditMode;
@@ -76,13 +74,13 @@ class HomeRoute extends StatelessWidget {
                 child: Column(
                     children: properties
                         .map<PropertyCard>((property) => PropertyCard(
-                            isEditMode: isEditMode,
-                            isSelected: selectedPropertyIds
-                                .contains(property.propertyId),
-                            property: property,
-                            onSelect: () => selectProperty(property.propertyId),
-                            onDeselect: () =>
-                                deselectProperty(property.propertyId)))
+                              isEditMode: isEditMode,
+                              isSelected: selectedPropertyIds
+                                  .contains(property.propertyId),
+                              property: property,
+                              onToggle: () =>
+                                  togglePropertySelect(property.propertyId),
+                            ))
                         .toList()),
               ),
             ),

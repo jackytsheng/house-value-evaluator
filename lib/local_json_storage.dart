@@ -153,10 +153,7 @@ class LocalJsonStorage {
       developer
           .log('error occurred: $e, setting app state to be the default value');
 
-      return AppState(
-          preferredMode: ThemeMode.system,
-          isEditMode: false,
-          showCriteriaValidationError: false);
+      return AppState();
     }
   }
 
