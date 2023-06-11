@@ -2,7 +2,7 @@ import 'package:property_evaluator/model/note.dart';
 
 class CriteriaItemEntity {
   final String criteriaId;
-  final List<NoteItem> notes;
+  List<NoteItem> notes;
   String criteriaName;
   double weighting;
 

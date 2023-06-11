@@ -2,14 +2,14 @@ import 'package:uuid/uuid.dart';
 
 class NoteItem {
   NoteItem({
-    this.expandedValue = "",
-    this.headerValue = "",
+    this.expandedValue,
+    this.headerValue,
     this.isExpanded = false,
   });
 
   String noteId = const Uuid().v4();
-  String expandedValue;
-  String headerValue;
+  String? expandedValue;
+  String? headerValue;
   bool isExpanded;
 
   Map<String, dynamic> toJson() {

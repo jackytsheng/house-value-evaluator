@@ -39,15 +39,20 @@ class PropertyRoute extends StatelessWidget {
   final Function(String propertyId, Price price) setPrice;
   final Function(String propertyId, String criteriaId, int score) setScore;
   final Function(String criteriaId, String noteId, bool isExpanded,
-      Map<String, CriteriaItemEntity> criteriaMap) toggleExpand;
+      Map<String, CriteriaItemEntity> criteriaMap,
+      {bool isCriteriaMapFromProperty}) toggleExpand;
   final Function(String criteriaId, String noteId,
-      Map<String, CriteriaItemEntity> criteriaMap) deleteNote;
+      Map<String, CriteriaItemEntity> criteriaMap,
+      {bool isCriteriaMapFromProperty}) deleteNote;
   final Function(String criteriaId, NoteItem newNote,
-      Map<String, CriteriaItemEntity> criteriaMap) addNote;
+      Map<String, CriteriaItemEntity> criteriaMap,
+      {bool isCriteriaMapFromProperty}) addNote;
   final Function(String criteriaId, int noteIndex, String expandedValue,
-      Map<String, CriteriaItemEntity> criteriaMap) setNoteBody;
+      Map<String, CriteriaItemEntity> criteriaMap,
+      {bool isCriteriaMapFromProperty}) setNoteBody;
   final Function(String criteriaId, int noteIndex, String headerValue,
-      Map<String, CriteriaItemEntity> criteriaMap) setNoteHeader;
+      Map<String, CriteriaItemEntity> criteriaMap,
+      {bool isCriteriaMapFromProperty}) setNoteHeader;
   final Map<String, AdditionalCostEntity> costItemsMap;
 
   @override
@@ -285,22 +290,27 @@ class PropertyRoute extends StatelessWidget {
                         },
                         setNoteBody: (noteIndex, body) {
                           setNoteBody(assessment.criteriaId, noteIndex, body,
-                              assessmentMap);
+                              assessmentMap,
+                              isCriteriaMapFromProperty: true);
                         },
                         setNoteHeader: (noteIndex, header) {
                           setNoteHeader(assessment.criteriaId, noteIndex,
-                              header, assessmentMap);
+                              header, assessmentMap,
+                              isCriteriaMapFromProperty: true);
                         },
                         addNote: (note) {
-                          addNote(assessment.criteriaId, note, assessmentMap);
+                          addNote(assessment.criteriaId, note, assessmentMap,
+                              isCriteriaMapFromProperty: true);
                         },
                         deleteNote: (noteId) {
                           deleteNote(
-                              assessment.criteriaId, noteId, assessmentMap);
+                              assessment.criteriaId, noteId, assessmentMap,
+                              isCriteriaMapFromProperty: true);
                         },
                         toggleExpand: (noteId, isExpanded) {
                           toggleExpand(assessment.criteriaId, noteId,
-                              isExpanded, assessmentMap);
+                              isExpanded, assessmentMap,
+                              isCriteriaMapFromProperty: true);
                         },
                         item: CriteriaItemEntity(
                             criteriaId: assessment.criteriaId,

@@ -157,6 +157,19 @@ class LocalJsonStorage {
     }
   }
 
+  Future<void> deleteTmpFiles() async {
+    try {
+      final path = await _localPath;
+
+      final file = File('$path/test.txt');
+      // Read the file
+      file.delete();
+    } catch (e) {
+      // Error handling
+      developer.log('error occurred: $e');
+    }
+  }
+
   Future<void> writeAppStateToJson(AppState state) async {
     try {
       final file = await _localAppStateJson;

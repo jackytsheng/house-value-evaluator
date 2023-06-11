@@ -28,28 +28,22 @@ ThemeMode stringToThemeMode(String themeModeString) {
 class AppState {
   ThemeMode preferredMode;
   bool isEditMode;
-  bool showCriteriaValidationError;
 
   AppState({
     this.preferredMode = ThemeMode.light,
     this.isEditMode = false,
-    this.showCriteriaValidationError = false,
   });
 
   Map<String, dynamic> toJson() {
     return {
       'preferredMode': themeModeToString(preferredMode),
       'isEditMode': isEditMode,
-      'showCriteriaValidationError': showCriteriaValidationError
     };
   }
 
   factory AppState.fromJson(Map<String, dynamic> json) {
     final themeModeString = json['preferredMode'];
     final themeMode = stringToThemeMode(themeModeString);
-    return AppState(
-        preferredMode: themeMode,
-        isEditMode: json['isEditMode'],
-        showCriteriaValidationError: json['showCriteriaValidationError']);
+    return AppState(preferredMode: themeMode, isEditMode: json['isEditMode']);
   }
 }
