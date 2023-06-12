@@ -25,10 +25,15 @@ class LocalJsonStorage {
   var trafficCriteria = CriteriaItemEntity(
       criteriaId: const Uuid().v4(),
       criteriaName: "Transport",
+      notes: [],
       weighting: 0.25);
   var facilityCriteria = CriteriaItemEntity(
-      criteriaId: const Uuid().v4(), criteriaName: "Facility", weighting: 0.25);
+      notes: [],
+      criteriaId: const Uuid().v4(),
+      criteriaName: "Facility",
+      weighting: 0.25);
   var convenienceCriteria = CriteriaItemEntity(
+      notes: [],
       criteriaId: const Uuid().v4(),
       criteriaName: "Convenience",
       weighting: 0.25);
@@ -200,6 +205,7 @@ class LocalJsonStorage {
           propertyAssessmentMap: {
             for (var item in _getInitialCriteriaList)
               item.criteriaId: PropertyAssessment(
+                  notes: [],
                   criteriaId: item.criteriaId,
                   criteriaName: item.criteriaName,
                   weighting: item.weighting,
@@ -215,6 +221,7 @@ class LocalJsonStorage {
           propertyAssessmentMap: {
             for (var item in _getInitialCriteriaList)
               item.criteriaId: PropertyAssessment(
+                  notes: [],
                   criteriaId: item.criteriaId,
                   criteriaName: item.criteriaName,
                   weighting: item.weighting,

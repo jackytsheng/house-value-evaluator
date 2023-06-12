@@ -244,7 +244,7 @@ class _PropertyEvaluatorApp extends State<PropertyEvaluatorApp> {
     setState(() {
       String newCriteriaId = const Uuid().v4();
       criteriaItemsMap[newCriteriaId] =
-          CriteriaItemEntity(criteriaId: newCriteriaId);
+          CriteriaItemEntity(criteriaId: newCriteriaId, notes: []);
       developer.log("adding new criteria with Id: $newCriteriaId");
 
       _addCriteriaToAllHouse(criteriaItemsMap[newCriteriaId]!);
@@ -316,6 +316,7 @@ class _PropertyEvaluatorApp extends State<PropertyEvaluatorApp> {
     setState(() {
       for (var house in propertiesMap.values) {
         house.propertyAssessmentMap[criteria.criteriaId] = PropertyAssessment(
+            notes: [],
             criteriaId: criteria.criteriaId,
             criteriaName: criteria.criteriaName,
             weighting: criteria.weighting);
@@ -375,6 +376,7 @@ class _PropertyEvaluatorApp extends State<PropertyEvaluatorApp> {
           propertyAssessmentMap: {
             for (var item in criteriaItemsMap.values)
               item.criteriaId: PropertyAssessment(
+                  notes: [],
                   criteriaId: item.criteriaId,
                   criteriaName: item.criteriaName,
                   weighting: item.weighting)

@@ -8,7 +8,7 @@ class CriteriaItemEntity {
 
   CriteriaItemEntity(
       {required this.criteriaId,
-      this.notes = const [],
+      required this.notes,
       this.criteriaName = "",
       this.weighting = 0});
 

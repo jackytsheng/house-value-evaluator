@@ -57,7 +57,7 @@ class PropertyAssessment extends CriteriaItemEntity {
 
   PropertyAssessment(
       {required super.criteriaId,
-      super.notes = const [],
+      required super.notes,
       required super.criteriaName,
       required super.weighting,
       this.score = 0});
