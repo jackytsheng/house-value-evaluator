@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'dart:developer' as developer;
 import 'dart:math';
+import 'package:flutter/services.dart';
 import 'package:path_provider/path_provider.dart';
 import 'dart:async';
 import 'dart:io';
@@ -230,9 +231,13 @@ class LocalJsonStorage {
           isSelected: true);
 
       final initialProperties = [initialHouse, initialTownHouse];
-      await writePropertiesListToJson(initialProperties);
+      var contents = await rootBundle.loadString('assets/properties.json');
+      final jsonList = jsonDecode(contents) as List<dynamic>;
 
-      return initialProperties;
+      return jsonList.map((json) => PropertyEntity.fromJson(json)).toList();
+      // await writePropertiesListToJson(initialProperties);
+
+      // return initialProperties;
     }
   }
 
@@ -268,9 +273,14 @@ class LocalJsonStorage {
       developer.log(
           'error occurred: $e, setting criteria item to be the default value. And saving it to file');
       final initialCriteriaList = _getInitialCriteriaList;
-      await writeCriteriaListToJson(initialCriteriaList);
 
-      return initialCriteriaList;
+      var contents = await rootBundle.loadString('assets/criteria.json');
+      final jsonList = jsonDecode(contents) as List<dynamic>;
+
+      return jsonList.map((json) => CriteriaItemEntity.fromJson(json)).toList();
+      // await writeCriteriaListToJson(initialCriteriaList);
+
+      // return initialCriteriaList;
     }
   }
 

@@ -71,6 +71,10 @@ flutter_icons:
 # The following section is specific to Flutter packages.
 flutter:
 
+  assets:
+    - assets/properties.json
+    - assets/criteria.json
+
   fonts:
     - family: RobotoMono
       fonts:

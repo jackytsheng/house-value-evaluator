@@ -1,0 +1,80 @@
+[
+    {
+        "criteriaId": "3ab17d24-3c0c-4c6d-bbfe-b2b51a1f6475",
+        "notes": [
+            {
+                "noteId": "ec970c49-8169-4712-95f3-3cfcd0106c78",
+                "expandedValue": "0: 除了框架,甚至包括框架推了重建,6个月工期\n1: 基本要全屋子大整，看哪都不满意 6个月工期,锤空间\n2: 基本要大整厨房和厕所 3个月工期  + 换框 + 铺大面积瓷砖，不用锤空\n3: 基本要大整厨房多厕所 or 某一个特定的区域 2个月左右工期 + 换框 + 格局会\n4: 要整某一个特定的区域，比如拆了厕所之类的，但格局不变\n5: 需要整，铺小瓷砖，油漆之类的，大格局不变\n6: 需要整，比如换木头框，之类的\n7: 需要小整，比如换灯按钮之类的，也可以不不整\n8: 拎包入住，小整都不需要，没那么喜欢，有一点看不顺眼\n9: 拎包入住，小整都不需要，没太喜欢，但也还行，没看不顺眼\n10: 拎包入住，小整都不需要，一进去就喜欢",
+                "headerValue": "Comments",
+                "isExpanded": false
+            }
+        ],
+        "criteriaName": "Condition",
+        "weighting": 0.15
+    },
+    {
+        "criteriaId": "b46a77a5-7375-469c-aa90-fd3bedf45fb5",
+        "notes": [
+            {
+                "noteId": "6ac54143-9cdb-461a-8207-26803d573b28",
+                "expandedValue": "0: 很多树，游泳池，大路，户型奇怪，路冲，建筑用料非常不好\n5: 不安静，户型奇怪，不太好打理，空间利用不是太好\n7: 安静，户型奇怪，不太好打理院子，空间利用不是太好\n8: 安静，户型奇怪，好打理，空间利用不是太好\n9: 整体还行，安静，好打理，户型有些许奇怪，空间利用还是很好\n10: 方方正正，平平，好打理，小路，安静，砖，空间利用的非常好",
+                "headerValue": "Comments",
+                "isExpanded": false
+            }
+        ],
+        "criteriaName": "Layout",
+        "weighting": 0.15
+    },
+    {
+        "criteriaId": "e6a64aac-ca81-4527-98f0-f68f8c724d8c",
+        "notes": [
+            {
+                "noteId": "325f77ed-1cb0-4c46-8e0f-eedb127a95ea",
+                "expandedValue": "0: 没有学校，或20分钟以上开车\n10: 走路10分钟内，好公校小学，中学，开车能到的好私立中学。Glen & Mount waverley",
+                "headerValue": "Comments",
+                "isExpanded": false
+            }
+        ],
+        "criteriaName": "School",
+        "weighting": 0.2
+    },
+    {
+        "criteriaId": "446f477a-30e2-4e7d-991f-16f1536901dd",
+        "notes": [
+            {
+                "noteId": "be87c9d2-fcda-4642-aa2f-e1bb24a1f8fc",
+                "expandedValue": "0: 没有鸟，没有昆虫，有马，牛\n3. \n4: 开车10分钟能到健身房 or 超市\n5.开车10分钟能到各种设施\n6. 开车5分钟左右能到健身房 or 超市\n7. 开车5分钟能到各种设施\n8. 走路能到 健身房 or 超市\n9: 走路能到健身房，超市，小shopping center or town\n10: 走路到购物中心，健身房等，餐厅，基本一切，公园，比如 glen",
+                "headerValue": "Comments",
+                "isExpanded": false
+            }
+        ],
+        "criteriaName": "Amenities",
+        "weighting": 0.2
+    },
+    {
+        "criteriaId": "4339eadd-1247-4221-81b3-fc90cc00ef55",
+        "notes": [
+            {
+                "noteId": "a10b4c88-ced0-4825-98bd-88769248a65b",
+                "expandedValue": "0-2: 4个criteria 只满足任意\n3: townhouse 的顶，地大，好区, 周围th 少，1-3套同款\n4: house lowest, 地小 400，地区不好\n5: 500平左右，地区不好\n6: 600平左右，地区不好\n7: 700平左右，地区不好\n8: 500平左右，地区好\n9: 600平左右，地区好\n10: 700平以上，地区好",
+                "headerValue": "Comments",
+                "isExpanded": false
+            }
+        ],
+        "criteriaName": "Land Value",
+        "weighting": 0.2
+    },
+    {
+        "criteriaId": "d2d3f510-39d8-44d3-89a7-4bcfb75d111e",
+        "notes": [
+            {
+                "noteId": "1f7c0e5a-3419-44a0-a931-10837746c12f",
+                "expandedValue": "0: 走路10分钟内都没有bus\n1: 走路10分钟才有bus\n2: 附近就有bus\n3: 有好几趟bus\n4: 路上有经过重要地方的交通，比如学校，大学\n5: ～\n6: 走路20分钟左右内能到火车站\n7: 走路20分钟左右内能到大火车站\n8: 走路15分钟内能到小火车站\n9: 走路15分钟内能到大火车站\n10:走路5分钟能到大火车站",
+                "headerValue": "Comments",
+                "isExpanded": true
+            }
+        ],
+        "criteriaName": "Transport",
+        "weighting": 0.1
+    }
+]
