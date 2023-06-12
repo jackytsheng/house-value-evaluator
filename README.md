@@ -18,6 +18,7 @@ or specify the path
 - Real estate link to property
 - Support different currency
 - Polish info message and warning message
+- Select and deselect all
 - Animation:
   - Bottom sheet appearing
   - Removing item
