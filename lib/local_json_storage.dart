@@ -22,28 +22,28 @@ class LocalJsonStorage {
       ],
       criteriaName: "Condition",
       weighting: 0.25);
-  var trafficCriteria = CriteriaItemEntity(
+  var transportCriteria = CriteriaItemEntity(
       criteriaId: const Uuid().v4(),
       criteriaName: "Transport",
       notes: [],
       weighting: 0.25);
-  var facilityCriteria = CriteriaItemEntity(
+  var amenitiesCriteria = CriteriaItemEntity(
       notes: [],
       criteriaId: const Uuid().v4(),
-      criteriaName: "Facility",
+      criteriaName: "Amenities",
       weighting: 0.25);
-  var convenienceCriteria = CriteriaItemEntity(
+  var schoolCriteria = CriteriaItemEntity(
       notes: [],
       criteriaId: const Uuid().v4(),
-      criteriaName: "Convenience",
+      criteriaName: "School",
       weighting: 0.25);
 
   List<CriteriaItemEntity> get _getInitialCriteriaList {
     return [
       conditionCriteria,
-      trafficCriteria,
-      facilityCriteria,
-      convenienceCriteria
+      transportCriteria,
+      amenitiesCriteria,
+      schoolCriteria
     ];
   }
 

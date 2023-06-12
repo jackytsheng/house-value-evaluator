@@ -99,22 +99,19 @@ class PropertyRoute extends StatelessWidget {
                   ? "Add a new property"
                   : "Edit a property",
               childrenMessages: [
-                Text("1. Hold and swipe left to show the delete icon",
+                Text("1. Score can be swiped up and down",
                     style: Theme.of(context).textTheme.bodySmall),
                 const SizedBox(height: 10),
-                Text("2. Number picker can be swiped up and down",
+                Text("2. Click legend label to change visibility of data",
                     style: Theme.of(context).textTheme.bodySmall),
                 const SizedBox(height: 10),
-                Text("3. Click legend label to toggle visibility of data",
+                Text("3. Legend labels can be scrolled vertically",
                     style: Theme.of(context).textTheme.bodySmall),
                 const SizedBox(height: 10),
-                Text("4. Legend labels can be scrolled vertically",
+                Text("4. Each track can be clicked to show score",
                     style: Theme.of(context).textTheme.bodySmall),
                 const SizedBox(height: 10),
-                Text("5. Each track can be clicked to show score",
-                    style: Theme.of(context).textTheme.bodySmall),
-                const SizedBox(height: 10),
-                Text("6. Total Score = sum(Criteria Weight * Individual Score)",
+                Text("5. Total Score = sum(Criteria Weight * Individual Score)",
                     style: Theme.of(context).textTheme.bodySmall),
               ]),
           body: SingleChildScrollView(
@@ -266,7 +263,7 @@ class PropertyRoute extends StatelessWidget {
                           : const SizedBox(),
                       Text(
                           totalScore > 0
-                              ? "Total Cost Unit Price : ${convertedToMoneyFormat(totalCost / totalScore)} AUD/pt"
+                              ? "Total Cost / Score: ${convertedToMoneyFormat(totalCost / totalScore)} AUD"
                               : "Unit Price Not Available For Zero Score",
                           style: TextStyle(
                             fontSize: 12,

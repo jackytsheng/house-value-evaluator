@@ -51,7 +51,7 @@ class HomeRoute extends StatelessWidget {
                 IconButton(
                     iconSize: 40,
                     tooltip: currentThemeMode == ThemeMode.light
-                        ? 'Light mode'
+                        ? "Light mode"
                         : "Dark mode",
                     icon: Icon(
                         currentThemeMode == ThemeMode.light

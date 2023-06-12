@@ -43,9 +43,9 @@ class CriteriaRoute extends StatelessWidget {
             appBar: ThemedAppBar(title: "Criteria", childrenMessages: [
               Text("1. Hold and swipe left to show the delete icon",
                   style: Theme.of(context).textTheme.bodySmall),
-              Text("2. Number picker can be swiped up and down",
+              Text("2. Weighting can be swiped up and down",
                   style: Theme.of(context).textTheme.bodySmall),
-              Text("3. Criteria name can have maximum of 15 characters",
+              Text("3. Criteria name can have up to 15 characters",
                   style: Theme.of(context).textTheme.bodySmall)
             ]),
             body: SingleChildScrollView(
