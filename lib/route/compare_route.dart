@@ -34,7 +34,11 @@ class CompareRoute extends StatelessWidget {
         ]),
         body: Center(
             child: Padding(
-                padding: const EdgeInsets.only(left: 20, top: 15, bottom: 20),
+                padding: const EdgeInsets.only(
+                  top: 15,
+                  bottom: 40,
+                  right: 5,
+                ),
                 child: selectedPropertyIds.isEmpty
                     ? ElevatedButton(
                         onPressed: () {
@@ -43,8 +47,6 @@ class CompareRoute extends StatelessWidget {
                         child: const Text("Selected Properties to Compare"),
                       )
                     : SfCartesianChart(
-                        margin: const EdgeInsets.only(
-                            top: 5, bottom: 30, left: 0, right: 25),
                         primaryYAxis: NumericAxis(minimum: 0, maximum: 10),
                         primaryXAxis: CategoryAxis(
                             majorTickLines: const MajorTickLines(width: 0),
