@@ -39,3 +39,11 @@ or specify the path
 1. Turn on developer mode, Settings > Privacy & Security > Developer Mode. Then Restart
 2. on Iphone, Settings > General > VPN & Device Management > Trust
    
+
+## Build & Deploy
+each time there is a release change the version 
+eg: `version: 1.0.0+2` 
+then run `flutter build ios`
+
+
+To deploy follow this [guide](https://docs.flutter.dev/deployment/ios)
