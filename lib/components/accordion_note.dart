@@ -77,6 +77,7 @@ class AccordionNote extends StatelessWidget {
                                       margin: const EdgeInsets.only(bottom: 20),
                                       height: 150,
                                       child: TextFormField(
+                                        initialValue: item.expandedValue,
                                         minLines: 10,
                                         maxLines: null,
                                         onChanged: (value) {
