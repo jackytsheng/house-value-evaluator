@@ -92,44 +92,53 @@ class HomeRoute extends StatelessWidget {
             floatingActionButtonLocation:
                 FloatingActionButtonLocation.centerDocked,
             bottomNavigationBar: BottomAppBar(
-              height: 80,
+              height: isEditMode ? 100 : 80,
               clipBehavior: Clip.hardEdge,
               shape: const CircularNotchedRectangle(),
               notchMargin: 8,
               child: isEditMode
-                  ? Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                      children: [
-                          ElevatedButton.icon(
-                              onPressed: () {
-                                Navigator.pushNamed(context, COMPARE_ROUTE);
-                                toggleEditMode();
-                              },
-                              icon: const Icon(Icons.bar_chart_rounded),
-                              label: const Text("Compare")),
-                          ElevatedButton.icon(
-                              onPressed: () {
-                                showDialog(
-                                    context: context,
-                                    builder: (BuildContext context) => Dialog(
-                                            child: CloseDeleteDialog(
-                                                onDelete: deleteAllSelected,
-                                                children: [
-                                              Text("Warning !",
-                                                  style: Theme.of(context)
-                                                      .textTheme
-                                                      .titleMedium),
-                                              Text(
-                                                  "Doing so will remove all notes related to these properties! Are you sure you really want to delete properties?",
-                                                  style: Theme.of(context)
-                                                      .textTheme
-                                                      .bodySmall),
-                                              const SizedBox(height: 10)
-                                            ])));
-                              },
-                              icon: const Icon(Icons.delete_rounded),
-                              label: const Text("Remove")),
-                        ])
+                  ? Column(children: [
+                      Text(
+                        "${selectedPropertyIds.length} / ${properties.length} Selected",
+                        style: TextStyle(
+                            fontFamily: "RobotoMono",
+                            fontWeight: FontWeight.bold,
+                            color: Theme.of(context).colorScheme.secondary),
+                      ),
+                      Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                          children: [
+                            ElevatedButton.icon(
+                                onPressed: () {
+                                  Navigator.pushNamed(context, COMPARE_ROUTE);
+                                  toggleEditMode();
+                                },
+                                icon: const Icon(Icons.bar_chart_rounded),
+                                label: const Text("Compare")),
+                            ElevatedButton.icon(
+                                onPressed: () {
+                                  showDialog(
+                                      context: context,
+                                      builder: (BuildContext context) => Dialog(
+                                              child: CloseDeleteDialog(
+                                                  onDelete: deleteAllSelected,
+                                                  children: [
+                                                Text("Warning !",
+                                                    style: Theme.of(context)
+                                                        .textTheme
+                                                        .titleMedium),
+                                                Text(
+                                                    "Doing so will remove all notes related to these properties! Are you sure you really want to delete properties?",
+                                                    style: Theme.of(context)
+                                                        .textTheme
+                                                        .bodySmall),
+                                                const SizedBox(height: 10)
+                                              ])));
+                                },
+                                icon: const Icon(Icons.delete_rounded),
+                                label: const Text("Remove")),
+                          ])
+                    ])
                   : Row(children: <Widget>[
                       IconButton(
                         iconSize: 40,
