@@ -23,7 +23,7 @@ class CompareRoute extends StatelessWidget {
           Text("1. Click property name to change hide or show",
               style: Theme.of(context).textTheme.bodySmall),
           const SizedBox(height: 10),
-          Text("2. Legend labels can be scrolled horizontally",
+          Text("2. Property names can be scrolled horizontally",
               style: Theme.of(context).textTheme.bodySmall),
           const SizedBox(height: 10),
           Text("3. Click each bar to view score",

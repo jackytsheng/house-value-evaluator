@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:property_evaluator/components/close_delete_dialog.dart';
-import 'package:property_evaluator/components/help_icon_button.dart';
 import 'package:property_evaluator/components/property_card.dart';
 import 'package:property_evaluator/constants/route.dart';
 import 'package:property_evaluator/model/property.dart';
@@ -39,15 +38,6 @@ class HomeRoute extends StatelessWidget {
             appBar: AppBar(
               toolbarHeight: 50,
               actions: <Widget>[
-                HelpIconButton(childrenMessages: [
-                  Text(
-                      "1. Select three dots to compare or to delete properties",
-                      style: Theme.of(context).textTheme.bodySmall),
-                  const SizedBox(height: 10),
-                  Text(
-                      "2. The higher the score the denser the background color",
-                      style: Theme.of(context).textTheme.bodySmall),
-                ]),
                 IconButton(
                     iconSize: 40,
                     tooltip: currentThemeMode == ThemeMode.light
@@ -59,11 +49,11 @@ class HomeRoute extends StatelessWidget {
                             : Icons.light_mode_rounded,
                         size: 30),
                     onPressed: toggleThemeMode),
-                IconButton(
-                    iconSize: 40,
-                    tooltip: 'Select cards',
-                    icon: const Icon(Icons.more_vert_rounded, size: 30),
-                    onPressed: toggleEditMode)
+                Padding(
+                    padding: const EdgeInsets.only(right: 10),
+                    child: ElevatedButton(
+                        onPressed: toggleEditMode,
+                        child: const Text('Select'))),
               ],
               scrolledUnderElevation: 10,
               elevation: 10,
@@ -130,7 +120,7 @@ class HomeRoute extends StatelessWidget {
                                                       .textTheme
                                                       .titleMedium),
                                               Text(
-                                                  "Doing so will remove all notes related to these properties ! Are you sure you really want to delete ?",
+                                                  "Doing so will remove all notes related to these properties! Are you sure you really want to delete properties?",
                                                   style: Theme.of(context)
                                                       .textTheme
                                                       .bodySmall),

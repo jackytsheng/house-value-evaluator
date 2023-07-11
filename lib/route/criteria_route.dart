@@ -102,7 +102,7 @@ class CriteriaRoute extends StatelessWidget {
                         child: Text(
                       criteriaItems.isEmpty
                           ? "Create at least one criteria first !"
-                          : "Value does not add up to 100% !",
+                          : "Value do not add up to 100% !",
                       style: TextStyle(
                         color: Theme.of(context).colorScheme.onError,
                         fontSize: 14,
