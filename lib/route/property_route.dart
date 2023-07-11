@@ -139,7 +139,10 @@ class PropertyRoute extends StatelessWidget {
                           borderRadius: BorderRadius.circular(24)),
                       enabledBorder: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(24),
-                        borderSide: const BorderSide(color: Colors.black12),
+                        borderSide: BorderSide(
+                            color: Theme.of(context)
+                                .colorScheme
+                                .secondaryContainer),
                       )),
                 )),
             const SizedBox(height: 10),
@@ -151,6 +154,7 @@ class PropertyRoute extends StatelessWidget {
                     args.propertyEntity.propertyId, PropertyType.values[index]);
               },
               borderRadius: const BorderRadius.all(Radius.circular(20)),
+              borderColor: Theme.of(context).colorScheme.secondaryContainer,
               selectedColor: Theme.of(context).colorScheme.onInverseSurface,
               fillColor: Theme.of(context).colorScheme.inversePrimary,
               color: Theme.of(context).colorScheme.inversePrimary,
@@ -175,6 +179,7 @@ class PropertyRoute extends StatelessWidget {
                         amount: args.propertyEntity.price.amount));
               },
               borderRadius: const BorderRadius.all(Radius.circular(20)),
+              borderColor: Theme.of(context).colorScheme.secondaryContainer,
               selectedColor: Theme.of(context).colorScheme.onInverseSurface,
               fillColor: Theme.of(context).colorScheme.inversePrimary,
               color: Theme.of(context).colorScheme.inversePrimary,
@@ -228,9 +233,11 @@ class PropertyRoute extends StatelessWidget {
                           ),
                           borderRadius: BorderRadius.circular(24)),
                       enabledBorder: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(24),
-                        borderSide: const BorderSide(color: Colors.black12),
-                      )),
+                          borderRadius: BorderRadius.circular(24),
+                          borderSide: BorderSide(
+                              color: Theme.of(context)
+                                  .colorScheme
+                                  .secondaryContainer))),
                 )),
             const SizedBox(height: 10),
             SizedBox(
