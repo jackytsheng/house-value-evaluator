@@ -17,27 +17,43 @@ class LocalJsonStorage {
   var conditionCriteria = CriteriaItemEntity(
       criteriaId: const Uuid().v4(),
       notes: [
-        NoteItem(
-            headerValue: "Description",
-            expandedValue: "Assessment on interior design")
+        NoteItem(headerValue: "Description", expandedValue: """
+9-10: Excellent condition: meticulously maintained.
+7-8: Good condition: minimal cosmetic flaws.
+4-6: Average condition: functional with some wear and tear.
+1-3: Poor condition: requires significant repairs.
+""")
       ],
       criteriaName: "Condition",
       weighting: 0.25);
   var transportCriteria = CriteriaItemEntity(
       criteriaId: const Uuid().v4(),
       criteriaName: "Transport",
-      notes: [],
+      notes: [
+        NoteItem(headerValue: "Description", expandedValue: """
+9-10: Easy access to train stations and convenient routes/freeways.
+7-8: Access to frequent trams/trains
+4-6: Access to buses/trams
+1-3: No public transport - ultimate tranquillity
+""")
+      ],
       weighting: 0.25);
-  var amenitiesCriteria = CriteriaItemEntity(
-      notes: [],
-      criteriaId: const Uuid().v4(),
-      criteriaName: "Amenities",
-      weighting: 0.25);
-  var schoolCriteria = CriteriaItemEntity(
-      notes: [],
-      criteriaId: const Uuid().v4(),
-      criteriaName: "School",
-      weighting: 0.25);
+  var amenitiesCriteria = CriteriaItemEntity(notes: [
+    NoteItem(headerValue: "Description", expandedValue: """
+9-10: Excellent amenities: high-quality shopping centres, gyms and well-maintained parks.
+7-8: Good amenities: access to shopping centres, well-equipped gyms and nearby parks.
+4-6: Average amenities: basic options for shopping, fitness and outdoor recreation.
+1-3: Limited amenities: minimal access to shopping centres, gyms or parks.
+""")
+  ], criteriaId: const Uuid().v4(), criteriaName: "Amenities", weighting: 0.25);
+  var schoolCriteria = CriteriaItemEntity(notes: [
+    NoteItem(headerValue: "Description", expandedValue: """
+9-10: Top-notch schools at your doorstep.
+7-8: Access to schools with above-average resources and performance.
+4-6: Access to schools with moderate resources and facilities.
+1-3: No good local schools.
+""")
+  ], criteriaId: const Uuid().v4(), criteriaName: "School", weighting: 0.25);
 
   List<CriteriaItemEntity> get _getInitialCriteriaList {
     return [
