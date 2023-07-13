@@ -127,12 +127,13 @@ class HomeRoute extends StatelessWidget {
                                                     style: Theme.of(context)
                                                         .textTheme
                                                         .titleMedium),
+                                                const SizedBox(height: 10),
                                                 Text(
-                                                    "Doing so will remove all notes related to these properties! Are you sure you really want to delete properties?",
+                                                    "Doing so will remove all notes related to these properties! Delete properties?",
                                                     style: Theme.of(context)
                                                         .textTheme
                                                         .bodySmall),
-                                                const SizedBox(height: 10)
+                                                const SizedBox(height: 20)
                                               ])));
                                 },
                                 icon: const Icon(Icons.delete_rounded),

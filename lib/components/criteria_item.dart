@@ -59,12 +59,13 @@ class CriteriaItem extends StatelessWidget {
                                         style: Theme.of(context)
                                             .textTheme
                                             .titleMedium),
+                                    const SizedBox(height: 10),
                                     Text(
-                                        "Doing so will remove all notes, properties that have scored and added note against this criteria as well. Are you sure you want to delete this criteria?",
+                                        "Delete all notes and properties that have been scored against this criteria.",
                                         style: Theme.of(context)
                                             .textTheme
                                             .bodySmall),
-                                    const SizedBox(height: 10)
+                                    const SizedBox(height: 20)
                                   ])));
                     },
                     backgroundColor: Theme.of(context).colorScheme.primary,
