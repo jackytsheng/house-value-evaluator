@@ -20,7 +20,7 @@ class CompareRoute extends StatelessWidget {
     final List<String> chartData = criteriaItemsMap.keys.toList();
     return Scaffold(
         appBar: ThemedAppBar(title: "Compare property", childrenMessages: [
-          Text("1. Click property name to change hide or show",
+          Text("1. Click property name to hide or show",
               style: Theme.of(context).textTheme.bodySmall),
           const SizedBox(height: 10),
           Text("2. Property names can be scrolled horizontally",

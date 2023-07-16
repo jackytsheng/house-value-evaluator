@@ -30,13 +30,13 @@ class AdditionalCostRoute extends StatelessWidget {
                   style: Theme.of(context).textTheme.bodySmall),
               const SizedBox(height: 10),
               Text(
-                  "2. Percentage cost will apply directly on the sold/estimate price",
+                  "2. Percentage costs will apply directly on the sold/estimate price",
                   style: Theme.of(context).textTheme.bodySmall),
               const SizedBox(height: 10),
-              Text("3. Plain cost will apply after percentage cost",
+              Text("3. Fixed costs will apply after percentage costs",
                   style: Theme.of(context).textTheme.bodySmall),
               const SizedBox(height: 10),
-              Text("4. These cost will apply to all properties",
+              Text("4. These costs will apply to all properties",
                   style: Theme.of(context).textTheme.bodySmall),
             ]),
             body: SingleChildScrollView(

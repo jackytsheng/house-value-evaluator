@@ -43,8 +43,10 @@ class CriteriaRoute extends StatelessWidget {
             appBar: ThemedAppBar(title: "Criteria", childrenMessages: [
               Text("1. Hold and swipe left to show the delete icon",
                   style: Theme.of(context).textTheme.bodySmall),
+              const SizedBox(height: 10),
               Text("2. Weighting can be swiped up and down",
                   style: Theme.of(context).textTheme.bodySmall),
+              const SizedBox(height: 10),
               Text("3. Criteria name can have up to 15 characters",
                   style: Theme.of(context).textTheme.bodySmall)
             ]),
